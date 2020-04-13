@@ -10,18 +10,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import budgetapp.beans.BudgetPeriod;
-import budgetapp.beans.BudgetedIncome;
+
 import budgetapp.repository.BudgetPeriodRepository;
-import budgetapp.repository.BudgetedIncomeRepository;
 
 
 @Controller
 public class WebController {
 	@Autowired
 	BudgetPeriodRepository repoBudgetPeriod;
-	@Autowired
-	BudgetedIncomeRepository repoBudgetedIncome;
-	
+		
 	@GetMapping({ "/" })
 	public String index() {
 		return "index.html";
@@ -64,10 +61,10 @@ public class WebController {
 	    return viewAllBudgetPeriods(model);
 	}
 ///something like this to select the item to add linked objects to...
-	@GetMapping("/selectBudgetPeriod/{id}")
-	public BudgetPeriod selectBudgetPeriod(@PathVariable("id") long id, Model model) {
-		BudgetPeriod p = repoBudgetPeriod.findById(id).orElse(null);
-	    return p;
-	}
+//	@GetMapping("/selectBudgetPeriod/{id}")
+//	public BudgetPeriod selectBudgetPeriod(@PathVariable("id") long id, Model model) {
+//		BudgetPeriod p = repoBudgetPeriod.findById(id).orElse(null);
+//	    return p;
+//	}
 ///	
 }

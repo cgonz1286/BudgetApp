@@ -1,5 +1,7 @@
 package budgetapp.beans;
 
+import java.time.LocalDate;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,25 +13,25 @@ import javax.persistence.Id;
 
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
-		private		long BudgetPeriodId;
-		private String Description;
-		//private LocalDate StartDate;
-		//private LocalDate EndDate; 
+		private		long id;
+		private String description;
+		private LocalDate startDate;
+		//private LocalDate endDate; 
 		/**
-		 * @param budgetPeriodId
+		 * @param id
 		 */
-		public BudgetPeriod(long budgetPeriodId) {
+		public BudgetPeriod(long id) {
 			super();
-			BudgetPeriodId = budgetPeriodId;
+			id = id;
 		}
 		/**
-		 * @param budgetPeriodId
+		 * @param id
 		 * @param Description
 		 */
-		public BudgetPeriod(long budgetPeriodId, String Description) {
+		public BudgetPeriod(long id, String Description) {
 			super();
-			BudgetPeriodId = budgetPeriodId;
-			Description = Description;
+			id = id;
+			description = Description;
 		}
 		/**
 		 * 
@@ -41,35 +43,34 @@ import javax.persistence.Id;
 
 		
 	/**
-	 * @return the budgetPeriodId
+	 * @return the id
 	 */
-	public long getBudgetPeriodId() {
-		return BudgetPeriodId;
+	public long getId() {
+		return id;
 	}
 
 	/**
-	 * @param budgetPeriodId the budgetPeriodId to set
+	 * @param id the id to set
 	 */
-	public void setBudgetPeriodId(long budgetPeriodId) {
-		BudgetPeriodId = budgetPeriodId;
+	public void setId(long id) {
+		id = id;
 	}
 	/**
 	 * @return the Description
 	 */
 	public String getDescription() {
-		return Description;
+		return description;
 	}
 	/**
 	 * @param Description the Description to set
 	 */
 	public void setDescription(String Description) {
-		Description = Description;
+		description = Description;
 	}
 
 	@Override
 	public String toString() {
-		return "BudgetPeriod [getBudgetPeriodId()=" + getBudgetPeriodId() + ", getDescription()="
-				+ getDescription() + "]";
+		return "BudgetPeriod [getId()=" + getId() + ", getDescription()="+ getDescription() + "]";
 	}
 
 }

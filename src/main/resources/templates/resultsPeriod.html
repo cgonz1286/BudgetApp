@@ -8,17 +8,18 @@
 <form>
 <table>
 <tr th:each="currentBudgetPeriod: ${BudgetPeriods}">
-	<td th:text="${currentBudgetPeriod.BudgetPeriodId}" />
+	<td th:text="${currentBudgetPeriod.id}" />
 	<td th:text="${currentBudgetPeriod.Description}" />
 <!--	<td th:text="${currentBudgetPeriod.StartDate}" /> -->
 <!-- 	<td th:text="${currentBudgetPeriod.EndDate}" /> -->
 	
 	
-	<td><a th:href="@{/editBudgetPeriod/{id}(id=${currentBudgetPeriod.BudgetPeriodId})}">Edit</a></td>
-	<td><a th:href="@{/deleteBudgetPeriod/{id}(id=${currentBudgetPeriod.BudgetPeriodId})}">Delete</a></td>
+	<td><a th:href="@{/editBudgetPeriod/{id}(id=${currentBudgetPeriod.id})}">Edit</a></td>
+	<td><a th:href="@{/deleteBudgetPeriod/{id}(id=${currentBudgetPeriod.id})}">Delete</a></td>
 	</tr>
 </table>
 </form>
 <a href = "../viewAllBudgetPeriods">View all Budget Periods</a><br/>
+<a href="../inputBudgetPeriod">Add a new Budget Period</a><br/>
 </body>
 </html>

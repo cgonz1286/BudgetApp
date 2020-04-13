@@ -5,8 +5,8 @@
 <title>Insert New Budget Period</title>
 </head>
 <body>
-<form th:object="${newBudgetPeriod}" th:action="@{/update/{id}(id=${newBudgetPeriod.id})}" method=POST>
-Budget Period Name: <input name="lastName" size="20" th:field="*{lastName}"><br />
+<form th:object="${newBudgetPeriod}" th:action="@{/updateBudgetPeriod/{id}(id=${newBudgetPeriod.id})}" method=POST>
+Budget Period Name: <input name="Description" size="20" th:field="*{Description}"><br />
 <!--	Start Date: <input type ="text" name = "month1" placeholder="mm" size="4"> <input type ="text" name = "day1" placeholder="dd" size="4">, <input type ="text" name = "year1" placeholder="yyyy" size="4">-->
 <!--	End Date: <input type ="text" name = "month2" placeholder="mm" size="4"> <input type ="text" name = "day2" placeholder="dd" size="4">, <input type ="text" name = "year2" placeholder="yyyy" size="4">-->
 

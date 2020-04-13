@@ -30,14 +30,14 @@ public class WebController {
 		}
 		
 		model.addAttribute("BudgetPeriods", repoBudgetPeriod.findAll());
-		return "resultsPeriods";
+		return "resultsPeriod";
 	}
 
 	@GetMapping("/inputBudgetPeriod")
 	public String addNewBudgetPeriod(Model model) {
 		BudgetPeriod p = new BudgetPeriod();
 		model.addAttribute("newBudgetPeriod", p);
-		return "inputPeriods";
+		return "inputPeriod";
 	}
 
 	@GetMapping("/editBudgetPeriod/{id}")
@@ -45,7 +45,7 @@ public class WebController {
 		BudgetPeriod p = repoBudgetPeriod.findById(id).orElse(null);
 		System.out.println("ITEM TO EDIT: " + p.toString());
 		model.addAttribute("newBudgetPeriod", p);
-		return "inputPeriods";
+		return "inputPeriod";
 	}
 
 	@PostMapping("/updateBudgetPeriod/{id}")

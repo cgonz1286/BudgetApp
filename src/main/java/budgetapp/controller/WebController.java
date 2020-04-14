@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import budgetapp.beans.BudgetPeriod;
-
+import budgetapp.beans.BudgetedBills;
 import budgetapp.repository.BudgetPeriodRepository;
 
 
@@ -67,4 +67,20 @@ public class WebController {
 //	    return p;
 //	}
 ///	
+	@GetMapping("/updateBudgetedBill")
+	public String newBudgetedBill(Model model) {
+		BudgetedBills p = new BudgetedBills();
+		model.addAttribute("newBudgetedBill", p);
+		return "BudgetedBill";
+	}
+	
+	@GetMapping({ "/viewAllBudgetedBills" })
+	public String viewAllBudgetedBills(Model model) {
+		if(repoBudgetedBills.findAll().isEmpty()) {
+			return addNewBudgetedBill(model);
+		}
+		
+		model.addAttribute("BudgetPeriods", repoBudgetPeriod.findAll());
+		return "resultsPeriod";
+	}
 }

@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import budgetapp.beans.BudgetPeriod;
 import budgetapp.beans.BudgetedBills;
 import budgetapp.repository.BudgetPeriodRepository;
+import budgetapp.repository.budgetedBillsRepository;
 
 
 @Controller
 public class WebController {
 	@Autowired
 	BudgetPeriodRepository repoBudgetPeriod;
+	@Autowired
+	budgetedBillsRepository repoBudgetedBills;
 		
 	@GetMapping({ "/" })
 	public String index() {
@@ -77,10 +80,30 @@ public class WebController {
 	@GetMapping({ "/viewAllBudgetedBills" })
 	public String viewAllBudgetedBills(Model model) {
 		if(repoBudgetedBills.findAll().isEmpty()) {
-			return addNewBudgetedBill(model);
+			return newBudgetedBill(model);
 		}
 		
-		model.addAttribute("BudgetPeriods", repoBudgetPeriod.findAll());
-		return "resultsPeriod";
+		model.addAttribute("BudgetedBills", repoBudgetedBills.findAll());
+		return "resultsBudgetedBills";
+	}
+	@GetMapping("/editBudgetedBill/{id}")
+	public String showUpdateBudgetedBill(@PathVariable("id") long id, Model model) {
+		BudgetedBills p = repoBudgetedBills.findById(id).orElse(null);
+		System.out.println("ITEM TO EDIT: " + p.toString());
+		model.addAttribute("newBudgetedBills", p);
+		return "inputBudgetedBills";
+	}
+
+	@PostMapping("/updateBudgetedBills/{id}")
+	public String reviseBudgetedBills(BudgetedBills p, Model model) {
+		repoBudgetedBills.save(p);
+		return viewAllBudgetedBills(model);
+	}
+	
+	@GetMapping("/deleteBudgetedBills/{id}")
+	public String deleteBudgetedBills(@PathVariable("id") long id, Model model) {
+		BudgetedBills p = repoBudgetedBills.findById(id).orElse(null);
+	    repoBudgetedBills.delete(p);
+	    return viewAllBudgetedBills(model);
 	}
 }

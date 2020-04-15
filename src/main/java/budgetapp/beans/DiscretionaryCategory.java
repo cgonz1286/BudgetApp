@@ -1,5 +1,6 @@
 package budgetapp.beans;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,7 +13,10 @@ public class DiscretionaryCategory {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	@Column(name="DiscretionaryCategoryId")
+	private long discretionaryCategoryId;
+	
+	@Column(name="Description")
 	private String description;
 	
 	public DiscretionaryCategory() {
@@ -25,18 +29,18 @@ public class DiscretionaryCategory {
 		this.description = description;
 	}
 	
-	public DiscretionaryCategory(long id, String description) {
+	public DiscretionaryCategory(long discretionaryCategoryId, String description) {
 		super();
-		this.id = id;
+		this.discretionaryCategoryId = discretionaryCategoryId;
 		this.description = description;
 	}
 
-	public long getId() {
-		return id;
+	public long getDiscretionaryCategoryId() {
+		return discretionaryCategoryId;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setDiscretionaryCategoryId(long discretionaryCategoryId) {
+		this.discretionaryCategoryId = discretionaryCategoryId;
 	}
 
 	public String getDescription() {
@@ -49,7 +53,7 @@ public class DiscretionaryCategory {
 
 	@Override
 	public String toString() {
-		return "DiscretionaryCategory [id=" + id + ", description=" + description + "]";
+		return "DiscretionaryCategory [discretionaryCategoryId=" + discretionaryCategoryId + ", description=" + description + "]";
 	}
 	
 }

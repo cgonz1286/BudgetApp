@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import budgetapp.beans.BudgetPeriod;
 import budgetapp.beans.BudgetedBills;
 import budgetapp.repository.BudgetPeriodRepository;
-import budgetapp.repository.budgetedBillsRepository;
+import budgetapp.repository.BudgetedBillsRepository;
+//import budgetapp.repository.budgetedBillsRepository;
 
 
 @Controller
@@ -20,7 +21,7 @@ public class WebController {
 	@Autowired
 	BudgetPeriodRepository repoBudgetPeriod;
 	@Autowired
-	budgetedBillsRepository repoBudgetedBills;
+	BudgetedBillsRepository repoBudgetedBills;
 		
 	@GetMapping({ "/" })
 	public String index() {

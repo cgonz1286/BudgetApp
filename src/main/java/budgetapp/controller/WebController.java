@@ -10,14 +10,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import budgetapp.beans.BudgetPeriod;
-
+import budgetapp.beans.BudgetedBills;
 import budgetapp.repository.BudgetPeriodRepository;
+import budgetapp.repository.BudgetedBillsRepository;
+//import budgetapp.repository.budgetedBillsRepository;
 
 
 @Controller
 public class WebController {
 	@Autowired
 	BudgetPeriodRepository repoBudgetPeriod;
+	@Autowired
+	BudgetedBillsRepository repoBudgetedBills;
 		
 	@GetMapping({ "/" })
 	public String index() {
@@ -67,4 +71,40 @@ public class WebController {
 //	    return p;
 //	}
 ///	
+	@GetMapping("/updateBudgetedBill")
+	public String newBudgetedBill(Model model) {
+		BudgetedBills p = new BudgetedBills();
+		model.addAttribute("newBudgetedBill", p);
+		return "BudgetedBill";
+	}
+	
+	@GetMapping({ "/viewAllBudgetedBills" })
+	public String viewAllBudgetedBills(Model model) {
+		if(repoBudgetedBills.findAll().isEmpty()) {
+			return newBudgetedBill(model);
+		}
+		
+		model.addAttribute("BudgetedBills", repoBudgetedBills.findAll());
+		return "resultsBudgetedBills";
+	}
+	@GetMapping("/editBudgetedBill/{id}")
+	public String showUpdateBudgetedBill(@PathVariable("id") long id, Model model) {
+		BudgetedBills p = repoBudgetedBills.findById(id).orElse(null);
+		System.out.println("ITEM TO EDIT: " + p.toString());
+		model.addAttribute("newBudgetedBills", p);
+		return "inputBudgetedBills";
+	}
+
+	@PostMapping("/updateBudgetedBills/{id}")
+	public String reviseBudgetedBills(BudgetedBills p, Model model) {
+		repoBudgetedBills.save(p);
+		return viewAllBudgetedBills(model);
+	}
+	
+	@GetMapping("/deleteBudgetedBills/{id}")
+	public String deleteBudgetedBills(@PathVariable("id") long id, Model model) {
+		BudgetedBills p = repoBudgetedBills.findById(id).orElse(null);
+	    repoBudgetedBills.delete(p);
+	    return viewAllBudgetedBills(model);
+	}
 }

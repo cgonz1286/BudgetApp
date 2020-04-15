@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Create or edit a bill</title>
+</head>
+<body>
+<Form th:object="${newBudgetedBill}" th:action="@{/updateBudgetedBill/{id}(id=${newBudgetedBill.id})}" method=Post>
+Bill Name: <input name="name" size="20"th:field="*{name}"><br />
+Account Number: <input name = "account number" size="20" th:field="*{accountNum}"><br />
+Category: <input name = "category" size="20" th:field="*{category}"><br />
+Date Due: <input name = "due date" size="20" th:field="*{dateDue}"><br />
+Amount Due: <input name = "amount due" size="20" th:field="*{price}"><br />
+<input name="Submit" type="Submit" value="Submit">
+</Form>
+<a href = "../viewAllBudgetedBills">View All Bills</a><br/>
+<a href = "../updateBudgetedBill">Add A New Bill</a><br/>
+</body>
+</html>

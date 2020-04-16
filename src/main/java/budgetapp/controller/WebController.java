@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import budgetapp.beans.BudgetPeriod;
 import budgetapp.beans.BudgetedBills;
 import budgetapp.beans.BudgetedIncome;
+import budgetapp.beans.DiscretionaryCategory;
 import budgetapp.repository.BudgetPeriodRepository;
 import budgetapp.repository.BudgetedBillsRepository;
 import budgetapp.repository.BudgetedIncomeRepository;
-
+import budgetapp.repository.DiscretionaryCategoryRepository;
 
 @Controller
 public class WebController {
@@ -23,11 +24,14 @@ public class WebController {
 	BudgetedBillsRepository repoBudgetedBills;
 	@Autowired
 	BudgetedIncomeRepository repoBudgetedIncome;
+	@Autowired
+	DiscretionaryCategoryRepository repoDiscretionaryCategory;
 	
-	@GetMapping({ "/","/index", "/index.html"})
-	public String index() {
-		return "index.html";
-	}
+//	@GetMapping({ "/","/index", "/index.html"})
+//	public String index() {
+//		return "index.html";
+//	}
+	
 	@GetMapping({ "/viewAllBudgetPeriods" })
 	public String viewAllBudgetPeriods(Model model) {
 		if(repoBudgetPeriod.findAll().isEmpty()) {
@@ -148,4 +152,104 @@ public class WebController {
 	    repoBudgetedIncome.delete(b);
 	    return viewAllBudgetedIncomes(model);
 	}
+	
+	// ------------------------------
+	// DiscretionaryCategory Mappings 
+	// ------------------------------
+	@GetMapping("/mainDiscretionaryCategory")
+	public String addNewDiscretionaryCategory(Model model) {
+		DiscretionaryCategory dc = new DiscretionaryCategory();
+		
+		model.addAttribute("discretionaryCategory", dc);	
+		
+		if(repoDiscretionaryCategory.findAll().isEmpty()) {
+			model.addAttribute("allDiscretionaryCategories", "EMPTY");
+		} else {
+			model.addAttribute("allDiscretionaryCategories", repoDiscretionaryCategory.findAll());
+		}
+		
+		return "discretionaryCategory";
+	}
+	
+	@PostMapping("/updateDiscretionaryCategory/{id}")
+	public String reviseDiscretionaryCategory(DiscretionaryCategory dc, Model model) {
+		repoDiscretionaryCategory.save(dc);
+		
+		return addNewDiscretionaryCategory(model);
+	}
+	
+	@GetMapping("/editDiscretionaryCategory/{id}")
+	public String showUpdateDiscretionaryCategory(@PathVariable("id") long discCategoryId, Model model) {
+		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(discCategoryId).orElse(null);
+			
+		model.addAttribute("discretionaryCategory", dc);
+		
+		if(repoDiscretionaryCategory.findAll().isEmpty()) {
+			model.addAttribute("allDiscretionaryCategories", "EMPTY");
+		} else {
+			model.addAttribute("allDiscretionaryCategories", repoDiscretionaryCategory.findAll());
+		}
+		
+		return "discretionaryCategory";
+	}
+	
+	@GetMapping("/deleteDiscretionaryCategory/{id}")
+	public String deleteUser(@PathVariable("id") long discCategoryId, Model model) {
+		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(discCategoryId).orElse(null);
+		repoDiscretionaryCategory.delete(dc);
+		
+		return addNewDiscretionaryCategory(model);
+	}
+	
+//	*** KEEPING FOR NOW IN CASE I NEED TO REVERT BACK TO THIS ***
+//	@GetMapping({"/selectDiscretionaryCategories"})
+//	public String viewAllDiscretionaryCategories(Model model) {
+//		if(repoDiscretionaryCategory.findAll().isEmpty()) {
+//			return addNewDiscretionaryCategory(model);
+//		}
+//		
+//		model.addAttribute("allDiscretionaryCategories", repoDiscretionaryCategory.findAll());
+//		
+//		return "selectDiscretionaryCategory";
+//	}
+//	
+//	@GetMapping("/newDiscretionaryCategory")
+//	public String addNewDiscretionaryCategory(Model model) {
+//		DiscretionaryCategory dc = new DiscretionaryCategory();
+//		
+//		model.addAttribute("discretionaryCategory", dc);	
+//		
+//		return "addDiscretionaryCategory";
+//	}
+//	
+////	@PostMapping("/newDiscretionaryCategory")
+////	public String addNewDiscretionaryCategory(@ModelAttribute DiscretionaryCategory dc, Model model) {
+////		repoDiscretionaryCategory.save(dc);
+////		
+////		return addNewDiscretionaryCategory(model);
+////	}
+//	
+//	@PostMapping("/updateDiscretionaryCategory/{id}")
+//	public String reviseDiscretionaryCategory(DiscretionaryCategory dc, Model model) {
+//		repoDiscretionaryCategory.save(dc);
+//		
+//		return addNewDiscretionaryCategory(model);
+//	}
+//	
+//	@GetMapping("/editDiscretionaryCategory/{id}")
+//	public String showUpdateDiscretionaryCategory(@PathVariable("id") long discCategoryId, Model model) {
+//		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(discCategoryId).orElse(null);
+//			
+//		model.addAttribute("discretionaryCategory", dc);
+//		
+//		return "addDiscretionaryCategory";
+//	}
+//	
+//	@GetMapping("/deleteDiscretionaryCategory/{id}")
+//	public String deleteUser(@PathVariable("id") long discCategoryId, Model model) {
+//		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(discCategoryId).orElse(null);
+//		repoDiscretionaryCategory.delete(dc);
+//		
+//		return addNewDiscretionaryCategory(model);
+//	}
 }

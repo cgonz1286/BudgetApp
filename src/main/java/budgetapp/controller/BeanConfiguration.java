@@ -7,6 +7,7 @@ import budgetapp.beans.BudgetPeriod;
 import budgetapp.beans.BudgetedBills;
 import budgetapp.beans.DiscretionaryCategory;
 
+
 @Configuration
 public class BeanConfiguration {
 	

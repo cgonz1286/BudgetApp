@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import budgetapp.beans.BudgetPeriod;
 import budgetapp.beans.BudgetedBills;
-import budgetapp.beans.DiscretionaryCategory;
+import budgetapp.beans.BudgetedIncome;
 import budgetapp.repository.BudgetPeriodRepository;
 import budgetapp.repository.BudgetedBillsRepository;
-import budgetapp.repository.DiscretionaryCategoryRepository;
+import budgetapp.repository.BudgetedIncomeRepository;
 
 
 @Controller
@@ -22,8 +22,8 @@ public class WebController {
 	@Autowired
 	BudgetedBillsRepository repoBudgetedBills;
 	@Autowired
-	DiscretionaryCategoryRepository repoDiscretionaryCategory;
-		
+	BudgetedIncomeRepository repoBudgetedIncome;
+	
 	@GetMapping({ "/","/index", "/index.html"})
 	public String index() {
 		return "index.html";
@@ -147,5 +147,5 @@ public class WebController {
 		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
 	    repoBudgetedIncome.delete(b);
 	    return viewAllBudgetedIncomes(model);
-	}	
+	}
 }

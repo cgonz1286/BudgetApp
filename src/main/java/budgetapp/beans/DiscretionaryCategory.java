@@ -11,16 +11,16 @@ import javax.persistence.UniqueConstraint;
 @Entity
 @Table(
 		name="discretionary_category",
-		uniqueConstraints = @UniqueConstraint(columnNames={"DESCRIPTION"})
+		uniqueConstraints = @UniqueConstraint(columnNames={"description"})
 )
 public class DiscretionaryCategory {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="DiscretionaryCategoryId")
+	@Column(name="discretionary_category_id")
 	private long discCategoryId;
 	
-	@Column(name="DESCRIPTION", nullable=false, length=30)
+	@Column(name="description", nullable=false, length=30)
 	private String description;
 	
 	public DiscretionaryCategory() {

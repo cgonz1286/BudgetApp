@@ -1,11 +1,13 @@
 package budgetapp.beans;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 	@Entity
@@ -15,8 +17,12 @@ import javax.persistence.Id;
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private		long id;
 		private String description;
-		private LocalDate startDate;
-		//private LocalDate endDate; 
+		
+	    @DateTimeFormat(pattern = "MM/dd/yyyy")
+		private Date startDate;
+	   
+	    @DateTimeFormat(pattern = "MM/dd/yyyy")
+		private Date endDate; 
 		/**
 		 * @param id
 		 */
@@ -67,7 +73,32 @@ import javax.persistence.Id;
 	public void setDescription(String Description) {
 		description = Description;
 	}
-
+	/**
+	 * @return the startDate
+	 */
+	public Date getStartDate() {
+		return startDate;
+	}
+	/**
+	 * @param startDate the startDate to set
+	 */
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	
+	
+	/**
+	 * @return the endDate
+	 */
+	public Date getEndDate() {
+		return endDate;
+	}
+	/**
+	 * @param endDate the endDate to set
+	 */
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
 	@Override
 	public String toString() {
 		return "BudgetPeriod [getId()=" + getId() + ", getDescription()="+ getDescription() + "]";

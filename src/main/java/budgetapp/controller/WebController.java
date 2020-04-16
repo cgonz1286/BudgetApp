@@ -26,10 +26,10 @@ public class WebController {
 	@Autowired
 	DiscretionaryCategoryRepository repoDiscretionaryCategory;
 		
-//	@GetMapping("/index")
-//	public String index(Model model) {
-//		return "index";
-//	}
+	@GetMapping({ "/","/index", "/index.html"})
+	public String index() {
+		return "index";
+	}
 	
 	@GetMapping({ "/viewAllBudgetPeriods" })
 	public String viewAllBudgetPeriods(Model model) {

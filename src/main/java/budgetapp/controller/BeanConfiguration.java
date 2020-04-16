@@ -5,11 +5,10 @@ import org.springframework.context.annotation.Configuration;
 
 import budgetapp.beans.BudgetPeriod;
 import budgetapp.beans.BudgetedBills;
-
+import budgetapp.beans.DiscretionaryCategory;
 
 @Configuration
 public class BeanConfiguration {
-	
 	
 	@Bean
 	public BudgetPeriod budgetPeriod() {
@@ -22,4 +21,11 @@ public class BeanConfiguration {
 		BudgetedBills bean = new BudgetedBills();
 		return bean;
 	}
+	
+	@Bean
+	public DiscretionaryCategory discretionaryCategory() {
+		DiscretionaryCategory bean = new DiscretionaryCategory();
+		return bean;
+	}
+	
 }

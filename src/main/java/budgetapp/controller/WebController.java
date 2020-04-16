@@ -6,14 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import budgetapp.beans.BudgetPeriod;
 import budgetapp.beans.BudgetedBills;
+import budgetapp.beans.DiscretionaryCategory;
 import budgetapp.repository.BudgetPeriodRepository;
 import budgetapp.repository.BudgetedBillsRepository;
-
+import budgetapp.repository.DiscretionaryCategoryRepository;
 
 @Controller
 public class WebController {
@@ -21,11 +23,14 @@ public class WebController {
 	BudgetPeriodRepository repoBudgetPeriod;
 	@Autowired
 	BudgetedBillsRepository repoBudgetedBills;
+	@Autowired
+	DiscretionaryCategoryRepository repoDiscretionaryCategory;
 		
-	@GetMapping({ "/" })
-	public String index() {
-		return "index.html";
-	}
+//	@GetMapping("/index")
+//	public String index(Model model) {
+//		return "index";
+//	}
+	
 	@GetMapping({ "/viewAllBudgetPeriods" })
 	public String viewAllBudgetPeriods(Model model) {
 		if(repoBudgetPeriod.findAll().isEmpty()) {
@@ -106,4 +111,46 @@ public class WebController {
 	    repoBudgetedBills.delete(p);
 	    return viewAllBudgetedBills(model);
 	}
+	
+	// ------------------------------
+	// DiscretionaryCategory Mappings 
+	// ------------------------------
+//	@GetMapping({"/viewAllDiscretionaryCategories"})
+//	public String viewAllDiscretionaryCategories(Model model) {
+//		if(repoDiscretionaryCategory.findAll().isEmpty()) {
+//			return addNewDiscretionaryCategory(model);
+//		}
+//		
+//		model.addAttribute("discretionaryCategories", repoDiscretionaryCategory.findAll());
+//		
+//		return "discretionaryCategory";
+//	}
+	
+	@GetMapping("/inputDiscretionaryCategory")
+	public String addNewDiscretionaryCategory(Model model) {
+		DiscretionaryCategory dc = new DiscretionaryCategory();
+		
+		model.addAttribute("newDiscretionaryCategory", dc);
+		
+		if(repoDiscretionaryCategory.findAll().isEmpty()) {
+			return "discretionaryCategory";
+		} else {
+			model.addAttribute("allDiscretionaryCategories", repoDiscretionaryCategory.findAll());
+			return "discretionaryCategory";
+		}
+	}
+	
+	@PostMapping("/inputDiscretionaryCategory")
+	public String addNewDiscretionaryCategory(@ModelAttribute DiscretionaryCategory dc, Model model) {
+		repoDiscretionaryCategory.save(dc);
+		
+		return addNewDiscretionaryCategory(model);
+	}
+	
+//	@PostMapping("/updateDiscretionaryCategory/{id}")
+//	public String reviseDiscretionaryCategory(DiscretionaryCategory dc, Model model) {
+//		repoDiscretionaryCategory.save(dc);
+//		
+//		return addNewDiscretionaryCategory(model);
+//	}
 }

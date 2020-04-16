@@ -10,11 +10,11 @@
 
 <form th:object="${newBudgetedIncome}" th:action="@{/updateBudgetedIncome/{id}(id=${newBudgetedIncome.id})}" method=POST>
 Income Description: <input name="Description" size="20" th:field="*{description}"><br />
-Expected Date: <input type ="text" name = "startDate" placeholder="MM/dd/yyyy" th:field="*{startDate}"><br />
+Expected Date: <input type ="text" name = "incomeDate" placeholder="MM/dd/yyyy" th:field="*{incomeDate}"><br />
 Amount: <input type ="text" name = "amount"  th:field="*{amount}"><br />
 
-<input name="Submit" type="submit" value="submit" />
-</form>
+<input name="Submit" type="submit" value="submit" /><br />
+
 <a href = "../viewAllBudgetedIncomes">View all Budgeted Income Entries</a><br/>
 <a href="../inputBudgetedIncome">Add a new Budgeted Income Entries</a><br/>
 

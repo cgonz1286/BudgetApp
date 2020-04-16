@@ -5,10 +5,13 @@
 <title>Insert New Budget Period</title>
 </head>
 <body>
+<h1>Enter Budget Period</h1>
+<h15>Name the time period that you want to budget for. Usually one month is a good starting place. You could choose to use one pay period or a full year, if you prefer.</h5>
+
 <form th:object="${newBudgetPeriod}" th:action="@{/updateBudgetPeriod/{id}(id=${newBudgetPeriod.id})}" method=POST>
-Budget Period Name: <input name="Description" size="20" th:field="*{Description}"><br />
-<!--	Start Date: <input type ="text" name = "month1" placeholder="mm" size="4"> <input type ="text" name = "day1" placeholder="dd" size="4">, <input type ="text" name = "year1" placeholder="yyyy" size="4">-->
-<!--	End Date: <input type ="text" name = "month2" placeholder="mm" size="4"> <input type ="text" name = "day2" placeholder="dd" size="4">, <input type ="text" name = "year2" placeholder="yyyy" size="4">-->
+Budget Period Name: <input name="Description" size="20" th:field="*{description}"><br />
+Start Date: <input type ="text" name = "startDate" placeholder="MM/dd/yyyy" th:field="*{startDate}"><br />
+End Date: <input type ="text" name = "endDate" placeholder="MM/dd/yyyy" th:field="*{endDate}"><br />
 
 <input name="Submit" type="submit" value="submit" />
 </form>

@@ -1,7 +1,5 @@
 package budgetapp.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import budgetapp.beans.BudgetPeriod;
 import budgetapp.beans.BudgetedBills;
 import budgetapp.repository.BudgetPeriodRepository;
-import budgetapp.repository.budgetedBillsRepository;
+import budgetapp.repository.BudgetedBillsRepository;
 
 
 @Controller
@@ -20,9 +18,9 @@ public class WebController {
 	@Autowired
 	BudgetPeriodRepository repoBudgetPeriod;
 	@Autowired
-	budgetedBillsRepository repoBudgetedBills;
+	BudgetedBillsRepository repoBudgetedBills;
 		
-	@GetMapping({ "/" })
+	@GetMapping({ "/","/index", "/index.html"})
 	public String index() {
 		return "index.html";
 	}

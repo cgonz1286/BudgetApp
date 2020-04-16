@@ -6,17 +6,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="DiscretionaryCategory")
+@Table(
+		name="discretionary_category",
+		uniqueConstraints = @UniqueConstraint(columnNames={"description"})
+)
 public class DiscretionaryCategory {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="DiscretionaryCategoryId")
-	private long discretionaryCategoryId;
+	@Column(name="discretionary_category_id")
+	private long discCategoryId;
 	
-	@Column(name="Description")
+	@Column(name="description", nullable=false, length=30)
 	private String description;
 	
 	public DiscretionaryCategory() {
@@ -29,18 +33,18 @@ public class DiscretionaryCategory {
 		this.description = description;
 	}
 	
-	public DiscretionaryCategory(long discretionaryCategoryId, String description) {
+	public DiscretionaryCategory(long discCategoryId, String description) {
 		super();
-		this.discretionaryCategoryId = discretionaryCategoryId;
+		this.discCategoryId = discCategoryId;
 		this.description = description;
 	}
 
-	public long getDiscretionaryCategoryId() {
-		return discretionaryCategoryId;
+	public long getDiscCategoryId() {
+		return discCategoryId;
 	}
 
-	public void setDiscretionaryCategoryId(long discretionaryCategoryId) {
-		this.discretionaryCategoryId = discretionaryCategoryId;
+	public void setDiscCategoryId(long discCategoryId) {
+		this.discCategoryId = discCategoryId;
 	}
 
 	public String getDescription() {
@@ -53,7 +57,7 @@ public class DiscretionaryCategory {
 
 	@Override
 	public String toString() {
-		return "DiscretionaryCategory [discretionaryCategoryId=" + discretionaryCategoryId + ", description=" + description + "]";
+		return "DiscretionaryCategory [discCategoryId=" + discCategoryId + ", description=" + description + "]";
 	}
 	
 }

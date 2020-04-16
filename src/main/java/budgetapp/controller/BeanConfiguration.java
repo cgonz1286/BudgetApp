@@ -10,6 +10,7 @@ import budgetapp.beans.DiscretionaryCategory;
 @Configuration
 public class BeanConfiguration {
 	
+	
 	@Bean
 	public BudgetPeriod budgetPeriod() {
 		BudgetPeriod bean = new BudgetPeriod();
@@ -23,9 +24,8 @@ public class BeanConfiguration {
 	}
 	
 	@Bean
-	public DiscretionaryCategory discretionaryCategory() {
-		DiscretionaryCategory bean = new DiscretionaryCategory();
+	public BudgetedIncome budgetedincome() {
+		BudgetedIncome bean = new BudgetedIncome();
 		return bean;
 	}
-	
 }

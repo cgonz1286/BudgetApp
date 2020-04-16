@@ -15,6 +15,7 @@ import budgetapp.repository.BudgetPeriodRepository;
 import budgetapp.repository.BudgetedBillsRepository;
 import budgetapp.repository.DiscretionaryCategoryRepository;
 
+
 @Controller
 public class WebController {
 	@Autowired
@@ -24,11 +25,10 @@ public class WebController {
 	@Autowired
 	DiscretionaryCategoryRepository repoDiscretionaryCategory;
 		
-//	@GetMapping({ "/","/index", "/index.html"})
-//	public String index() {
-//		return "index";
-//	}
-	
+	@GetMapping({ "/","/index", "/index.html"})
+	public String index() {
+		return "index.html";
+	}
 	@GetMapping({ "/viewAllBudgetPeriods" })
 	public String viewAllBudgetPeriods(Model model) {
 		if(repoBudgetPeriod.findAll().isEmpty()) {
@@ -110,104 +110,43 @@ public class WebController {
 	    return viewAllBudgetedBills(model);
 	}
 	
-	// ------------------------------
-	// DiscretionaryCategory Mappings 
-	// ------------------------------
-	@GetMapping("/mainDiscretionaryCategory")
-	public String addNewDiscretionaryCategory(Model model) {
-		DiscretionaryCategory dc = new DiscretionaryCategory();
-		
-		model.addAttribute("discretionaryCategory", dc);	
-		
-		if(repoDiscretionaryCategory.findAll().isEmpty()) {
-			model.addAttribute("allDiscretionaryCategories", "EMPTY");
-		} else {
-			model.addAttribute("allDiscretionaryCategories", repoDiscretionaryCategory.findAll());
+	////////////////
+	@GetMapping({ "/viewAllBudgetedIncomes" })
+	public String viewAllBudgetedIncomes(Model model) {
+		if(repoBudgetedIncome.findAll().isEmpty()) {
+			return addNewBudgetedIncome(model);
 		}
 		
-		return "discretionaryCategory";
+		model.addAttribute("BudgetedIncomes", repoBudgetedIncome.findAll());
+		return "resultsIncome";
+	}
+
+	@GetMapping("/inputBudgetedIncome")
+	public String addNewBudgetedIncome(Model model) {
+		BudgetedIncome b = new BudgetedIncome();
+		model.addAttribute("newBudgetedIncome", b);
+		return "inputIncome";
+	}
+
+	@GetMapping("/editBudgetedIncome/{id}")
+	public String showUpdateBudgetedIncome(@PathVariable("id") long id, Model model) {
+		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
+		System.out.println("ITEM TO EDIT: " + b.toString());
+		model.addAttribute("newBudgetedIncome", b);
+
+		return "inputIncome";
+	}
+
+	@PostMapping("/updateBudgetedIncome/{id}")
+	public String reviseBudgetedIncome(BudgetedIncome b, Model model) {
+		repoBudgetedIncome.save(b);
+		return viewAllBudgetedIncomes(model);
 	}
 	
-	@PostMapping("/updateDiscretionaryCategory/{id}")
-	public String reviseDiscretionaryCategory(DiscretionaryCategory dc, Model model) {
-		repoDiscretionaryCategory.save(dc);
-		
-		return addNewDiscretionaryCategory(model);
-	}
-	
-	@GetMapping("/editDiscretionaryCategory/{id}")
-	public String showUpdateDiscretionaryCategory(@PathVariable("id") long discCategoryId, Model model) {
-		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(discCategoryId).orElse(null);
-			
-		model.addAttribute("discretionaryCategory", dc);
-		
-		if(repoDiscretionaryCategory.findAll().isEmpty()) {
-			model.addAttribute("allDiscretionaryCategories", "EMPTY");
-		} else {
-			model.addAttribute("allDiscretionaryCategories", repoDiscretionaryCategory.findAll());
-		}
-		
-		return "discretionaryCategory";
-	}
-	
-	@GetMapping("/deleteDiscretionaryCategory/{id}")
-	public String deleteUser(@PathVariable("id") long discCategoryId, Model model) {
-		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(discCategoryId).orElse(null);
-		repoDiscretionaryCategory.delete(dc);
-		
-		return addNewDiscretionaryCategory(model);
-	}
-	
-//	*** KEEPING FOR NOW IN CASE I NEED TO REVERT BACK TO THIS ***
-//	@GetMapping({"/selectDiscretionaryCategories"})
-//	public String viewAllDiscretionaryCategories(Model model) {
-//		if(repoDiscretionaryCategory.findAll().isEmpty()) {
-//			return addNewDiscretionaryCategory(model);
-//		}
-//		
-//		model.addAttribute("allDiscretionaryCategories", repoDiscretionaryCategory.findAll());
-//		
-//		return "selectDiscretionaryCategory";
-//	}
-//	
-//	@GetMapping("/newDiscretionaryCategory")
-//	public String addNewDiscretionaryCategory(Model model) {
-//		DiscretionaryCategory dc = new DiscretionaryCategory();
-//		
-//		model.addAttribute("discretionaryCategory", dc);	
-//		
-//		return "addDiscretionaryCategory";
-//	}
-//	
-////	@PostMapping("/newDiscretionaryCategory")
-////	public String addNewDiscretionaryCategory(@ModelAttribute DiscretionaryCategory dc, Model model) {
-////		repoDiscretionaryCategory.save(dc);
-////		
-////		return addNewDiscretionaryCategory(model);
-////	}
-//	
-//	@PostMapping("/updateDiscretionaryCategory/{id}")
-//	public String reviseDiscretionaryCategory(DiscretionaryCategory dc, Model model) {
-//		repoDiscretionaryCategory.save(dc);
-//		
-//		return addNewDiscretionaryCategory(model);
-//	}
-//	
-//	@GetMapping("/editDiscretionaryCategory/{id}")
-//	public String showUpdateDiscretionaryCategory(@PathVariable("id") long discCategoryId, Model model) {
-//		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(discCategoryId).orElse(null);
-//			
-//		model.addAttribute("discretionaryCategory", dc);
-//		
-//		return "addDiscretionaryCategory";
-//	}
-//	
-//	@GetMapping("/deleteDiscretionaryCategory/{id}")
-//	public String deleteUser(@PathVariable("id") long discCategoryId, Model model) {
-//		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(discCategoryId).orElse(null);
-//		repoDiscretionaryCategory.delete(dc);
-//		
-//		return addNewDiscretionaryCategory(model);
-//	}
-	
+	@GetMapping("/deleteBudgetedIncome/{id}")
+	public String deleteBudgetedIncome(@PathVariable("id") long id, Model model) {
+		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
+	    repoBudgetedIncome.delete(b);
+	    return viewAllBudgetedIncomes(model);
+	}	
 }

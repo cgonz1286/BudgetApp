@@ -22,10 +22,10 @@ public class WebController {
 	@Autowired
 	BudgetedBillsRepository repoBudgetedBills;
 		
-	@GetMapping({ "/" })
+	/*@GetMapping({ "/" })
 	public String index() {
 		return "index.html";
-	}
+	}*/
 	@GetMapping({ "/viewAllBudgetPeriods" })
 	public String viewAllBudgetPeriods(Model model) {
 		if(repoBudgetPeriod.findAll().isEmpty()) {

@@ -22,7 +22,7 @@ import javax.persistence.Id;
 		 */
 		public BudgetPeriod(long id) {
 			super();
-			id = id;
+			this.id = id;
 		}
 		/**
 		 * @param id
@@ -30,7 +30,7 @@ import javax.persistence.Id;
 		 */
 		public BudgetPeriod(long id, String Description) {
 			super();
-			id = id;
+			this.id = id;
 			description = Description;
 		}
 		/**
@@ -53,7 +53,7 @@ import javax.persistence.Id;
 	 * @param id the id to set
 	 */
 	public void setId(long id) {
-		id = id;
+		this.id = id;
 	}
 	/**
 	 * @return the Description

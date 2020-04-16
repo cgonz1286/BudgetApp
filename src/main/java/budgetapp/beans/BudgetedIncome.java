@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,9 +19,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private		long id;
 		
-		//@ManyToOne(cascade=CascadeType.PERSIST)
-		//@JoinColumn(name="id")
-		//private BudgetPeriod budgetPeriod;
+		@ManyToOne(cascade=CascadeType.PERSIST)
+		private BudgetPeriod budgetPeriod;
 		
 		private String description;
 		
@@ -56,6 +54,18 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 
 		
+	/**
+		 * @return the budgetPeriod
+		 */
+		public BudgetPeriod getBudgetPeriod() {
+			return budgetPeriod;
+		}
+		/**
+		 * @param budgetPeriod the budgetPeriod to set
+		 */
+		public void setBudgetPeriod(BudgetPeriod budgetPeriod) {
+			this.budgetPeriod = budgetPeriod;
+		}
 	/**
 	 * @return the id
 	 */

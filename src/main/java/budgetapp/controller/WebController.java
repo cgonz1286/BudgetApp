@@ -132,6 +132,7 @@ public class WebController {
 		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
 		System.out.println("ITEM TO EDIT: " + b.toString());
 		model.addAttribute("newBudgetedIncome", b);
+
 		return "inputIncome";
 	}
 

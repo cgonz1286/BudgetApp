@@ -9,6 +9,7 @@
 <h15>Enter the income that you expect to receive during the budget edIncome. You can put in the full amount as one entry, or type in multiple entries with different dates if you expect to recieve income at different times.</h15>
 
 <form th:object="${newBudgetedIncome}" th:action="@{/updateBudgetedIncome/{id}(id=${newBudgetedIncome.id})}" method=POST>
+Budget Period: <input name="budgetPeriod" size="20" th:field="*{budgetPeriod}"><br />
 Income Description: <input name="Description" size="20" th:field="*{description}"><br />
 Expected Date: <input type ="text" name = "incomeDate" placeholder="MM/dd/yyyy" th:field="*{incomeDate}"><br />
 Amount: <input type ="text" name = "amount"  th:field="*{amount}"><br />

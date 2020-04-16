@@ -20,18 +20,20 @@ th, td {
 <table>
 
 <tr>
-<th>Description</th>
+<!--  <th>BudgetPeriod</th>  -->
+<th>Description</th> 
 <th>Date</th>
 <th>Amount</th>
 
 </tr>
  
 <tr th:each="currentBudgetedIncome: ${BudgetedIncomes}">
-	<td th:text="${currentBudgetedIncome.id}" hidden />
+	<td hidden th:text="${currentBudgetedIncome.id}"  />
+	<!--  <td th:text="${currentBudgetedIncome.budgetPeriod.id}" />    -->
 	<td th:text="${currentBudgetedIncome.description}" />
 	<td th:text="${#dates.format(currentBudgetedIncome.incomeDate, 'MM/dd/yyyy')}" /> 
 	<td th:text="${currentBudgetedIncome.amount}" />
-	
+
 	
 	<td><a th:href="@{/editBudgetedIncome/{id}(id=${currentBudgetedIncome.id})}">Edit</a></td>
 	<td><a th:href="@{/deleteBudgetedIncome/{id}(id=${currentBudgetedIncome.id})}">Delete</a></td>

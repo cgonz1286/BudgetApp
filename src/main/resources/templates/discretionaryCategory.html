@@ -14,8 +14,8 @@ tr:nth-child(even) {background-color: #dddddd;}
 <title>Choose Discretionary Categories</title>
 </head>
 <body>
-	<h3>Please add/select the Discretionary Categories you want to include this budget period.</h2>
-	<br />
+	<h4>Add new discretionary categor(ies) if desired.</h4>
+	<!-- 
 	<form th:object="${newDiscretionaryCategory}" th:action="@{/inputDiscretionaryCategory}" method='POST'>	
 		<table style="width: 24%">
 			<tr>
@@ -25,12 +25,10 @@ tr:nth-child(even) {background-color: #dddddd;}
 			</tr>
 		</table>
 		<br />
-	</form>
-	<a href="/index">Back to index</a>
-	
-	<!-- ***USE BELOW AS REFERENCE FOR LIST OF ALL CATEGORIES WITH EDIT/DELETE FUNCTIONALITY***
+	</form>	
+	-->
 	<form th:object="${newDiscretionaryCategory}" th:action="@{/updateDiscretionaryCategory/{id}(id=${newDiscretionaryCategory.discCategoryId})}" method='POST'>	
-		<table style="width: 18%">
+		<table style="width: 24%">
 			<tr>
 				<th>Discretionary Category:</th>
 				<td><input type="text" name="description" size="30" th:field="*{description}" required></td>
@@ -39,7 +37,16 @@ tr:nth-child(even) {background-color: #dddddd;}
 		</table>
 		<br />
 	</form>
-	-->
-	
+	<h4>Select the categor(ies) you would like to include this budget period:</h4>
+	<form>
+		<table>
+			<tr th:each="currentCategory : ${allDiscretionaryCategories}" >
+				<td th:text="${currentCategory.description}" />
+				<td><a th:href="@{/edit/{id}(id=${currentCategory.description})}">Edit</a></td>
+				<td><a th:href="@{/delete/{id}(id=${currentCategory.description})}">Delete</a></td>
+			</tr>
+		</table>
+		<br />
+	</form>	
 </body>
 </html>

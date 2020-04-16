@@ -24,10 +24,10 @@ public class WebController {
 	@Autowired
 	DiscretionaryCategoryRepository repoDiscretionaryCategory;
 		
-	@GetMapping({ "/","/index", "/index.html"})
-	public String index() {
-		return "index";
-	}
+//	@GetMapping({ "/","/index", "/index.html"})
+//	public String index() {
+//		return "index";
+//	}
 	
 	@GetMapping({ "/viewAllBudgetPeriods" })
 	public String viewAllBudgetPeriods(Model model) {
@@ -138,17 +138,17 @@ public class WebController {
 		}
 	}
 	
-	@PostMapping("/inputDiscretionaryCategory")
-	public String addNewDiscretionaryCategory(@ModelAttribute DiscretionaryCategory dc, Model model) {
-		repoDiscretionaryCategory.save(dc);
-		
-		return addNewDiscretionaryCategory(model);
-	}
-	
-//	@PostMapping("/updateDiscretionaryCategory/{id}")
-//	public String reviseDiscretionaryCategory(DiscretionaryCategory dc, Model model) {
+//	@PostMapping("/inputDiscretionaryCategory")
+//	public String addNewDiscretionaryCategory(@ModelAttribute DiscretionaryCategory dc, Model model) {
 //		repoDiscretionaryCategory.save(dc);
 //		
 //		return addNewDiscretionaryCategory(model);
 //	}
+	
+	@PostMapping("/updateDiscretionaryCategory/{id}")
+	public String reviseDiscretionaryCategory(DiscretionaryCategory dc, Model model) {
+		repoDiscretionaryCategory.save(dc);
+		
+		return addNewDiscretionaryCategory(model);
+	}
 }

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert New Budgeted Income Entry</title>
+</head>
+<body>
+<h1>Enter Budgeted Income</h1>
+<h15>Enter the income that you expect to receive during the budget edIncome. You can put in the full amount as one entry, or type in multiple entries with different dates if you expect to recieve income at different times.</h15>
+
+<form th:object="${newBudgetedIncome}" th:action="@{/updateBudgetedIncome/{id}(id=${newBudgetedIncome.id})}" method=POST>
+Income Description: <input name="Description" size="20" th:field="*{description}"><br />
+Expected Date: <input type ="text" name = "startDate" placeholder="MM/dd/yyyy" th:field="*{startDate}"><br />
+Amount: <input type ="text" name = "amount"  th:field="*{amount}"><br />
+
+<input name="Submit" type="submit" value="submit" />
+</form>
+<a href = "../viewAllBudgetedIncomes">View all Budgeted Income Entries</a><br/>
+<a href="../inputBudgetedIncome">Add a new Budgeted Income Entries</a><br/>
+
+</body>
+</html>

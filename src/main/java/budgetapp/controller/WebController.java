@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import budgetapp.beans.BudgetPeriod;
 import budgetapp.beans.BudgetedBills;
+import budgetapp.beans.BudgetedIncome;
 import budgetapp.repository.BudgetPeriodRepository;
 import budgetapp.repository.BudgetedBillsRepository;
+import budgetapp.repository.BudgetedIncomeRepository;
 
 
 @Controller
@@ -19,7 +21,9 @@ public class WebController {
 	BudgetPeriodRepository repoBudgetPeriod;
 	@Autowired
 	BudgetedBillsRepository repoBudgetedBills;
-		
+	@Autowired
+	BudgetedIncomeRepository repoBudgetedIncome;
+	
 	@GetMapping({ "/","/index", "/index.html"})
 	public String index() {
 		return "index.html";
@@ -103,5 +107,44 @@ public class WebController {
 		BudgetedBills p = repoBudgetedBills.findById(id).orElse(null);
 	    repoBudgetedBills.delete(p);
 	    return viewAllBudgetedBills(model);
+	}
+	
+	////////////////
+	@GetMapping({ "/viewAllBudgetedIncomes" })
+	public String viewAllBudgetedIncomes(Model model) {
+		if(repoBudgetedIncome.findAll().isEmpty()) {
+			return addNewBudgetedIncome(model);
+		}
+		
+		model.addAttribute("BudgetedIncomes", repoBudgetedIncome.findAll());
+		return "resultsIncome";
+	}
+
+	@GetMapping("/inputBudgetedIncome")
+	public String addNewBudgetedIncome(Model model) {
+		BudgetedIncome b = new BudgetedIncome();
+		model.addAttribute("newBudgetedIncome", b);
+		return "inputIncome";
+	}
+
+	@GetMapping("/editBudgetedIncome/{id}")
+	public String showUpdateBudgetedIncome(@PathVariable("id") long id, Model model) {
+		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
+		System.out.println("ITEM TO EDIT: " + b.toString());
+		model.addAttribute("newBudgetedIncome", b);
+		return "inputIncome";
+	}
+
+	@PostMapping("/updateBudgetedIncome/{id}")
+	public String reviseBudgetedIncome(BudgetedIncome b, Model model) {
+		repoBudgetedIncome.save(b);
+		return viewAllBudgetedIncomes(model);
+	}
+	
+	@GetMapping("/deleteBudgetedIncome/{id}")
+	public String deleteBudgetedIncome(@PathVariable("id") long id, Model model) {
+		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
+	    repoBudgetedIncome.delete(b);
+	    return viewAllBudgetedIncomes(model);
 	}
 }

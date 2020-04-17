@@ -201,55 +201,8 @@ public class WebController {
 		return addNewDiscretionaryCategory(model);
 	}
 	
-//	*** KEEPING FOR NOW IN CASE I NEED TO REVERT BACK TO THIS ***
-//	@GetMapping({"/selectDiscretionaryCategories"})
-//	public String viewAllDiscretionaryCategories(Model model) {
-//		if(repoDiscretionaryCategory.findAll().isEmpty()) {
-//			return addNewDiscretionaryCategory(model);
-//		}
-//		
-//		model.addAttribute("allDiscretionaryCategories", repoDiscretionaryCategory.findAll());
-//		
-//		return "selectDiscretionaryCategory";
-//	}
-//	
-//	@GetMapping("/newDiscretionaryCategory")
-//	public String addNewDiscretionaryCategory(Model model) {
-//		DiscretionaryCategory dc = new DiscretionaryCategory();
-//		
-//		model.addAttribute("discretionaryCategory", dc);	
-//		
-//		return "addDiscretionaryCategory";
-//	}
-//	
-////	@PostMapping("/newDiscretionaryCategory")
-////	public String addNewDiscretionaryCategory(@ModelAttribute DiscretionaryCategory dc, Model model) {
-////		repoDiscretionaryCategory.save(dc);
-////		
-////		return addNewDiscretionaryCategory(model);
-////	}
-//	
-//	@PostMapping("/updateDiscretionaryCategory/{id}")
-//	public String reviseDiscretionaryCategory(DiscretionaryCategory dc, Model model) {
-//		repoDiscretionaryCategory.save(dc);
-//		
-//		return addNewDiscretionaryCategory(model);
-//	}
-//	
-//	@GetMapping("/editDiscretionaryCategory/{id}")
-//	public String showUpdateDiscretionaryCategory(@PathVariable("id") long discCategoryId, Model model) {
-//		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(discCategoryId).orElse(null);
-//			
-//		model.addAttribute("discretionaryCategory", dc);
-//		
-//		return "addDiscretionaryCategory";
-//	}
-//	
-//	@GetMapping("/deleteDiscretionaryCategory/{id}")
-//	public String deleteUser(@PathVariable("id") long discCategoryId, Model model) {
-//		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(discCategoryId).orElse(null);
-//		repoDiscretionaryCategory.delete(dc);
-//		
-//		return addNewDiscretionaryCategory(model);
-//	}
+	// ------------------------------
+	// BudgetedDiscretionary Mappings 
+	// ------------------------------
+	
 }

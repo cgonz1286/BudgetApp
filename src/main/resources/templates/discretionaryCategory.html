@@ -11,12 +11,12 @@ th, td {
 }
 tr:nth-child(even) {background-color: #dddddd;}
 </style>
-<title>Choose Discretionary Categories</title>
+<title>Discretionary Categories</title>
 </head>
 <body>
-	<h4>Add/edit discretionary categor(ies) if needed:</h4>
+	<h1>Add/Update/Delete All Discretionary Categories:</h1>
 	<form th:object="${discretionaryCategory}" th:action="@{/updateDiscretionaryCategory/{id}(id=${discretionaryCategory.discCategoryId})}" method='POST'>	
-		<table style="width: 24%">
+		<table style="width: 455px">
 			<tr>
 				<th>Discretionary Category:</th>
 				<td><input name="id" th:field="*{discCategoryId}" hidden></td>
@@ -26,8 +26,7 @@ tr:nth-child(even) {background-color: #dddddd;}
 		</table>
 		<br />
 	</form>	
-	<h4>Select the categor(ies) you would like to include in this budget period:</h4>
-	<form>
+	<form> 
 		<table>
 			<th:block th:if="${allDiscretionaryCategories == 'EMPTY'}"> No categories exist (must add/select at least one to continue). </th:block>
 			<th:block th:if="${allDiscretionaryCategories != 'EMPTY'}">  
@@ -39,6 +38,12 @@ tr:nth-child(even) {background-color: #dddddd;}
 			</th:block>
 		</table>
 		<br />
+	</form>
+	<form> <!-- This will need to pass in/out the BudgetPeriod object - similar to first form seen above -->
+		<br />
+		<table>
+			<tr><td><input name="continue" type="submit" value="Continue"></td></tr>
+		</table>
 	</form>
 </body>
 </html>

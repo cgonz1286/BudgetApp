@@ -29,12 +29,12 @@ public class WebController {
 		return "index.html";
 	}*/
 
-	@Autowired
+	/*@Autowired
 	BudgetedIncomeRepository repoBudgetedIncome;
 	@Autowired
 	DiscretionaryCategoryRepository repoDiscretionaryCategory;
 	
-//	/*@GetMapping({ "/","/index", "/index.html"})
+//	@GetMapping({ "/","/index", "/index.html"})
 //	public String index() {
 //		return "index.html";
 //	}*/
@@ -119,7 +119,7 @@ public class WebController {
 	    repoBudgetedBills.delete(p);
 	    return viewAllBudgetedBills(model);
 	}
-	
+	/*////////////////
 	@GetMapping({ "/viewAllBudgetedIncomes" })
 	public String viewAllBudgetedIncomes(Model model) {
 		if(repoBudgetedIncome.findAll().isEmpty()) {

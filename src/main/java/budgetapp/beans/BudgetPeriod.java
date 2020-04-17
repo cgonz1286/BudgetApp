@@ -28,7 +28,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 		 */
 		public BudgetPeriod(long id) {
 			super();
-			id = id;
+			this.id = id;
 		}
 		/**
 		 * @param id
@@ -36,7 +36,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 		 */
 		public BudgetPeriod(long id, String Description) {
 			super();
-			id = id;
+			this.id = id;
 			description = Description;
 		}
 		/**
@@ -59,7 +59,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 	 * @param id the id to set
 	 */
 	public void setId(long id) {
-		id = id;
+		this.id = id;
 	}
 	/**
 	 * @return the Description

@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import budgetapp.beans.BudgetPeriod;
 import budgetapp.beans.BudgetedBills;
-import budgetapp.beans.BudgetedIncome;
+//import budgetapp.beans.BudgetedIncome;
 import budgetapp.beans.DiscretionaryCategory;
 import budgetapp.repository.BudgetPeriodRepository;
 import budgetapp.repository.BudgetedBillsRepository;
-import budgetapp.repository.BudgetedIncomeRepository;
+//import budgetapp.repository.BudgetedIncomeRepository;
 import budgetapp.repository.DiscretionaryCategoryRepository;
 
 @Controller
@@ -22,7 +22,14 @@ public class WebController {
 	BudgetPeriodRepository repoBudgetPeriod;
 	@Autowired
 	BudgetedBillsRepository repoBudgetedBills;
-	@Autowired
+
+		
+	/*@GetMapping({ "/" })
+	public String index() {
+		return "index.html";
+	}*/
+
+	/*@Autowired
 	BudgetedIncomeRepository repoBudgetedIncome;
 	@Autowired
 	DiscretionaryCategoryRepository repoDiscretionaryCategory;
@@ -30,7 +37,7 @@ public class WebController {
 //	@GetMapping({ "/","/index", "/index.html"})
 //	public String index() {
 //		return "index.html";
-//	}
+//	}*/
 	
 	@GetMapping({ "/viewAllBudgetPeriods" })
 	public String viewAllBudgetPeriods(Model model) {
@@ -112,8 +119,7 @@ public class WebController {
 	    repoBudgetedBills.delete(p);
 	    return viewAllBudgetedBills(model);
 	}
-	
-	////////////////
+	/*////////////////
 	@GetMapping({ "/viewAllBudgetedIncomes" })
 	public String viewAllBudgetedIncomes(Model model) {
 		if(repoBudgetedIncome.findAll().isEmpty()) {
@@ -151,12 +157,12 @@ public class WebController {
 		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
 	    repoBudgetedIncome.delete(b);
 	    return viewAllBudgetedIncomes(model);
-	}
+	}*/
 	
 	// ------------------------------
 	// DiscretionaryCategory Mappings 
 	// ------------------------------
-	@GetMapping("/mainDiscretionaryCategory")
+	/*@GetMapping("/mainDiscretionaryCategory")
 	public String addNewDiscretionaryCategory(Model model) {
 		DiscretionaryCategory dc = new DiscretionaryCategory();
 		
@@ -199,7 +205,7 @@ public class WebController {
 		repoDiscretionaryCategory.delete(dc);
 		
 		return addNewDiscretionaryCategory(model);
-	}
+	}*/
 	
 //	*** KEEPING FOR NOW IN CASE I NEED TO REVERT BACK TO THIS ***
 //	@GetMapping({"/selectDiscretionaryCategories"})

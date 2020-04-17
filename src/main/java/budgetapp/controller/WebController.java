@@ -157,12 +157,12 @@ public class WebController {
 		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
 	    repoBudgetedIncome.delete(b);
 	    return viewAllBudgetedIncomes(model);
-	}*/
+	}
 	
 	// ------------------------------
 	// DiscretionaryCategory Mappings 
 	// ------------------------------
-	/*@GetMapping("/mainDiscretionaryCategory")
+	@GetMapping("/mainDiscretionaryCategory")
 	public String addNewDiscretionaryCategory(Model model) {
 		DiscretionaryCategory dc = new DiscretionaryCategory();
 		
@@ -205,7 +205,7 @@ public class WebController {
 		repoDiscretionaryCategory.delete(dc);
 		
 		return addNewDiscretionaryCategory(model);
-	}*/
+	}
 	
 //	*** KEEPING FOR NOW IN CASE I NEED TO REVERT BACK TO THIS ***
 //	@GetMapping({"/selectDiscretionaryCategories"})

@@ -3,15 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <title>View All BudgetPeriods</title>
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;
+}
+</style>
 </head>
 <body>
+<h1>Budget Periods</h1>
+
 <form>
 <table>
+
+<tr>
+<th>Description</th>
+<th>Start Date</th>
+<th>End Date</th>
+
+</tr>
+ 
 <tr th:each="currentBudgetPeriod: ${BudgetPeriods}">
-	<td th:text="${currentBudgetPeriod.id}" />
-	<td th:text="${currentBudgetPeriod.Description}" />
-<!--	<td th:text="${currentBudgetPeriod.StartDate}" /> -->
-<!-- 	<td th:text="${currentBudgetPeriod.EndDate}" /> -->
+	<td th:text="${currentBudgetPeriod.id}" hidden />
+	<td th:text="${currentBudgetPeriod.description}" />
+	<td th:text="${#dates.format(currentBudgetPeriod.startDate, 'MM/dd/yyyy')}" /> 
+	<td th:text="${#dates.format(currentBudgetPeriod.endDate, 'MM/dd/yyyy')}" /> 
 	
 	
 	<td><a th:href="@{/editBudgetPeriod/{id}(id=${currentBudgetPeriod.id})}">Edit</a></td>

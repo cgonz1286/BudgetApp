@@ -32,9 +32,12 @@ th, td {
 	<td th:text="${#dates.format(currentBudgetPeriod.startDate, 'MM/dd/yyyy')}" /> 
 	<td th:text="${#dates.format(currentBudgetPeriod.endDate, 'MM/dd/yyyy')}" /> 
 	
+	<td><a th:href="@{/inputBudgetedIncome/{periodId}(periodId=${currentBudgetPeriod.id})}">Continue to Enter Income</a></td>
 	
 	<td><a th:href="@{/editBudgetPeriod/{id}(id=${currentBudgetPeriod.id})}">Edit</a></td>
 	<td><a th:href="@{/deleteBudgetPeriod/{id}(id=${currentBudgetPeriod.id})}">Delete</a></td>
+	<td th:text="${currentBudgetPeriod.id} "  /> <!-- temporarily displaying ID for testing" -->
+	
 	</tr>
 </table>
 </form>

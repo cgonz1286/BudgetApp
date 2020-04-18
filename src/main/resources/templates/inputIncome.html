@@ -6,15 +6,24 @@
 </head>
 <body>
 <h1>Enter Budgeted Income</h1>
-<h15>Enter the income that you expect to receive during the budget edIncome. You can put in the full amount as one entry, or type in multiple entries with different dates if you expect to recieve income at different times.</h15>
+<h5>Enter the income that you expect to receive during the budget period. You can put in the full amount as one entry, or type in multiple entries with different dates if you expect to recieve income at different times.</h5>
+<table>
+<tr>
+
+	<td th:text="${selectedBudgetPeriodDescription}"  />
+		<td th:text="${selectedBudgetPeriodString}"  />
+	
+</tr>
+</table>
 
 <form th:object="${newBudgetedIncome}" th:action="@{/updateBudgetedIncome/{id}(id=${newBudgetedIncome.id})}" method=POST>
-Budget Period: <input name="budgetPeriod" size="20" th:field="*{budgetPeriod}"><br />
+
 Income Description: <input name="Description" size="20" th:field="*{description}"><br />
 Expected Date: <input type ="text" name = "incomeDate" placeholder="MM/dd/yyyy" th:field="*{incomeDate}"><br />
 Amount: <input type ="text" name = "amount"  th:field="*{amount}"><br />
 
 <input name="Submit" type="submit" value="submit" /><br />
+</form>
 
 <a href = "../viewAllBudgetedIncomes">View all Budgeted Income Entries</a><br/>
 <a href="../inputBudgetedIncome">Add a new Budgeted Income Entries</a><br/>

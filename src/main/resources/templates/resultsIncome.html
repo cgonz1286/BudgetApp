@@ -29,7 +29,10 @@ th, td {
  
 <tr th:each="currentBudgetedIncome: ${BudgetedIncomes}">
 	<td hidden th:text="${currentBudgetedIncome.id}"  />
-	<!--  <td th:text="${currentBudgetedIncome.budgetPeriod.id}" />    -->
+	<td hidden th:text="${currentBudgetedIncome.budgetPeriod.id}" />  
+	<td hidden th:text="${selectedBudgetPeriodDescription}" />  
+	<td hidden th:text="${selectedBudgetPeriodId}" />  
+	
 	<td th:text="${currentBudgetedIncome.description}" />
 	<td th:text="${#dates.format(currentBudgetedIncome.incomeDate, 'MM/dd/yyyy')}" /> 
 	<td th:text="${currentBudgetedIncome.amount}" />

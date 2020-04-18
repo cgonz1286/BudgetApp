@@ -52,12 +52,28 @@ public class WebController {
 		model.addAttribute("newBudgetPeriod", p);
 		return "inputPeriod";
 	}
-
+/*
+	@GetMapping("/continueBudgetPeriodtoIncome/{id}")
+	public String addIncometoBudgetPeriod(@PathVariable("id") long id, Model model) {
+		BudgetPeriod p = repoBudgetPeriod.findById(id).orElse(null);
+		System.out.println("ITEM TO EDIT: " + p.toString());
+		model.addAttribute("selectedBudgetPeriod", p);
+		return "inputPeriod";
+	}
+*/
 	@PostMapping("/updateBudgetPeriod/{id}")
 	public String reviseBudgetPeriod(BudgetPeriod p, Model model) {
 		repoBudgetPeriod.save(p);
+		
 		return viewAllBudgetPeriods(model);
 	}
+	/*CONTINUE
+	@GetMapping("/passBudgetPeriod/{id}")
+	{
+		//....
+	return inputBudgetedIncome(...)
+}	*/
+	
 	
 	@GetMapping("/deleteBudgetPeriod/{id}")
 	public String deleteBudgetPeriod(@PathVariable("id") long id, Model model) {
@@ -113,17 +129,26 @@ public class WebController {
 	@GetMapping({ "/viewAllBudgetedIncomes" })
 	public String viewAllBudgetedIncomes(Model model) {
 		if(repoBudgetedIncome.findAll().isEmpty()) {
-			return addNewBudgetedIncome(model);
+			return viewAllBudgetPeriods(model);
 		}
 		
 		model.addAttribute("BudgetedIncomes", repoBudgetedIncome.findAll());
 		return "resultsIncome";
 	}
+	
 
-	@GetMapping("/inputBudgetedIncome")
-	public String addNewBudgetedIncome(Model model) {
+///continue from period to inputBudgetedIncome
+	@GetMapping("/inputBudgetedIncome/{periodId}")
+	public String addNewBudgetedIncome(@PathVariable("periodId") long periodId, Model model) {
 		BudgetedIncome b = new BudgetedIncome();
+		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
+		b.setBudgetPeriod(selectedPeriod);
 		model.addAttribute("newBudgetedIncome", b);
+		model.addAttribute("selectedBudgetPeriodDescription", b.getBudgetPeriod().getDescription());
+		model.addAttribute("selectedBudgetPeriodString", b.getBudgetPeriod().toString());
+		model.addAttribute("pathVariableBudgetPeriodID", periodId);
+	
+
 		return "inputIncome";
 	}
 
@@ -138,6 +163,7 @@ public class WebController {
 
 	@PostMapping("/updateBudgetedIncome/{id}")
 	public String reviseBudgetedIncome(BudgetedIncome b, Model model) {
+		
 		repoBudgetedIncome.save(b);
 		return viewAllBudgetedIncomes(model);
 	}

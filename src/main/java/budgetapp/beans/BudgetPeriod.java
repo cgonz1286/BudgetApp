@@ -2,10 +2,15 @@ package budgetapp.beans;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -26,9 +31,20 @@ import org.springframework.format.annotation.DateTimeFormat;
 		/**
 		 * @param id
 		 */
+	    
+	    
+	    /* add something simlar for all other entities
+	     * 	@OneToMany(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
+		@JoinTable
+	  (
+	      name="items_on_list",
+	      joinColumns={ @JoinColumn(name="LIST_ID", referencedColumnName="LIST_ID") },
+	      inverseJoinColumns={ @JoinColumn(name="ITEM_ID", referencedColumnName="ID", unique=true) }
+	  )
+	     */
 		public BudgetPeriod(long id) {
 			super();
-			id = id;
+			this.id = id;
 		}
 		/**
 		 * @param id
@@ -36,7 +52,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 		 */
 		public BudgetPeriod(long id, String Description) {
 			super();
-			id = id;
+			this.id = id;
 			description = Description;
 		}
 		/**
@@ -59,7 +75,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 	 * @param id the id to set
 	 */
 	public void setId(long id) {
-		id = id;
+		this.id = id;
 	}
 	/**
 	 * @return the Description

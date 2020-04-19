@@ -86,13 +86,8 @@ public class WebController {
 	    repoBudgetPeriod.delete(p);
 	    return viewAllBudgetPeriods(model);
 	}
-///something like this to select the item to add linked objects to...
-//	@GetMapping("/selectBudgetPeriod/{id}")
-//	public BudgetPeriod selectBudgetPeriod(@PathVariable("id") long id, Model model) {
-//		BudgetPeriod p = repoBudgetPeriod.findById(id).orElse(null);
-//	    return p;
-//	}
-///	
+////////////////End of BudgetPeriod Maps////////////////////
+//////////////////BudgetedBill maps////////////////////////
 	@GetMapping("/updateBudgetedBill")
 	public String newBudgetedBill(Model model) {
 		BudgetedBills p = new BudgetedBills();
@@ -129,8 +124,9 @@ public class WebController {
 	    repoBudgetedBills.delete(p);
 	    return viewAllBudgetedBills(model);
 	}
-	
-	////////////////
+////////////////End of BudgededBill Maps////////////////////
+
+	////////////////BudgetedIncome maps//////////////////////
 	@GetMapping({ "/viewAllBudgetedIncomes" })
 	public String viewAllBudgetedIncomes(Model model) {
 		if(repoBudgetedIncome.findAll().isEmpty()) {
@@ -140,25 +136,20 @@ public class WebController {
 		return "resultsIncome";
 	}
 	
-	//Maybe temporary, using this for troubleshooting
-	@GetMapping({ "/viewBudgetedIncomeDetail/{id}" })
-	public String viewBudgetedIncomeDetail(@PathVariable("id") long id, Model model) {
-		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
-		BudgetPeriod p = b.getBudgetPeriod();
-		model.addAttribute("selectedBudgetedIncome", b);
-		model.addAttribute("linkedBudgetPeriod", p);
-		return "resultsIncomeDetail";
-	}
+
 	
 ///continue from period to inputBudgetedIncome
+	//!!! use this format to allow join, pass in the period id and add BudgetPeriod as an attribute
+	//!!!add the findAll attribute if you are also displaying the existing entries on the input form
 	@GetMapping("/inputBudgetedIncome/{periodId}")
 	public String addNewBudgetedIncome(@PathVariable("periodId") long periodId, Model model) {
-		BudgetedIncome b = new BudgetedIncome();
-		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
-		b.setBudgetPeriod(selectedPeriod);
+	BudgetedIncome b = new BudgetedIncome();
+	BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
+	model.addAttribute("BudgetedIncomes", repoBudgetedIncome.findAll());
+	//b.setBudgetPeriod(selectedPeriod);
 
 		model.addAttribute("newBudgetedIncome", b);
-		model.addAttribute("selectedBudgetPeriod", b.getBudgetPeriod());
+		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
 
 		return "inputIncome";
 	}
@@ -172,23 +163,8 @@ public class WebController {
 
 		return "inputIncome";
 	}
-	/*
-//temporary for troubleshooting, original version, no budget period
-	@PostMapping("/updateBudgetedIncome/{id}/")
-	public String reviseBudgetedIncome(BudgetedIncome b, Model model) {
-		repoBudgetedIncome.save(b);
-		return viewAllBudgetedIncomes(model);
-	}
 
-	@PostMapping("/updateBudgetedIncome/{id}/{periodId}")
-	public String reviseBudgetedIncome(@PathVariable("periodId") long periodId, BudgetedIncome b, Model model) {
-		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
-		b.setBudgetPeriod(selectedPeriod);
-		repoBudgetedIncome.save(b);
-		return viewAllBudgetedIncomes(model);
-	}
-	*/
-	
+	//!!! use this format to allow join
 	@PostMapping("/updateBudgetedIncome/{periodId}")
 	public String reviseBudgetedIncome(@PathVariable("periodId") long periodId, BudgetedIncome b, Model model) {
 		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
@@ -203,4 +179,15 @@ public class WebController {
 	    repoBudgetedIncome.delete(b);
 	    return viewAllBudgetedIncomes(model);
 	}
+	
+	//Maybe temporary, using this for troubleshooting
+	@GetMapping({ "/viewBudgetedIncomeDetail/{id}" })
+	public String viewBudgetedIncomeDetail(@PathVariable("id") long id, Model model) {
+		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
+		BudgetPeriod p = b.getBudgetPeriod();
+		model.addAttribute("selectedBudgetedIncome", b);
+		model.addAttribute("linkedBudgetPeriod", p);
+		return "resultsIncomeDetail";
+	}
+	//////////End of BudgetedIncomeMaps////////////////////////////////
 }

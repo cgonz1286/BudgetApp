@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import budgetapp.beans.BudgetPeriod;
 import budgetapp.beans.BudgetedBills;
 import budgetapp.beans.BudgetedIncome;
+import budgetapp.beans.DiscretionaryCategory;
 import budgetapp.repository.BudgetPeriodRepository;
 import budgetapp.repository.BudgetedBillsRepository;
 import budgetapp.repository.BudgetedIncomeRepository;
-
+import budgetapp.repository.DiscretionaryCategoryRepository;
 
 @Controller
 public class WebController {
@@ -21,15 +22,31 @@ public class WebController {
 	BudgetPeriodRepository repoBudgetPeriod;
 	@Autowired
 	BudgetedBillsRepository repoBudgetedBills;
+
+		
+	/*@GetMapping({ "/" })
+	public String index() {
+		return "index.html";
+	}*/
+
 	@Autowired
 	BudgetedIncomeRepository repoBudgetedIncome;
+	@Autowired
+	DiscretionaryCategoryRepository repoDiscretionaryCategory;
 	
+//	@GetMapping({ "/","/index", "/index.html"})
+//	public String index() {
+//		return "index.html";
+//	}
+	
+
 	@GetMapping({"/index.html"})
 	public String index() {
 		return "index.html";
 	}
 		
 	@GetMapping({"/viewAllBudgetPeriods" ,"/" })
+
 	public String viewAllBudgetPeriods(Model model) {
 		if(repoBudgetPeriod.findAll().isEmpty()) {
 			return addNewBudgetPeriod(model);
@@ -124,9 +141,13 @@ public class WebController {
 	    repoBudgetedBills.delete(p);
 	    return viewAllBudgetedBills(model);
 	}
+
 ////////////////End of BudgededBill Maps////////////////////
 
 	////////////////BudgetedIncome maps//////////////////////
+
+	
+
 	@GetMapping({ "/viewAllBudgetedIncomes" })
 	public String viewAllBudgetedIncomes(Model model) {
 		if(repoBudgetedIncome.findAll().isEmpty()) {
@@ -190,4 +211,56 @@ public class WebController {
 		return "resultsIncomeDetail";
 	}
 	//////////End of BudgetedIncomeMaps////////////////////////////////
+	// ------------------------------
+	// DiscretionaryCategory Mappings 
+	// ------------------------------
+	@GetMapping("/mainDiscretionaryCategory")
+	public String addNewDiscretionaryCategory(Model model) {
+		DiscretionaryCategory dc = new DiscretionaryCategory();
+		
+		model.addAttribute("discretionaryCategory", dc);	
+		
+		if(repoDiscretionaryCategory.findAll().isEmpty()) {
+			model.addAttribute("allDiscretionaryCategories", "EMPTY");
+		} else {
+			model.addAttribute("allDiscretionaryCategories", repoDiscretionaryCategory.findAll());
+		}
+		
+		return "discretionaryCategory";
+	}
+	
+	@PostMapping("/updateDiscretionaryCategory/{id}")
+	public String reviseDiscretionaryCategory(DiscretionaryCategory dc, Model model) {
+		repoDiscretionaryCategory.save(dc);
+		
+		return addNewDiscretionaryCategory(model);
+	}
+	
+	@GetMapping("/editDiscretionaryCategory/{id}")
+	public String showUpdateDiscretionaryCategory(@PathVariable("id") long discCategoryId, Model model) {
+		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(discCategoryId).orElse(null);
+			
+		model.addAttribute("discretionaryCategory", dc);
+		
+		if(repoDiscretionaryCategory.findAll().isEmpty()) {
+			model.addAttribute("allDiscretionaryCategories", "EMPTY");
+		} else {
+			model.addAttribute("allDiscretionaryCategories", repoDiscretionaryCategory.findAll());
+		}
+		
+		return "discretionaryCategory";
+	}
+	
+	@GetMapping("/deleteDiscretionaryCategory/{id}")
+	public String deleteUser(@PathVariable("id") long discCategoryId, Model model) {
+		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(discCategoryId).orElse(null);
+		repoDiscretionaryCategory.delete(dc);
+		
+		return addNewDiscretionaryCategory(model);
+	}
+	
+	// ------------------------------
+	// BudgetedDiscretionary Mappings 
+	// ------------------------------
+	
 }

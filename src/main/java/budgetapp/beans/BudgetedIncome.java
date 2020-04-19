@@ -89,7 +89,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 	 * @param Description the Description to set
 	 */
 	public void setDescription(String Description) {
-		description = Description;
+		this.description = Description;
 	}
 	
 	/**

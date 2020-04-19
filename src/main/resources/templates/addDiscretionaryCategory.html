@@ -1,0 +1,43 @@
+<!-- *** KEEPING FOR NOW IN CASE I NEED TO REVERT BACK TO THIS - NOT CURRENTLY BEING USED *** -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<style>
+th, td {
+  padding: 1px;
+  padding-right: 1px;
+  text-align: left; 
+  vertical-align: center;
+}
+tr:nth-child(even) {background-color: #dddddd;}
+</style>
+<title>Choose Discretionary Categories</title>
+</head>
+<body>
+	<h4>Add new discretionary categor(ies) if desired.</h4>
+	<!-- 
+	<form th:object="${discretionaryCategory}" th:action="@{/inputDiscretionaryCategory}" method='POST'>	
+		<table style="width: 24%">
+			<tr>
+				<th>Discretionary Category:</th>
+				<td><input type="text" name="description" size="30" required></td>
+				<td><input name="add" type="submit" value="Add"></td>
+			</tr>
+		</table>
+		<br />
+	</form>	
+	-->
+	<form th:object="${discretionaryCategory}" th:action="@{/updateDiscretionaryCategory/{id}(id=${discretionaryCategory.discCategoryId})}" method='POST'>	
+		<table style="width: 24%">
+			<tr>
+				<th>Discretionary Category:</th>
+				<td><input type="text" name="description" size="30" th:field="*{description}" required></td>
+				<td><input name="submit" type="submit" value="Submit"></td>
+			</tr>
+		</table>
+		<br />
+	</form>	
+</body>
+</html>

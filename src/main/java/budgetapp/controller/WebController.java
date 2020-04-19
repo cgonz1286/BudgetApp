@@ -24,11 +24,12 @@ public class WebController {
 	@Autowired
 	BudgetedIncomeRepository repoBudgetedIncome;
 	
-	@GetMapping({ "/","/index", "/index.html"})
+	@GetMapping({"/index.html"})
 	public String index() {
 		return "index.html";
 	}
-	@GetMapping({ "/viewAllBudgetPeriods" })
+		
+	@GetMapping({"/viewAllBudgetPeriods" ,"/" })
 	public String viewAllBudgetPeriods(Model model) {
 		if(repoBudgetPeriod.findAll().isEmpty()) {
 			return addNewBudgetPeriod(model);
@@ -67,13 +68,17 @@ public class WebController {
 		
 		return viewAllBudgetPeriods(model);
 	}
-	/*CONTINUE
-	@GetMapping("/passBudgetPeriod/{id}")
-	{
-		//....
-	return inputBudgetedIncome(...)
-}	*/
-	
+
+   
+	@GetMapping("/viewReports/{periodId}")
+	public String viewReports(@PathVariable("periodId") long periodId, Model model) {
+		BudgetPeriod p = repoBudgetPeriod.findById(periodId).orElse(null);
+	    model.addAttribute("selectedBudgetPeriod", p);
+	    model.addAttribute("periodIncomes", p.getListOfBudgetedIncomes());
+	    model.addAttribute("periodIncomesString", p.toString());
+
+	    return "reports";
+	}	
 	
 	@GetMapping("/deleteBudgetPeriod/{id}")
 	public String deleteBudgetPeriod(@PathVariable("id") long id, Model model) {
@@ -131,39 +136,63 @@ public class WebController {
 		if(repoBudgetedIncome.findAll().isEmpty()) {
 			return viewAllBudgetPeriods(model);
 		}
-		
 		model.addAttribute("BudgetedIncomes", repoBudgetedIncome.findAll());
 		return "resultsIncome";
 	}
 	
-
+	//Maybe temporary, using this for troubleshooting
+	@GetMapping({ "/viewBudgetedIncomeDetail/{id}" })
+	public String viewBudgetedIncomeDetail(@PathVariable("id") long id, Model model) {
+		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
+		BudgetPeriod p = b.getBudgetPeriod();
+		model.addAttribute("selectedBudgetedIncome", b);
+		model.addAttribute("linkedBudgetPeriod", p);
+		return "resultsIncomeDetail";
+	}
+	
 ///continue from period to inputBudgetedIncome
 	@GetMapping("/inputBudgetedIncome/{periodId}")
 	public String addNewBudgetedIncome(@PathVariable("periodId") long periodId, Model model) {
 		BudgetedIncome b = new BudgetedIncome();
 		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
 		b.setBudgetPeriod(selectedPeriod);
+
 		model.addAttribute("newBudgetedIncome", b);
-		model.addAttribute("selectedBudgetPeriodDescription", b.getBudgetPeriod().getDescription());
-		model.addAttribute("selectedBudgetPeriodString", b.getBudgetPeriod().toString());
-		model.addAttribute("pathVariableBudgetPeriodID", periodId);
-	
+		model.addAttribute("selectedBudgetPeriod", b.getBudgetPeriod());
 
 		return "inputIncome";
 	}
+	
 
 	@GetMapping("/editBudgetedIncome/{id}")
-	public String showUpdateBudgetedIncome(@PathVariable("id") long id, Model model) {
+	public String showUpdateBudgetedIncome(@PathVariable("id") long id,  Model model) {
 		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
 		System.out.println("ITEM TO EDIT: " + b.toString());
 		model.addAttribute("newBudgetedIncome", b);
 
 		return "inputIncome";
 	}
-
-	@PostMapping("/updateBudgetedIncome/{id}")
+	/*
+//temporary for troubleshooting, original version, no budget period
+	@PostMapping("/updateBudgetedIncome/{id}/")
 	public String reviseBudgetedIncome(BudgetedIncome b, Model model) {
-		
+		repoBudgetedIncome.save(b);
+		return viewAllBudgetedIncomes(model);
+	}
+
+	@PostMapping("/updateBudgetedIncome/{id}/{periodId}")
+	public String reviseBudgetedIncome(@PathVariable("periodId") long periodId, BudgetedIncome b, Model model) {
+		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
+		b.setBudgetPeriod(selectedPeriod);
+		repoBudgetedIncome.save(b);
+		return viewAllBudgetedIncomes(model);
+	}
+	*/
+	
+	@PostMapping("/updateBudgetedIncome/{periodId}")
+	public String reviseBudgetedIncome(@PathVariable("periodId") long periodId, BudgetedIncome b, Model model) {
+		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
+		b.setBudgetPeriod(selectedPeriod);
 		repoBudgetedIncome.save(b);
 		return viewAllBudgetedIncomes(model);
 	}

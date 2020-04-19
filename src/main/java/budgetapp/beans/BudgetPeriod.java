@@ -35,6 +35,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 		@OneToMany(mappedBy="budgetPeriod", cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
 		private List<BudgetedIncome> listOfBudgetedIncomes;
 
+		//cascade type merge so that it doesn't create duplicates of same item
+		@OneToMany(mappedBy="budgetPeriod", cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
+		private List<BudgetedBills> listOfBudgetedBills;
+				
+		//cascade type merge so that it doesn't create duplicates of same item
+		@OneToMany(mappedBy="budgetPeriod", cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
+		private List<BudgetedDiscretionary> listOfBudgetedDiscretionaries;
+
 		public BudgetPeriod(long id) {
 			super();
 			this.id = id;
@@ -68,6 +76,32 @@ import org.springframework.format.annotation.DateTimeFormat;
 		 */
 		public void setListOfBudgetedIncomes(List<BudgetedIncome> listOfBudgetedIncomes) {
 			this.listOfBudgetedIncomes = listOfBudgetedIncomes;
+		}
+		
+		
+	/**
+		 * @return the listOfBudgetedBills
+		 */
+		public List<BudgetedBills> getListOfBudgetedBills() {
+			return listOfBudgetedBills;
+		}
+		/**
+		 * @param listOfBudgetedBills the listOfBudgetedBills to set
+		 */
+		public void setListOfBudgetedBills(List<BudgetedBills> listOfBudgetedBills) {
+			this.listOfBudgetedBills = listOfBudgetedBills;
+		}
+		/**
+		 * @return the listOfBudgetedDiscretionaries
+		 */
+		public List<BudgetedDiscretionary> getListOfBudgetedDiscretionaries() {
+			return listOfBudgetedDiscretionaries;
+		}
+		/**
+		 * @param listOfBudgetedDiscretionaries the listOfBudgetedDiscretionaries to set
+		 */
+		public void setListOfBudgetedDiscretionaries(List<BudgetedDiscretionary> listOfBudgetedDiscretionaries) {
+			this.listOfBudgetedDiscretionaries = listOfBudgetedDiscretionaries;
 		}
 	/**
 	 * @return the id

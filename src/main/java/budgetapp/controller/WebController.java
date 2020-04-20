@@ -22,22 +22,15 @@ public class WebController {
 	BudgetPeriodRepository repoBudgetPeriod;
 	@Autowired
 	BudgetedBillsRepository repoBudgetedBills;
-
-		
-	/*@GetMapping({ "/" })
-	public String index() {
-		return "index.html";
-	}*/
-
-	/*@Autowired
-	BudgetedIncomeRepository repoBudgetedIncome;
+//	@Autowired
+//	BudgetedIncomeRepository repoBudgetedIncome;
 	@Autowired
 	DiscretionaryCategoryRepository repoDiscretionaryCategory;
 	
 //	@GetMapping({ "/","/index", "/index.html"})
 //	public String index() {
 //		return "index.html";
-//	}*/
+//	}
 	
 	@GetMapping({ "/viewAllBudgetPeriods" })
 	public String viewAllBudgetPeriods(Model model) {
@@ -76,7 +69,7 @@ public class WebController {
 	    repoBudgetPeriod.delete(p);
 	    return viewAllBudgetPeriods(model);
 	}
-///something like this to select the item to add linked objects to...
+/// something like this to select the item to add linked objects to...
 //	@GetMapping("/selectBudgetPeriod/{id}")
 //	public BudgetPeriod selectBudgetPeriod(@PathVariable("id") long id, Model model) {
 //		BudgetPeriod p = repoBudgetPeriod.findById(id).orElse(null);
@@ -119,7 +112,7 @@ public class WebController {
 	    repoBudgetedBills.delete(p);
 	    return viewAllBudgetedBills(model);
 	}
-	/*////////////////
+	/*
 	@GetMapping({ "/viewAllBudgetedIncomes" })
 	public String viewAllBudgetedIncomes(Model model) {
 		if(repoBudgetedIncome.findAll().isEmpty()) {
@@ -162,7 +155,7 @@ public class WebController {
 	// ------------------------------
 	// DiscretionaryCategory Mappings 
 	// ------------------------------
-	/*@GetMapping("/mainDiscretionaryCategory")
+	@GetMapping("/mainDiscretionaryCategory")
 	public String addNewDiscretionaryCategory(Model model) {
 		DiscretionaryCategory dc = new DiscretionaryCategory();
 		
@@ -205,7 +198,7 @@ public class WebController {
 		repoDiscretionaryCategory.delete(dc);
 		
 		return addNewDiscretionaryCategory(model);
-	}*/
+	}
 	
 	// ------------------------------
 	// BudgetedDiscretionary Mappings 

@@ -28,7 +28,7 @@ tr:nth-child(even) {background-color: #dddddd;}
 	</form>	
 	<form> 
 		<table>
-			<th:block th:if="${allDiscretionaryCategories == 'EMPTY'}"> No categories exist (must add/select at least one to continue). </th:block>
+			<th:block th:if="${allDiscretionaryCategories == 'EMPTY'}"><font color="red">No categories exist. Must add at least one category to continue.</font></th:block>
 			<th:block th:if="${allDiscretionaryCategories != 'EMPTY'}">  
 				<tr th:each="currentCategory : ${allDiscretionaryCategories}">
 					<td th:text="${currentCategory.description}" />

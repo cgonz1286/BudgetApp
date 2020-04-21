@@ -22,6 +22,10 @@ public class WebController {
 	BudgetPeriodRepository repoBudgetPeriod;
 	@Autowired
 	BudgetedBillsRepository repoBudgetedBills;
+<<<<<<< HEAD
+//	@Autowired
+//	BudgetedIncomeRepository repoBudgetedIncome;
+=======
 
 		
 	/*@GetMapping({ "/" })
@@ -31,6 +35,7 @@ public class WebController {
 
 	@Autowired
 	BudgetedIncomeRepository repoBudgetedIncome;
+>>>>>>> fc02c241bd63e0fff8dc5d029e5007deecaa9062
 	@Autowired
 	DiscretionaryCategoryRepository repoDiscretionaryCategory;
 	
@@ -103,8 +108,18 @@ public class WebController {
 	    repoBudgetPeriod.delete(p);
 	    return viewAllBudgetPeriods(model);
 	}
+<<<<<<< HEAD
+/// something like this to select the item to add linked objects to...
+//	@GetMapping("/selectBudgetPeriod/{id}")
+//	public BudgetPeriod selectBudgetPeriod(@PathVariable("id") long id, Model model) {
+//		BudgetPeriod p = repoBudgetPeriod.findById(id).orElse(null);
+//	    return p;
+//	}
+///	
+=======
 ////////////////End of BudgetPeriod Maps////////////////////
 //////////////////BudgetedBill maps////////////////////////
+>>>>>>> fc02c241bd63e0fff8dc5d029e5007deecaa9062
 	@GetMapping("/updateBudgetedBill")
 	public String newBudgetedBill(Model model) {
 		BudgetedBills p = new BudgetedBills();
@@ -141,6 +156,9 @@ public class WebController {
 	    repoBudgetedBills.delete(p);
 	    return viewAllBudgetedBills(model);
 	}
+<<<<<<< HEAD
+	/*
+=======
 
 ////////////////End of BudgededBill Maps////////////////////
 
@@ -148,6 +166,7 @@ public class WebController {
 
 	
 
+>>>>>>> fc02c241bd63e0fff8dc5d029e5007deecaa9062
 	@GetMapping({ "/viewAllBudgetedIncomes" })
 	public String viewAllBudgetedIncomes(Model model) {
 		if(repoBudgetedIncome.findAll().isEmpty()) {

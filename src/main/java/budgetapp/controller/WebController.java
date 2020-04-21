@@ -119,7 +119,7 @@ public class WebController {
 ////////////////End of BudgetPeriod Maps////////////////////
 //////////////////BudgetedBill maps////////////////////////
 
-	@GetMapping("/inputBudgetedBill")
+	@GetMapping("/inputBudgetedBill/{periodId}")
 	public String newBudgetedBill(@PathVariable("periodId") long periodId, Model model) {
 		BudgetedBills p = new BudgetedBills();
 		
@@ -133,6 +133,21 @@ public class WebController {
 		
 		return "BudgetedBill";
 	}
+	
+	/*@GetMapping("/inputBudgetedBill/{id}")
+	public String newBudgetedBill(@PathVariable("id") long id, Model model) {
+		BudgetedBills p = new BudgetedBills();
+		
+		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(id).orElse(null);
+		
+		model.addAttribute("newBudgetedBill", repoBudgetedBills.findAll());
+		
+		model.addAttribute("BudgetedBills", p);
+		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
+		
+		
+		return "BudgetedBill";
+	}*/
 	
 	
 	@GetMapping({ "/viewAllBudgetedBills" })

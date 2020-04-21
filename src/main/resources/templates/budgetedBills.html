@@ -5,7 +5,7 @@
 <title>Create or edit a bill</title>
 </head>
 <body>
-<Form th:object="${newBudgetedBill}" th:action="@{/updateBudgetedBill/{id}(id=${newBudgetedBill.id})}" method=Post>
+<Form th:object="${newBudgetedBill}" th:action="@{/inputBudgetedBill/{id}(id=${newBudgetedBill.id})}" method=Post>
 Bill Name: <input name="name" size="20"th:field="*{name}"><br />
 Account Number: <input name = "account number" size="20" th:field="*{accountNum}"><br />
 Category: <input name = "category" size="20" th:field="*{category}"><br />

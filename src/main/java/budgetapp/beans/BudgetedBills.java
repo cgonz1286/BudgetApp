@@ -3,18 +3,17 @@ package budgetapp.beans;
 import java.util.Date;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "bills", schema = "budgeting")
 public class BudgetedBills {
 	
-
-
-
 private long id;
 private String name;
 private int accountNum;
@@ -22,6 +21,10 @@ private String category;
 private Date dateDue;
 private double price;
 
+/* !!!Remember to add getter and setter
+@ManyToOne(cascade=CascadeType.PERSIST)
+private BudgetPeriod budgetPeriod;
+*/
 public BudgetedBills() {
 	super();
 	// TODO Auto-generated constructor stub
@@ -102,5 +105,9 @@ public double getPrice() {
 public void setPrice(double price) {
 	this.price = price;
 }
+
+
+
+
 
 }

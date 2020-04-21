@@ -22,10 +22,9 @@ public class WebController {
 	BudgetPeriodRepository repoBudgetPeriod;
 	@Autowired
 	BudgetedBillsRepository repoBudgetedBills;
-<<<<<<< HEAD
+
 //	@Autowired
 //	BudgetedIncomeRepository repoBudgetedIncome;
-=======
 
 		
 	/*@GetMapping({ "/" })
@@ -35,7 +34,7 @@ public class WebController {
 
 	@Autowired
 	BudgetedIncomeRepository repoBudgetedIncome;
->>>>>>> fc02c241bd63e0fff8dc5d029e5007deecaa9062
+
 	@Autowired
 	DiscretionaryCategoryRepository repoDiscretionaryCategory;
 	
@@ -108,7 +107,7 @@ public class WebController {
 	    repoBudgetPeriod.delete(p);
 	    return viewAllBudgetPeriods(model);
 	}
-<<<<<<< HEAD
+//<<<<<<< HEAD
 /// something like this to select the item to add linked objects to...
 //	@GetMapping("/selectBudgetPeriod/{id}")
 //	public BudgetPeriod selectBudgetPeriod(@PathVariable("id") long id, Model model) {
@@ -116,21 +115,30 @@ public class WebController {
 //	    return p;
 //	}
 ///	
-=======
+//=======
 ////////////////End of BudgetPeriod Maps////////////////////
 //////////////////BudgetedBill maps////////////////////////
->>>>>>> fc02c241bd63e0fff8dc5d029e5007deecaa9062
-	@GetMapping("/updateBudgetedBill")
-	public String newBudgetedBill(Model model) {
+
+	@GetMapping("/inputBudgetedBill")
+	public String newBudgetedBill(@PathVariable("periodId") long periodId, Model model) {
 		BudgetedBills p = new BudgetedBills();
-		model.addAttribute("newBudgetedBill", p);
+		
+		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
+		
+		model.addAttribute("newBudgetedBill", repoBudgetedBills.findAll());
+		
+		model.addAttribute("BudgetedBills", p);
+		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
+		
+		
 		return "BudgetedBill";
 	}
+	
 	
 	@GetMapping({ "/viewAllBudgetedBills" })
 	public String viewAllBudgetedBills(Model model) {
 		if(repoBudgetedBills.findAll().isEmpty()) {
-			return newBudgetedBill(model);
+			return viewAllBudgetedBills(model);
 		}
 		
 		model.addAttribute("BudgetedBills", repoBudgetedBills.findAll());
@@ -141,12 +149,18 @@ public class WebController {
 		BudgetedBills p = repoBudgetedBills.findById(id).orElse(null);
 		System.out.println("ITEM TO EDIT: " + p.toString());
 		model.addAttribute("newBudgetedBills", p);
-		return "inputBudgetedBills";
+		return "inputBudgetedBill";
 	}
 
-	@PostMapping("/updateBudgetedBills/{id}")
-	public String reviseBudgetedBills(BudgetedBills p, Model model) {
-		repoBudgetedBills.save(p);
+	@PostMapping("/updateBudgetedBills/{periodId}")
+	public String reviseBudgetedBills(@PathVariable("periodId") long periodId, BudgetedBills bb, Model model) {
+		
+		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
+		
+		bb.setBudgetPeriod(selectedPeriod);
+		
+		
+		repoBudgetedBills.save(bb);
 		return viewAllBudgetedBills(model);
 	}
 	
@@ -156,9 +170,7 @@ public class WebController {
 	    repoBudgetedBills.delete(p);
 	    return viewAllBudgetedBills(model);
 	}
-<<<<<<< HEAD
-	/*
-=======
+
 
 ////////////////End of BudgededBill Maps////////////////////
 
@@ -166,7 +178,7 @@ public class WebController {
 
 	
 
->>>>>>> fc02c241bd63e0fff8dc5d029e5007deecaa9062
+
 	@GetMapping({ "/viewAllBudgetedIncomes" })
 	public String viewAllBudgetedIncomes(Model model) {
 		if(repoBudgetedIncome.findAll().isEmpty()) {

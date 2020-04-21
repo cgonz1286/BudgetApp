@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
@@ -33,13 +35,16 @@ import org.springframework.format.annotation.DateTimeFormat;
 	    
 		//cascade type merge so that it doesn't create duplicates of same item
 		@OneToMany(mappedBy="budgetPeriod", cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
+		@Fetch(value = FetchMode.SUBSELECT)
 		private List<BudgetedIncome> listOfBudgetedIncomes;
 		
-/* !!!REmember to re-add setters and getters!!!
+		//!!!REmember to re-add setters and getters!!!	
 		//cascade type merge so that it doesn't create duplicates of same item
 		@OneToMany(mappedBy="budgetPeriod", cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
+		@Fetch(value = FetchMode.SUBSELECT)
 		private List<BudgetedBills> listOfBudgetedBills;
-				
+		
+		/* !!!REmember to re-add setters and getters!!!				
 		//cascade type merge so that it doesn't create duplicates of same item
 		@OneToMany(mappedBy="budgetPeriod", cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
 		private List<BudgetedDiscretionary> listOfBudgetedDiscretionaries;
@@ -79,7 +84,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 			this.listOfBudgetedIncomes = listOfBudgetedIncomes;
 		}
 		
+		public List<BudgetedBills> getListOfBudgetedBills() {
+			return listOfBudgetedBills;
+		}
 		
+		public void setListOfBudgetedBills(List<BudgetedBills> listOfBudgetedBills) {
+			this.listOfBudgetedBills = listOfBudgetedBills;
+		}
 
 		
 	/**

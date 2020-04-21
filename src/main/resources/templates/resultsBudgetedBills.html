@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>View All Bills</title>
 <style>
 table, th, td {
   border: 1px solid black;
@@ -14,6 +14,36 @@ th, td {
 </style>
 </head>
 <body>
+<h1>Bills</h1>
 
+<form>
+<table>
+
+<tr>
+<th>Name</th>
+<th>Account Number</th>
+<th>Category</th>
+<th>Due Date</th>
+<th>Total Due</th>
+
+</tr>
+
+<tr th:each="currentBudgetedBill: ${BudgetedBills}">
+	<td th:text="${currentBudgetedBill.id}" hidden />
+	<td th:text="${currentBudgetedBill.name}" />
+	<td th:text="${currentBudgetedBill.accountNum}" />
+	<td th:text="${currentBudgetedBill.category}" />
+	<td th:text="${#dates.format(currentBudgetedBill.dateDue, 'MM/dd/yyyy')}" />
+	<td th:text="${currentBudgetedBill.price}" />
+	
+	<td><a th:href="@{/editBudgetedBills/{id}(id=${currentBudgetedBill.id})}">Edit</a></td>
+	<td><a th:href="@{/deleteBudgetedBills/{id}(id=${currentBudgetedBill.id})}">Delete</a></td>
+
+
+
+</table>
+</form>
+
+<a href="../updateBudgetedBill">Add a new Bill</a><br/>
 </body>
 </html>

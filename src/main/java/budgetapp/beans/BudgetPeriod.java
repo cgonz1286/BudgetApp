@@ -1,11 +1,15 @@
 package budgetapp.beans;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -26,6 +30,19 @@ import org.springframework.format.annotation.DateTimeFormat;
 		/**
 		 * @param id
 		 */
+	    
+		//cascade type merge so that it doesn't create duplicates of same item
+		@OneToMany(mappedBy="budgetPeriod", cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
+		private List<BudgetedIncome> listOfBudgetedIncomes;
+
+		//cascade type merge so that it doesn't create duplicates of same item
+		@OneToMany(mappedBy="budgetPeriod", cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
+		private List<BudgetedBills> listOfBudgetedBills;
+				
+		//cascade type merge so that it doesn't create duplicates of same item
+		@OneToMany(mappedBy="budgetPeriod", cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
+		private List<BudgetedDiscretionary> listOfBudgetedDiscretionaries;
+
 		public BudgetPeriod(long id) {
 			super();
 			this.id = id;
@@ -48,6 +65,44 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 
 		
+	/**
+		 * @return the listOfBudgetedIncomes
+		 */
+		public List<BudgetedIncome> getListOfBudgetedIncomes() {
+			return listOfBudgetedIncomes;
+		}
+		/**
+		 * @param listOfBudgetedIncomes the listOfBudgetedIncomes to set
+		 */
+		public void setListOfBudgetedIncomes(List<BudgetedIncome> listOfBudgetedIncomes) {
+			this.listOfBudgetedIncomes = listOfBudgetedIncomes;
+		}
+		
+		
+	/**
+		 * @return the listOfBudgetedBills
+		 */
+		public List<BudgetedBills> getListOfBudgetedBills() {
+			return listOfBudgetedBills;
+		}
+		/**
+		 * @param listOfBudgetedBills the listOfBudgetedBills to set
+		 */
+		public void setListOfBudgetedBills(List<BudgetedBills> listOfBudgetedBills) {
+			this.listOfBudgetedBills = listOfBudgetedBills;
+		}
+		/**
+		 * @return the listOfBudgetedDiscretionaries
+		 */
+		public List<BudgetedDiscretionary> getListOfBudgetedDiscretionaries() {
+			return listOfBudgetedDiscretionaries;
+		}
+		/**
+		 * @param listOfBudgetedDiscretionaries the listOfBudgetedDiscretionaries to set
+		 */
+		public void setListOfBudgetedDiscretionaries(List<BudgetedDiscretionary> listOfBudgetedDiscretionaries) {
+			this.listOfBudgetedDiscretionaries = listOfBudgetedDiscretionaries;
+		}
 	/**
 	 * @return the id
 	 */
@@ -101,7 +156,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 	}
 	@Override
 	public String toString() {
-		return "BudgetPeriod [getId()=" + getId() + ", getDescription()="+ getDescription() + "]";
+String tostr=		 "BudgetPeriod [id=" + getId() + ", description="+ getDescription() + "] For test purposes, linked Incomes: ";
+for(BudgetedIncome b : listOfBudgetedIncomes) {
+	tostr+= b.toString()+", ";
+} ;
+tostr+="end";
+		 return tostr;
 	}
 
 }

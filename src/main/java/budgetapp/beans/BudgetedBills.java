@@ -130,13 +130,13 @@ public void setPrice(double price) {
 	this.price = price;
 }
 
-public List<BudgetedBills> getListOfBudgetedBills(){
+/*public List<BudgetedBills> getListOfBudgetedBills(){
 	return listOfBudgetedBills;
 }
 
 public void setListOfBudgetedBills(List<BudgetedBills> listOfBudgetedBills) {
 	this.listOfBudgetedBills = listOfBudgetedBills;
-}
+}*/
 @ManyToOne
 public BudgetPeriod getBudgetPeriod() {
 	return budgetPeriod;

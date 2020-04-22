@@ -22,8 +22,19 @@ public class WebController {
 	BudgetPeriodRepository repoBudgetPeriod;
 	@Autowired
 	BudgetedBillsRepository repoBudgetedBills;
+
+//	@Autowired
+//	BudgetedIncomeRepository repoBudgetedIncome;
+
+		
+	/*@GetMapping({ "/" })
+	public String index() {
+		return "index.html";
+	}*/
+
 	@Autowired
 	BudgetedIncomeRepository repoBudgetedIncome;
+
 	@Autowired
 	DiscretionaryCategoryRepository repoDiscretionaryCategory;
 	
@@ -31,6 +42,7 @@ public class WebController {
 //	public String index() {
 //		return "index.html";
 //	}
+	
 
 	@GetMapping({"/index.html"})
 	public String index() {
@@ -77,6 +89,7 @@ public class WebController {
 		
 		return viewAllBudgetPeriods(model);
 	}
+
    
 	@GetMapping("/viewReports/{periodId}")
 	public String viewReports(@PathVariable("periodId") long periodId, Model model) {
@@ -94,9 +107,17 @@ public class WebController {
 	    repoBudgetPeriod.delete(p);
 	    return viewAllBudgetPeriods(model);
 	}
+//<<<<<<< HEAD
+/// something like this to select the item to add linked objects to...
+//	@GetMapping("/selectBudgetPeriod/{id}")
+//	public BudgetPeriod selectBudgetPeriod(@PathVariable("id") long id, Model model) {
+//		BudgetPeriod p = repoBudgetPeriod.findById(id).orElse(null);
+//	    return p;
+//	}
+///	
+//=======
 ////////////////End of BudgetPeriod Maps////////////////////
-	
-//////////////////BudgetedBill maps/////////////////////////
+//////////////////BudgetedBill maps////////////////////////
 
 	@GetMapping("/inputBudgetedBill/{periodId}")
 	public String newBudgetedBill(@PathVariable("periodId") long periodId, Model model) {
@@ -138,7 +159,6 @@ public class WebController {
 		model.addAttribute("BudgetedBills", repoBudgetedBills.findAll());
 		return "resultsBudgetedBills";
 	}
-	
 	@GetMapping("/editBudgetedBill/{id}")
 	public String showUpdateBudgetedBill(@PathVariable("id") long id, Model model) {
 		BudgetedBills p = repoBudgetedBills.findById(id).orElse(null);
@@ -152,7 +172,7 @@ public class WebController {
 		
 		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
 		
-//		bb.setBudgetPeriod(selectedPeriod); // commented this line out due to it causing errors
+		bb.setBudgetPeriod(selectedPeriod);
 		
 		
 		repoBudgetedBills.save(bb);
@@ -169,7 +189,10 @@ public class WebController {
 
 ////////////////End of BudgededBill Maps////////////////////
 
-///////////////////BudgetedIncome maps//////////////////////
+	////////////////BudgetedIncome maps//////////////////////
+
+	
+
 
 	@GetMapping({ "/viewAllBudgetedIncomes" })
 	public String viewAllBudgetedIncomes(Model model) {
@@ -179,6 +202,8 @@ public class WebController {
 		model.addAttribute("BudgetedIncomes", repoBudgetedIncome.findAll());
 		return "resultsIncome";
 	}
+	
+
 	
 ///continue from period to inputBudgetedIncome
 	//!!! use this format to allow join, pass in the period id and add BudgetPeriod as an attribute
@@ -195,6 +220,7 @@ public class WebController {
 
 		return "inputIncome";
 	}
+	
 
 	@GetMapping("/editBudgetedIncome/{id}")
 	public String showUpdateBudgetedIncome(@PathVariable("id") long id,  Model model) {
@@ -231,7 +257,6 @@ public class WebController {
 		return "resultsIncomeDetail";
 	}
 	//////////End of BudgetedIncomeMaps////////////////////////////////
-	
 	// ------------------------------
 	// DiscretionaryCategory Mappings 
 	// ------------------------------

@@ -13,6 +13,7 @@ import budgetapp.beans.BudgetedIncome;
 import budgetapp.beans.DiscretionaryCategory;
 import budgetapp.repository.BudgetPeriodRepository;
 import budgetapp.repository.BudgetedBillsRepository;
+import budgetapp.repository.BudgetedDiscretionaryRepository;
 import budgetapp.repository.BudgetedIncomeRepository;
 import budgetapp.repository.DiscretionaryCategoryRepository;
 
@@ -22,27 +23,17 @@ public class WebController {
 	BudgetPeriodRepository repoBudgetPeriod;
 	@Autowired
 	BudgetedBillsRepository repoBudgetedBills;
-
-//	@Autowired
-//	BudgetedIncomeRepository repoBudgetedIncome;
-
-		
-	/*@GetMapping({ "/" })
-	public String index() {
-		return "index.html";
-	}*/
-
 	@Autowired
 	BudgetedIncomeRepository repoBudgetedIncome;
-
 	@Autowired
 	DiscretionaryCategoryRepository repoDiscretionaryCategory;
+	@Autowired
+	BudgetedDiscretionaryRepository repoBudgetedDiscretionary;
 	
 //	@GetMapping({ "/","/index", "/index.html"})
 //	public String index() {
 //		return "index.html";
 //	}
-	
 
 	@GetMapping({"/index.html"})
 	public String index() {
@@ -89,7 +80,6 @@ public class WebController {
 		
 		return viewAllBudgetPeriods(model);
 	}
-
    
 	@GetMapping("/viewReports/{periodId}")
 	public String viewReports(@PathVariable("periodId") long periodId, Model model) {
@@ -107,17 +97,9 @@ public class WebController {
 	    repoBudgetPeriod.delete(p);
 	    return viewAllBudgetPeriods(model);
 	}
-//<<<<<<< HEAD
-/// something like this to select the item to add linked objects to...
-//	@GetMapping("/selectBudgetPeriod/{id}")
-//	public BudgetPeriod selectBudgetPeriod(@PathVariable("id") long id, Model model) {
-//		BudgetPeriod p = repoBudgetPeriod.findById(id).orElse(null);
-//	    return p;
-//	}
-///	
-//=======
-////////////////End of BudgetPeriod Maps////////////////////
-//////////////////BudgetedBill maps////////////////////////
+	////////////////End of BudgetPeriod Maps////////////////////
+	
+	//////////////////BudgetedBill maps/////////////////////////
 
 	@GetMapping("/inputBudgetedBill/{periodId}")
 	public String newBudgetedBill(@PathVariable("periodId") long periodId, Model model) {
@@ -159,6 +141,7 @@ public class WebController {
 		model.addAttribute("BudgetedBills", repoBudgetedBills.findAll());
 		return "resultsBudgetedBills";
 	}
+	
 	@GetMapping("/editBudgetedBill/{id}")
 	public String showUpdateBudgetedBill(@PathVariable("id") long id, Model model) {
 		BudgetedBills p = repoBudgetedBills.findById(id).orElse(null);
@@ -172,7 +155,7 @@ public class WebController {
 		
 		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
 		
-		bb.setBudgetPeriod(selectedPeriod);
+//		bb.setBudgetPeriod(selectedPeriod); // commented this line out due to it causing errors
 		
 		
 		repoBudgetedBills.save(bb);
@@ -187,12 +170,9 @@ public class WebController {
 	}
 
 
-////////////////End of BudgededBill Maps////////////////////
+	////////////////End of BudgededBill Maps////////////////////
 
-	////////////////BudgetedIncome maps//////////////////////
-
-	
-
+	///////////////////BudgetedIncome maps//////////////////////
 
 	@GetMapping({ "/viewAllBudgetedIncomes" })
 	public String viewAllBudgetedIncomes(Model model) {
@@ -203,9 +183,7 @@ public class WebController {
 		return "resultsIncome";
 	}
 	
-
-	
-///continue from period to inputBudgetedIncome
+	///continue from period to inputBudgetedIncome
 	//!!! use this format to allow join, pass in the period id and add BudgetPeriod as an attribute
 	//!!!add the findAll attribute if you are also displaying the existing entries on the input form
 	@GetMapping("/inputBudgetedIncome/{periodId}")
@@ -220,7 +198,6 @@ public class WebController {
 
 		return "inputIncome";
 	}
-	
 
 	@GetMapping("/editBudgetedIncome/{id}")
 	public String showUpdateBudgetedIncome(@PathVariable("id") long id,  Model model) {
@@ -256,7 +233,8 @@ public class WebController {
 		model.addAttribute("linkedBudgetPeriod", p);
 		return "resultsIncomeDetail";
 	}
-	//////////End of BudgetedIncomeMaps////////////////////////////////
+	//////////End of BudgetedIncomeMaps/////////////////////////
+	
 	// ------------------------------
 	// DiscretionaryCategory Mappings 
 	// ------------------------------
@@ -308,5 +286,52 @@ public class WebController {
 	// ------------------------------
 	// BudgetedDiscretionary Mappings 
 	// ------------------------------
+	
+	// !!!!!!!!!! COPY/PASTED BELOW FROM DISCRETIONARYCATEGORY MAPPINGS, SO NEED TO CHANGE FOR BUDGETEDDISCRETIONARY !!!!!!!!!!!!
+	
+//	@GetMapping("/mainDiscretionaryCategory")
+//	public String addNewDiscretionaryCategory(Model model) {
+//		DiscretionaryCategory dc = new DiscretionaryCategory();
+//		
+//		model.addAttribute("discretionaryCategory", dc);	
+//		
+//		if(repoDiscretionaryCategory.findAll().isEmpty()) {
+//			model.addAttribute("allDiscretionaryCategories", "EMPTY");
+//		} else {
+//			model.addAttribute("allDiscretionaryCategories", repoDiscretionaryCategory.findAll());
+//		}
+//		
+//		return "discretionaryCategory";
+//	}
+//
+//	@PostMapping("/updateDiscretionaryCategory/{id}")
+//	public String reviseDiscretionaryCategory(DiscretionaryCategory dc, Model model) {
+//		repoDiscretionaryCategory.save(dc);
+//		
+//		return addNewDiscretionaryCategory(model);
+//	}
+//
+//	@GetMapping("/editDiscretionaryCategory/{id}")
+//	public String showUpdateDiscretionaryCategory(@PathVariable("id") long discCategoryId, Model model) {
+//		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(discCategoryId).orElse(null);
+//			
+//		model.addAttribute("discretionaryCategory", dc);
+//		
+//		if(repoDiscretionaryCategory.findAll().isEmpty()) {
+//			model.addAttribute("allDiscretionaryCategories", "EMPTY");
+//		} else {
+//			model.addAttribute("allDiscretionaryCategories", repoDiscretionaryCategory.findAll());
+//		}
+//		
+//		return "discretionaryCategory";
+//	}
+//	
+//	@GetMapping("/deleteDiscretionaryCategory/{id}")
+//	public String deleteUser(@PathVariable("id") long discCategoryId, Model model) {
+//		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(discCategoryId).orElse(null);
+//		repoDiscretionaryCategory.delete(dc);
+//		
+//		return addNewDiscretionaryCategory(model);
+//	}
 	
 }

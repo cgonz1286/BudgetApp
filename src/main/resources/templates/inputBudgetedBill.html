@@ -63,7 +63,7 @@ th, td {
 <form th:object="${newBudgetedBill}" th:action="@{/updateBudgetedBill/{periodid}(periodid=${selectedBudgetPeriod.id})}" method=POST>
 
 Bill Name: <input name="Description" size="20" th:field="*{name}"><br />
-Account Number: <input name="Account Number" size="20" th:field="*{acoountNum}"><br />
+Account Number: <input name="Account Number" size="20" th:field="*{acountNum}"><br />
 Category: <input name="Category" size="20" th:field="*{category}"><br />
 Due Date: <input type ="text" name = "dateDue" placeholder="MM/dd/yyyy" th:field="*{dateDue}"><br />
 Amount Due: <input type ="text" name = "price"  th:field="*{price}"><br />

@@ -1,5 +1,7 @@
 package budgetapp.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,10 +73,12 @@ public class WebController {
 
 	@GetMapping("/viewReports/{periodId}")
 	public String viewReports(@PathVariable("periodId") long periodId, Model model) {
-		BudgetPeriod p = repoBudgetPeriod.findById(periodId).orElse(null);
-	    model.addAttribute("selectedBudgetPeriod", p);
-	    model.addAttribute("periodIncomes", p.getListOfBudgetedIncomes());
-	    model.addAttribute("periodIncomesString", p.toString());
+		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
+	    model.addAttribute("selectedBudgetPeriod", selectedPeriod);
+	    model.addAttribute("periodIncomes", selectedPeriod.getListOfBudgetedIncomes());
+	    model.addAttribute("periodIncomesString", selectedPeriod.toString());
+		model.addAttribute("BudgetedIncomesTotal", calcTotalBudgetedIncome(selectedPeriod)); ///!!!Fixed this by adding a method in BudgetedIncomeRepository to filter by period, and a method in webcontroller
+
 
 	    return "reports";
 	}	
@@ -127,7 +131,8 @@ public class WebController {
 ////////////////End of BudgededBill Maps////////////////////
 
 	////////////////BudgetedIncome maps//////////////////////
-
+	
+	/*Not USING
 	@GetMapping({ "/viewAllBudgetedIncomes" })
 	public String viewAllBudgetedIncomes(Model model) {
 		if(repoBudgetedIncome.findAll().isEmpty()) {
@@ -137,6 +142,27 @@ public class WebController {
 		return "resultsIncome";
 	}
 	
+	
+	Object findTotalIncome(BudgetPeriod selectedPeriod){
+		 List<Object[]> results = repoBudgetedIncome.sumByBudgetPeriod(selectedPeriod);
+		return results.get(0);
+	}
+	*/
+	double calcTotalBudgetedIncome(BudgetPeriod selectedPeriod){
+		 List<BudgetedIncome> BudgetedIncomes = repoBudgetedIncome.findByBudgetPeriod(selectedPeriod);
+		 double totalIncome = 0;
+
+		 for (BudgetedIncome b : BudgetedIncomes)
+		 {
+			 totalIncome += b.getAmount();
+				System.out.println("??? calcTotalBudgetedIncome "+b.getId()+" "+b.getAmount());
+
+		 }
+			System.out.println("??? calcTotalBudgetedIncome "+totalIncome);
+
+		 return totalIncome;
+	}
+	
 ///continue from period to inputBudgetedIncome
 	//!!! use this format to allow join, pass in the period id and add BudgetPeriod as an attribute
 	//!!!add the findAll attribute if you are also displaying the existing entries on the input form
@@ -144,7 +170,10 @@ public class WebController {
 	public String addNewBudgetedIncome(@PathVariable("periodId") long periodId, Model model) {
 	BudgetedIncome b = new BudgetedIncome();
 	BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
-		model.addAttribute("BudgetedIncomes", repoBudgetedIncome.findAll());
+		model.addAttribute("BudgetedIncomes", repoBudgetedIncome.findByBudgetPeriod(selectedPeriod)); ///!!!Fixed this by adding a method in BudgetedIncomeRepository to filter by period
+		model.addAttribute("BudgetedIncomesTotal", calcTotalBudgetedIncome(selectedPeriod)); ///!!!Fixed this by adding a method in BudgetedIncomeRepository to filter by period
+		System.out.println("??? /inputBudgetedIncome/{periodId} BudgetedIncomesTotal"+calcTotalBudgetedIncome(selectedPeriod));
+
 		model.addAttribute("newBudgetedIncome", b);
 		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
 		System.out.println("??? /inputBudgetedIncome/{periodId} inputIncome");

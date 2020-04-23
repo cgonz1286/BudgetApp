@@ -1,50 +1,85 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
 <meta charset="UTF-8">
+<title>Budgeted Discretionary Spending Entry</title>
 <style>
-th, td {
-  padding: 1px;
-  padding-right: 1px;
-  text-align: left; 
-  vertical-align: center;
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
 }
-tr:nth-child(even) {background-color: #dddddd;}
+th, td {
+  padding: 15px;
+}
 </style>
-<title>Budgeted Discretionary</title>
 </head>
-<!-- NEED TO CHANGE BELOW FOR BUDGETED DISCRETIONARY (THIS IS JUST A COPY/PASTE FROM DISCRETIONARYCATEGORY.HTML) -->
+
 <body>
-	<h1>Add/update/delete discretionary information for this budget period:</h1>
-	<form th:object="${discretionaryCategory}" th:action="@{/updateDiscretionaryCategory/{id}(id=${discretionaryCategory.discCategoryId})}" method='POST'>	
-		<table style="width: 455px">
-			<tr>
-				<th>Discretionary Category:</th>
-				<td><input name="id" th:field="*{discCategoryId}" hidden></td>
-				<td><input type="text" name="description" size="30" th:field="*{description}" required></td>
-				<td><input name="submit" type="submit" value="Submit"></td>
-			</tr>
-		</table>
-		<br />
-	</form>	
-	<form> 
-		<table>
-			<th:block th:if="${allDiscretionaryCategories == 'EMPTY'}"><font color="red">No categories exist. Must add at least one category to continue.</font></th:block>
-			<th:block th:if="${allDiscretionaryCategories != 'EMPTY'}">  
-				<tr th:each="currentCategory : ${allDiscretionaryCategories}">
-					<td th:text="${currentCategory.description}" />
-					<td><a th:href="@{/editDiscretionaryCategory/{id}(id=${currentCategory.discCategoryId})}">Edit</a></td>
-					<td><a th:href="@{/deleteDiscretionaryCategory/{id}(id=${currentCategory.discCategoryId})}">Delete</a></td>
-				</tr>
-			</th:block>
-		</table>
-		<br />
+	<h1>Enter Budgeted Discretionary Spending</h1>	
+	
+	<h3>Budget Period</h3>
+	<!-- This section is read only, it displays the Budget Period that was passed in from the web controller -->
+	<table>
+		<tr>
+			<th>Budget Period Description</th>
+			<th>Start Date</th>
+			<th>End Date</th>
+		</tr>
+		<tr >
+			<td th:text="${selectedBudgetPeriod.id}" hidden/>
+			<td th:text="${selectedBudgetPeriod.description}" />
+			<td th:text="${#dates.format(selectedBudgetPeriod.startDate, 'MM/dd/yyyy')}" /> 
+			<td th:text="${#dates.format(selectedBudgetPeriod.endDate, 'MM/dd/yyyy')}" /> 	
+		</tr>
+	</table>
+	
+	<h3>Discretionary Spending for this Budget Period</h3>
+	<table>
+		<tr>
+			<th>Discretionary Category</th> 
+			<th>Discretionary Amount</th>
+		</tr>	 
+		<tr th:each="currentBudgetedDiscretionary: ${BudgetedDiscretionaries}">
+			<td th:text="${currentBudgetedDiscretionary.id}" hidden/>
+			<td th:text="${currentBudgetedDiscretionary.discCategory.description}" /> 
+			<td th:text="${currentBudgetedDiscretionary.amount}" />
+			<td><a th:href="@{/editBudgetedDiscretionary/{id}(id=${currentBudgetedDiscretionary.id})}">Edit</a></td>
+			<td><a th:href="@{/deleteBudgetedDiscretionary/{id}(id=${currentBudgetedDiscretionary.id})}">Delete</a></td>
+		</tr>
+	</table>
+	
+	<h3>Add More Discretionary Spending for this Budget Period</h3>	
+	<h4>Enter all the discretionary spending buckets you would like have this budget period.</br>
+		Continue making adjustments to entries as needed.</h4>
+		
+	<form th:object="${newBudgetedDiscretionary}" th:action="@{/updateBudgetedDiscretionary/{periodid}(periodid=${selectedBudgetPeriod.id})}" method=POST>	
+		<!-- NOTE: This hidden field is causing an error - "Multiple representations of the same entity are being merged" -->
+		<!-- But without it, editing a field adds a new entry instead of just updating an existing one. -->
+		<tr><td><input name="id" th:field="*{id}" hidden></td></tr>
+		<tr>
+			<th>Discretionary Category:</th>
+			<td>			
+				<select th:field="*{discCategory.discCategoryId}">
+					<option th:each="currentDiscretionaryCategory : ${DiscretionaryCategories}" 
+						th:value="${currentDiscretionaryCategory.discCategoryId}" 
+						th:text="${currentDiscretionaryCategory.description}">
+					</option>
+				</select>
+			</td> 
+		</tr>
+		<tr>
+			<th>Discretionary Amount:</th>
+			<td><input type="number" size="10" maxlength="12" max="9999999.99" step="0.01" name="amount"  th:field="*{amount}"></td>
+		</tr>
+		<tr>
+			<th><input name="submit" type="submit" value="submit" /></th>
+		</tr>
 	</form>
-	<form> <!-- This will need to pass in/out the BudgetPeriod object - similar to first form seen above -->
-		<br />
-		<table>
-			<tr><td><input name="continue" type="submit" value="Continue"></td></tr>
-		</table>
-	</form>
+	<br/>
+	<h5>!!!Uncomment and update the link to budgeted bills in budgetedDiscretionary.html when final page mapping is ready to receive period id.</h5>
+	<!-- <a th:href="@{/inputBudgetedBill/{periodId}(periodid=${selectedBudgetPeriod.id})}">Continue to add Bills to this Budget</a><br/> -->
+	<!-- <a th:href="@{/viewReports/{periodId}( periodId=${selectedBudgetPeriod.id})}">View Reports for this Budget Period</a><br/> -->
+	<!-- <a href="{/viewAllBudgetPeriods">Return to All Budget Periods</a><br/> -->
 </body>
 </html>

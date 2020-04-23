@@ -1,6 +1,7 @@
 package budgetapp.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -75,10 +76,9 @@ public class WebController {
 	public String viewReports(@PathVariable("periodId") long periodId, Model model) {
 		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
 	    model.addAttribute("selectedBudgetPeriod", selectedPeriod);
-	    model.addAttribute("periodIncomes", selectedPeriod.getListOfBudgetedIncomes());
+	    model.addAttribute("periodIncomes", repoBudgetedIncome.findByBudgetPeriod(selectedPeriod)); //!!!Changed this to query the repo, allows the reports.html to refresh better
 	    model.addAttribute("periodIncomesString", selectedPeriod.toString());
 		model.addAttribute("BudgetedIncomesTotal", calcTotalBudgetedIncome(selectedPeriod)); ///!!!Fixed this by adding a method in BudgetedIncomeRepository to filter by period, and a method in webcontroller
-
 
 	    return "reports";
 	}	
@@ -241,6 +241,7 @@ public class WebController {
 		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
 		BudgetPeriod selectedPeriod = b.getBudgetPeriod();//!!! add selected period
 	    repoBudgetedIncome.delete(b);
+	    repoBudgetedIncome.flush();
 	    if(GoTo.equals("GoToReports")) {
 			return viewReports(selectedPeriod.getId(), model);
 		}

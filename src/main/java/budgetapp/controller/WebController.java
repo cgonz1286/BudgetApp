@@ -1,7 +1,6 @@
 package budgetapp.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +15,7 @@ import budgetapp.beans.BudgetedIncome;
 import budgetapp.beans.DiscretionaryCategory;
 import budgetapp.repository.BudgetPeriodRepository;
 import budgetapp.repository.BudgetedBillsRepository;
+import budgetapp.repository.BudgetedDiscretionaryRepository;
 import budgetapp.repository.BudgetedIncomeRepository;
 import budgetapp.repository.DiscretionaryCategoryRepository;
 
@@ -30,8 +30,9 @@ public class WebController {
 	BudgetedIncomeRepository repoBudgetedIncome;
 	@Autowired
 	DiscretionaryCategoryRepository repoDiscretionaryCategory;
+	@Autowired
+	BudgetedDiscretionaryRepository repoBudgetedDiscretionary;
 	
-
 
 	@GetMapping({"/index.html"})
 	public String index() {
@@ -89,35 +90,68 @@ public class WebController {
 	    repoBudgetPeriod.delete(p);
 	    return viewAllBudgetPeriods(model);
 	}
-////////////////End of BudgetPeriod Maps////////////////////
-//////////////////BudgetedBill maps////////////////////////
-	@GetMapping("/updateBudgetedBill")
-	public String newBudgetedBill(Model model) {
+	////////////////End of BudgetPeriod Maps////////////////////
+	
+	//////////////////BudgetedBill maps/////////////////////////
+
+	/*@GetMapping("/inputBudgetedBill/{periodId}")
+	public String newBudgetedBill(@PathVariable("periodId") long periodId, Model model) {
 		BudgetedBills p = new BudgetedBills();
-		model.addAttribute("newBudgetedBill", p);
+		
+		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
+		
+		model.addAttribute("newBudgetedBill", repoBudgetedBills.findAll());
+		
+		model.addAttribute("BudgetedBills", p);
+		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
+		
+		
+		return "BudgetedBill";
+	}*/
+	//I thought this might work, it didn't
+	@GetMapping("/inputBudgetedBill/{id}")
+	public String newBudgetedBill(@PathVariable("id") long id, Model model) {
+		BudgetedBills p = new BudgetedBills();
+		
+		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(id).orElse(null);
+		
+		model.addAttribute("newBudgetedBill", repoBudgetedBills.findAll());
+		
+		model.addAttribute("BudgetedBills", p);
+		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
+		
+		
 		return "BudgetedBill";
 	}
+	
 	
 	@GetMapping({ "/viewAllBudgetedBills" })
 	public String viewAllBudgetedBills(Model model) {
 		if(repoBudgetedBills.findAll().isEmpty()) {
-			return newBudgetedBill(model);
+			return viewAllBudgetedBills(model);
 		}
 		
 		model.addAttribute("BudgetedBills", repoBudgetedBills.findAll());
 		return "resultsBudgetedBills";
 	}
+	
 	@GetMapping("/editBudgetedBill/{id}")
 	public String showUpdateBudgetedBill(@PathVariable("id") long id, Model model) {
 		BudgetedBills p = repoBudgetedBills.findById(id).orElse(null);
 		System.out.println("???/editBudgetedBill/{id} ITEM TO EDIT: " + p.toString());
 		model.addAttribute("newBudgetedBills", p);
-		return "inputBudgetedBills";
+		return "inputBudgetedBill";
 	}
 
-	@PostMapping("/updateBudgetedBills/{id}")
-	public String reviseBudgetedBills(BudgetedBills p, Model model) {
-		repoBudgetedBills.save(p);
+	@PostMapping("/updateBudgetedBills/{periodId}")
+	public String reviseBudgetedBills(@PathVariable("periodId") long periodId, BudgetedBills bb, Model model) {
+		
+	//	BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
+		
+//		bb.setBudgetPeriod(selectedPeriod); // commented this line out due to it causing errors
+		
+		
+		repoBudgetedBills.save(bb);
 		return viewAllBudgetedBills(model);
 	}
 	
@@ -128,11 +162,14 @@ public class WebController {
 	    return viewAllBudgetedBills(model);
 	}
 
-////////////////End of BudgededBill Maps////////////////////
 
-	////////////////BudgetedIncome maps//////////////////////
-	
-	/*Not USING
+
+	////////////////End of BudgededBill Maps////////////////////
+
+
+	///////////////////BudgetedIncome maps//////////////////////
+/* Not using
+
 	@GetMapping({ "/viewAllBudgetedIncomes" })
 	public String viewAllBudgetedIncomes(Model model) {
 		if(repoBudgetedIncome.findAll().isEmpty()) {
@@ -163,7 +200,9 @@ public class WebController {
 		 return totalIncome;
 	}
 	
-///continue from period to inputBudgetedIncome
+
+	///continue from period to inputBudgetedIncome
+
 	//!!! use this format to allow join, pass in the period id and add BudgetPeriod as an attribute
 	//!!!add the findAll attribute if you are also displaying the existing entries on the input form
 	@GetMapping("/inputBudgetedIncome/{periodId}")
@@ -180,7 +219,6 @@ public class WebController {
 
 		return "inputIncome";
 	}
-	
 
 
 	//!!!START Added GoTo - will also need to edit the post action link on reports.html to add the .../GoToReports . 
@@ -304,7 +342,8 @@ public class WebController {
 		model.addAttribute("linkedBudgetPeriod", p);
 		return "resultsIncomeDetail";
 	}
-	//////////End of BudgetedIncomeMaps////////////////////////////////
+	//////////End of BudgetedIncomeMaps/////////////////////////
+	
 	// ------------------------------
 	// DiscretionaryCategory Mappings 
 	// ------------------------------
@@ -356,5 +395,52 @@ public class WebController {
 	// ------------------------------
 	// BudgetedDiscretionary Mappings 
 	// ------------------------------
+	
+	// !!!!!!!!!! COPY/PASTED BELOW FROM DISCRETIONARYCATEGORY MAPPINGS, SO NEED TO CHANGE FOR BUDGETEDDISCRETIONARY !!!!!!!!!!!!
+	
+//	@GetMapping("/mainDiscretionaryCategory")
+//	public String addNewDiscretionaryCategory(Model model) {
+//		DiscretionaryCategory dc = new DiscretionaryCategory();
+//		
+//		model.addAttribute("discretionaryCategory", dc);	
+//		
+//		if(repoDiscretionaryCategory.findAll().isEmpty()) {
+//			model.addAttribute("allDiscretionaryCategories", "EMPTY");
+//		} else {
+//			model.addAttribute("allDiscretionaryCategories", repoDiscretionaryCategory.findAll());
+//		}
+//		
+//		return "discretionaryCategory";
+//	}
+//
+//	@PostMapping("/updateDiscretionaryCategory/{id}")
+//	public String reviseDiscretionaryCategory(DiscretionaryCategory dc, Model model) {
+//		repoDiscretionaryCategory.save(dc);
+//		
+//		return addNewDiscretionaryCategory(model);
+//	}
+//
+//	@GetMapping("/editDiscretionaryCategory/{id}")
+//	public String showUpdateDiscretionaryCategory(@PathVariable("id") long discCategoryId, Model model) {
+//		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(discCategoryId).orElse(null);
+//			
+//		model.addAttribute("discretionaryCategory", dc);
+//		
+//		if(repoDiscretionaryCategory.findAll().isEmpty()) {
+//			model.addAttribute("allDiscretionaryCategories", "EMPTY");
+//		} else {
+//			model.addAttribute("allDiscretionaryCategories", repoDiscretionaryCategory.findAll());
+//		}
+//		
+//		return "discretionaryCategory";
+//	}
+//	
+//	@GetMapping("/deleteDiscretionaryCategory/{id}")
+//	public String deleteUser(@PathVariable("id") long discCategoryId, Model model) {
+//		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(discCategoryId).orElse(null);
+//		repoDiscretionaryCategory.delete(dc);
+//		
+//		return addNewDiscretionaryCategory(model);
+//	}
 	
 }

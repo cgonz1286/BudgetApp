@@ -43,8 +43,8 @@ public class BudgetPeriod {
 	
 	//!!!REmember to re-add setters and getters!!!				
 	//cascade type merge so that it doesn't create duplicates of same item
-//	@OneToMany(mappedBy="budgetPeriod", cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
-//	private List<BudgetedDiscretionary> listOfBudgetedDiscretionaries;
+	@OneToMany(mappedBy="budgetPeriod", cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
+	private List<BudgetedDiscretionary> listOfBudgetedDiscretionaries;
 
 	/**
 	 * @param id
@@ -96,15 +96,15 @@ public class BudgetPeriod {
 	/**
 	 * @return the listOfBudgetedDiscretionaries
 	 */
-//	public List<BudgetedDiscretionary> getListOfBudgetedDiscretionaries() {
-//		return listOfBudgetedDiscretionaries;
-//	}
-//	/**
-//	 * @param listOfBudgetedDiscretionaries the listOfBudgetedDiscretionaries to set
-//	 */
-//	public void setListOfBudgetedDiscretionaries(List<BudgetedDiscretionary> listOfBudgetedDiscretionaries) {
-//		this.listOfBudgetedDiscretionaries = listOfBudgetedDiscretionaries;
-//	}
+	public List<BudgetedDiscretionary> getListOfBudgetedDiscretionaries() {
+		return listOfBudgetedDiscretionaries;
+	}
+	/**
+	 * @param listOfBudgetedDiscretionaries the listOfBudgetedDiscretionaries to set
+	 */
+	public void setListOfBudgetedDiscretionaries(List<BudgetedDiscretionary> listOfBudgetedDiscretionaries) {
+		this.listOfBudgetedDiscretionaries = listOfBudgetedDiscretionaries;
+	}
 		
 	/**
 	 * @return the id

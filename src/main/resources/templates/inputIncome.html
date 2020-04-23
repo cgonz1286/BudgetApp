@@ -70,7 +70,9 @@ Amount: <input type ="text" name = "amount"  th:field="*{amount}"><br />
 
 <br/>
 <h5>!!!Uncomment the link to budgeted bills in inputIncome.html when that mapping is ready to receive period id.</h5>
-<a th:href="@{/inputBudgetedBill/{periodId}(periodid=${selectedBudgetPeriod.id})}">Continue to add Bills to this Budget</a><br/>
+<!--  <a th:href="@{/inputBudgetedBill/{periodId}(periodid=${selectedBudgetPeriod.id})}">Continue to add Bills to this Budget</a><br/> -->
+<h5>!!!Added this temporarily to test budgetedDiscretionary page.</h5>
+<a th:href="@{/inputBudgetedDiscretionary/{periodId}(periodId=${selectedBudgetPeriod.id})}">Continue to add BudgetedDiscretionary to this Budget</a><br/></br>
 <a th:href="@{/viewReports/{periodId}( periodId=${selectedBudgetPeriod.id})}">View Reports for this Budget Period</a>
 <br/><a href = "{/viewAllBudgetPeriods">Return to All Budget Periods</a><br/>
 

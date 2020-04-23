@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import budgetapp.beans.BudgetPeriod;
 import budgetapp.beans.BudgetedBills;
+import budgetapp.beans.BudgetedDiscretionary;
 import budgetapp.beans.BudgetedIncome;
 import budgetapp.beans.DiscretionaryCategory;
 import budgetapp.repository.BudgetPeriodRepository;
@@ -39,7 +40,10 @@ public class WebController {
 	public String index() {
 		return "index.html";
 	}
-		
+	
+	//------------------------------------------------------
+	//                BudgetPeriod Maps                            
+	//------------------------------------------------------
 	@GetMapping({"/viewAllBudgetPeriods" ,"/" })
 
 	public String viewAllBudgetPeriods(Model model) {
@@ -97,10 +101,11 @@ public class WebController {
 	    repoBudgetPeriod.delete(p);
 	    return viewAllBudgetPeriods(model);
 	}
-	////////////////End of BudgetPeriod Maps////////////////////
+	////////////////End of BudgetPeriod Maps////////////////
 	
-	//////////////////BudgetedBill maps/////////////////////////
-
+	//------------------------------------------------------
+	//                BudgetedBill Maps                              
+	//------------------------------------------------------
 	@GetMapping("/inputBudgetedBill/{periodId}")
 	public String newBudgetedBill(@PathVariable("periodId") long periodId, Model model) {
 		BudgetedBills p = new BudgetedBills();
@@ -168,12 +173,11 @@ public class WebController {
 	    repoBudgetedBills.delete(p);
 	    return viewAllBudgetedBills(model);
 	}
-
-
-	////////////////End of BudgededBill Maps////////////////////
-
-	///////////////////BudgetedIncome maps//////////////////////
-
+	////////////////End of BudgededBill Maps////////////////
+	
+	//------------------------------------------------------
+	//                BudgetedIncome Maps                            
+	//------------------------------------------------------
 	@GetMapping({ "/viewAllBudgetedIncomes" })
 	public String viewAllBudgetedIncomes(Model model) {
 		if(repoBudgetedIncome.findAll().isEmpty()) {
@@ -188,10 +192,10 @@ public class WebController {
 	//!!!add the findAll attribute if you are also displaying the existing entries on the input form
 	@GetMapping("/inputBudgetedIncome/{periodId}")
 	public String addNewBudgetedIncome(@PathVariable("periodId") long periodId, Model model) {
-	BudgetedIncome b = new BudgetedIncome();
-	BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
-	model.addAttribute("BudgetedIncomes", repoBudgetedIncome.findAll());
-	//b.setBudgetPeriod(selectedPeriod);
+		BudgetedIncome b = new BudgetedIncome();
+		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
+		model.addAttribute("BudgetedIncomes", repoBudgetedIncome.findAll());
+		//b.setBudgetPeriod(selectedPeriod);
 
 		model.addAttribute("newBudgetedIncome", b);
 		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
@@ -233,11 +237,11 @@ public class WebController {
 		model.addAttribute("linkedBudgetPeriod", p);
 		return "resultsIncomeDetail";
 	}
-	//////////End of BudgetedIncomeMaps/////////////////////////
+	///////////////End of BudgetedIncomeMaps////////////////////
 	
-	// ------------------------------
-	// DiscretionaryCategory Mappings 
-	// ------------------------------
+	//------------------------------------------------------
+	//           DiscretionaryCategory Mappings 
+	//------------------------------------------------------
 	@GetMapping("/mainDiscretionaryCategory")
 	public String addNewDiscretionaryCategory(Model model) {
 		DiscretionaryCategory dc = new DiscretionaryCategory();
@@ -251,13 +255,6 @@ public class WebController {
 		}
 		
 		return "discretionaryCategory";
-	}
-	
-	@PostMapping("/updateDiscretionaryCategory/{id}")
-	public String reviseDiscretionaryCategory(DiscretionaryCategory dc, Model model) {
-		repoDiscretionaryCategory.save(dc);
-		
-		return addNewDiscretionaryCategory(model);
 	}
 	
 	@GetMapping("/editDiscretionaryCategory/{id}")
@@ -275,6 +272,13 @@ public class WebController {
 		return "discretionaryCategory";
 	}
 	
+	@PostMapping("/updateDiscretionaryCategory/{id}")
+	public String reviseDiscretionaryCategory(DiscretionaryCategory dc, Model model) {
+		repoDiscretionaryCategory.save(dc);
+		
+		return addNewDiscretionaryCategory(model);
+	}
+	
 	@GetMapping("/deleteDiscretionaryCategory/{id}")
 	public String deleteUser(@PathVariable("id") long discCategoryId, Model model) {
 		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(discCategoryId).orElse(null);
@@ -283,55 +287,72 @@ public class WebController {
 		return addNewDiscretionaryCategory(model);
 	}
 	
-	// ------------------------------
-	// BudgetedDiscretionary Mappings 
-	// ------------------------------
+	//------------------------------------------------------
+	//            BudgetedDiscretionary Mappings 
+	//------------------------------------------------------
+	//!!! Use this format to allow join, pass in the period id and add BudgetPeriod as an attribute
+	//!!! Add the findAll attribute if you are also displaying the existing entries on the input form
+	// Continue from a previous page to budgetedDiscretionary
+	@GetMapping("/inputBudgetedDiscretionary/{periodId}")
+	public String addNewBudgetedDiscretionary(@PathVariable("periodId") long periodId, Model model) {
+		BudgetedDiscretionary bd = new BudgetedDiscretionary();
+		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
+		
+		model.addAttribute("newBudgetedDiscretionary", bd);
+		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
+		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findAll());
+		model.addAttribute("DiscretionaryCategories", repoDiscretionaryCategory.findAll());
+
+		return "budgetedDiscretionary";
+	}
 	
-	// !!!!!!!!!! COPY/PASTED BELOW FROM DISCRETIONARYCATEGORY MAPPINGS, SO NEED TO CHANGE FOR BUDGETEDDISCRETIONARY !!!!!!!!!!!!
+	// Refresh current page so that it shows current data and is ready for a new entry
+	@GetMapping("/refreshPageBudgetedDiscretionary")
+	public String refreshPageBudgetedDiscretionary(long periodId, Model model) {
+		BudgetedDiscretionary bd = new BudgetedDiscretionary();
+		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
+		
+		model.addAttribute("newBudgetedDiscretionary", bd);
+		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
+		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findAll());
+		model.addAttribute("DiscretionaryCategories", repoDiscretionaryCategory.findAll());
+
+		return "budgetedDiscretionary";
+	}
+		
+	// !!! NOTE: Need to fix this as it's currently creating a new entry instead of editing an existing one. !!!
+	// !!! NOTE 2: Updated html page and now it's throwing "Multiple representations of the same entity are being merged" exception 
+	@GetMapping("/editBudgetedDiscretionary/{id}")
+	public String showUpdateBudgetedDiscretionary(@PathVariable("id") long id,  Model model) {
+		BudgetedDiscretionary bd = repoBudgetedDiscretionary.findById(id).orElse(null);		
+		long periodId = bd.getBudgetPeriod().getId(); // Get periodId.
+		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
+		
+		model.addAttribute("newBudgetedDiscretionary", bd);
+		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
+		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findAll());
+		model.addAttribute("DiscretionaryCategories", repoDiscretionaryCategory.findAll());
+
+		return "budgetedDiscretionary"; 
+	}
+
+	@PostMapping("/updateBudgetedDiscretionary/{periodId}")
+	public String reviseBudgetedDiscretionary(@PathVariable("periodId") long periodId, BudgetedDiscretionary bd, Model model) {
+		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null); // Find selected budget period.
+		bd.setBudgetPeriod(selectedPeriod); // Add budget period to entity.
+		repoBudgetedDiscretionary.save(bd); // Save entity.
+		
+		return refreshPageBudgetedDiscretionary(periodId, model);
+	}
 	
-//	@GetMapping("/mainDiscretionaryCategory")
-//	public String addNewDiscretionaryCategory(Model model) {
-//		DiscretionaryCategory dc = new DiscretionaryCategory();
-//		
-//		model.addAttribute("discretionaryCategory", dc);	
-//		
-//		if(repoDiscretionaryCategory.findAll().isEmpty()) {
-//			model.addAttribute("allDiscretionaryCategories", "EMPTY");
-//		} else {
-//			model.addAttribute("allDiscretionaryCategories", repoDiscretionaryCategory.findAll());
-//		}
-//		
-//		return "discretionaryCategory";
-//	}
-//
-//	@PostMapping("/updateDiscretionaryCategory/{id}")
-//	public String reviseDiscretionaryCategory(DiscretionaryCategory dc, Model model) {
-//		repoDiscretionaryCategory.save(dc);
-//		
-//		return addNewDiscretionaryCategory(model);
-//	}
-//
-//	@GetMapping("/editDiscretionaryCategory/{id}")
-//	public String showUpdateDiscretionaryCategory(@PathVariable("id") long discCategoryId, Model model) {
-//		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(discCategoryId).orElse(null);
-//			
-//		model.addAttribute("discretionaryCategory", dc);
-//		
-//		if(repoDiscretionaryCategory.findAll().isEmpty()) {
-//			model.addAttribute("allDiscretionaryCategories", "EMPTY");
-//		} else {
-//			model.addAttribute("allDiscretionaryCategories", repoDiscretionaryCategory.findAll());
-//		}
-//		
-//		return "discretionaryCategory";
-//	}
-//	
-//	@GetMapping("/deleteDiscretionaryCategory/{id}")
-//	public String deleteUser(@PathVariable("id") long discCategoryId, Model model) {
-//		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(discCategoryId).orElse(null);
-//		repoDiscretionaryCategory.delete(dc);
-//		
-//		return addNewDiscretionaryCategory(model);
-//	}
-	
+	@GetMapping("/deleteBudgetedDiscretionary/{id}")
+	public String deleteBudgetedDiscretionary(@PathVariable("id") long id, Model model) {
+		BudgetedDiscretionary bd = repoBudgetedDiscretionary.findById(id).orElse(null);
+		
+		long periodId = bd.getBudgetPeriod().getId(); // Get periodId before deleting.
+	    
+		repoBudgetedDiscretionary.delete(bd); // Delete entity.
+	    
+		return refreshPageBudgetedDiscretionary(periodId, model);
+	}
 }

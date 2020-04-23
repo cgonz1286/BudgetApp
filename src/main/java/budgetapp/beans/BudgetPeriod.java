@@ -24,10 +24,10 @@ public class BudgetPeriod {
 	private	long id;
 	private String description;
 	
-@DateTimeFormat(pattern = "MM/dd/yyyy")
+    @DateTimeFormat(pattern = "MM/dd/yyyy")
 	private Date startDate;
    
-@DateTimeFormat(pattern = "MM/dd/yyyy")
+    @DateTimeFormat(pattern = "MM/dd/yyyy")
 	private Date endDate; 
     
 	//cascade type merge so that it doesn't create duplicates of same item

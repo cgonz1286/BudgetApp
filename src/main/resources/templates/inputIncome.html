@@ -47,7 +47,6 @@ th, td {
 	<td th:text="${currentBudgetedIncome.description}" />
 	<td th:text="${#dates.format(currentBudgetedIncome.incomeDate, 'MM/dd/yyyy')}" /> 
 	<td th:text="${currentBudgetedIncome.amount}" />
-
 	<td><a th:href="@{/editBudgetedIncome/{id}(id=${currentBudgetedIncome.id})}">Edit</a></td>
 	<td><a th:href="@{/deleteBudgetedIncome/{id}(id=${currentBudgetedIncome.id})}">Delete</a></td>
 	</tr>
@@ -55,11 +54,12 @@ th, td {
 
 <h4>Add More Expected Income for this Budget Period</h4>
 
-<h5>Enter all the income that you expect to receive during the budget period.</br>You can put in the full amount as one entry, or continue adding multiple entries.</h5>
+<h5>Enter all the income that you expect to receive during the budget period.
+You can put in the full amount as one entry, or continue adding multiple entries.</h5>
 	
 <!-- <form th:object="${newBudgetedIncome}" th:action="@{/updateBudgetedIncome/{id}/{periodId}(id=${newBudgetedIncome.id}, periodId =${selectedBudgetPeriod.id})" method=POST> -->
 <!--<form th:object="${newBudgetedIncome}" th:action="@{/updateBudgetedIncome/{id}(id=${newBudgetedIncome.id})}" method=POST>-->
-<form th:object="${newBudgetedIncome}" th:action="@{/updateBudgetedIncome/{periodid}(periodid=${selectedBudgetPeriod.id})}" method=POST>
+<form th:object="${newBudgetedIncome}" th:action="@{/updateBudgetedIncome/{id}/{periodid}(id=${newBudgetedIncome.id}, periodid=${selectedBudgetPeriod.id})}" method=POST>
 
 Income Description: <input name="Description" size="20" th:field="*{description}"><br />
 Expected Date: <input type ="text" name = "incomeDate" placeholder="MM/dd/yyyy" th:field="*{incomeDate}"><br />

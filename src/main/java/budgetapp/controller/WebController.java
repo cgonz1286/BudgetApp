@@ -283,9 +283,12 @@ public class WebController {
 		
 		BudgetPeriod selectedPeriod = b.getBudgetPeriod(); ///!!!Add this so the input form layout will work with the edit mapping
 		System.out.println("???ITEM TO EDIT: " + selectedPeriod.toString());
+
 		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
+
 		model.addAttribute("newBudgetedIncome", b);
 		model.addAttribute("BudgetedIncomes", repoBudgetedIncome.findAll());///!!Add this so the input form will work with the edit mapping
+
 		return "editIncomeGoToInputForm";
 	}
 	

@@ -119,7 +119,7 @@ public class WebController {
 ////////////////End of BudgetPeriod Maps////////////////////
 //////////////////BudgetedBill maps////////////////////////
 
-	@GetMapping("/inputBudgetedBill/{periodId}")
+	/*@GetMapping("/inputBudgetedBill/{periodId}")
 	public String newBudgetedBill(@PathVariable("periodId") long periodId, Model model) {
 		BudgetedBills p = new BudgetedBills();
 		
@@ -132,9 +132,9 @@ public class WebController {
 		
 		
 		return "BudgetedBill";
-	}
+	}*/
 	//I thought this might work, it didn't
-	/*@GetMapping("/inputBudgetedBill/{id}")
+	@GetMapping("/inputBudgetedBill/{id}")
 	public String newBudgetedBill(@PathVariable("id") long id, Model model) {
 		BudgetedBills p = new BudgetedBills();
 		
@@ -147,7 +147,7 @@ public class WebController {
 		
 		
 		return "BudgetedBill";
-	}*/
+	}
 	
 	
 	@GetMapping({ "/viewAllBudgetedBills" })

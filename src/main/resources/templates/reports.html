@@ -53,8 +53,8 @@ th, td {
 	<td th:text="${currentBudgetedIncome.description}" />
 	<td th:text="${#dates.format(currentBudgetedIncome.incomeDate, 'MM/dd/yyyy')}" /> 
 	<td th:text="${currentBudgetedIncome.amount}" />
-	<td><a th:href="@{/editBudgetedIncome/{id}(id=${currentBudgetedIncome.id})}">Edit</a></td>
-	<td><a th:href="@{/deleteBudgetedIncome/{id}(id=${currentBudgetedIncome.id})}">Delete</a></td>
+	<td><a th:href="@{/editBudgetedIncome/{id}/GoToReports(id=${currentBudgetedIncome.id})}">Edit (WithGoTo)</a></td>
+	<td><a th:href="@{/deleteBudgetedIncome/{id}/GoToReports(id=${currentBudgetedIncome.id})}">Delete (WithGoTo)</a></td>
 	</tr>
 </table>
 
@@ -66,7 +66,7 @@ th, td {
 <!-- add table here for discretionary -->
 
 
-<a href="../inputBudgetPeriod">Add a new Budget Period</a><br/>
-<a href = "../viewAllBudgetPeriods">View all Budget Periods</a><br/>
+<a href="/inputBudgetPeriod">Add a new Budget Period</a><br/>
+<a href = "/viewAllBudgetPeriods">View all Budget Periods</a><br/>
 
 </body></html>

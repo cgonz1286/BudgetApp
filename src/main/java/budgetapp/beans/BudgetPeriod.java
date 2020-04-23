@@ -162,16 +162,21 @@ public class BudgetPeriod {
 		this.endDate = endDate;
 	}
 	
+
+  
 	@Override
 	public String toString() {
-		String tostr="BudgetPeriod [id=" + getId() + ", description="+ getDescription() + "] For test purposes, linked Incomes: ";
-		
-		for(BudgetedIncome b : listOfBudgetedIncomes) {
-			tostr+= b.toString()+", ";
-		} ;
-		
-		tostr+="end";
-		
-		return tostr;
+String tostr=		 "BudgetPeriod [id=" + getId() + ", description="+ getDescription() + "] ";
+		 return tostr;
+	}
+	
+	public String toStringlinkedincomes() {
+String tostr=		 "BudgetPeriod [id=" + getId() + ", description="+ getDescription() + "] For test purposes, linked Incomes: ";
+for(BudgetedIncome b : listOfBudgetedIncomes) {
+	tostr+= b.toString()+", ";
+} ;
+tostr+="end";
+		 return tostr;
 	}
 }
+

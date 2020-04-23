@@ -133,8 +133,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
+	
+
 	@Override
 	public String toString() {
+String tostr=		 "BudgetPeriod [id=" + getId() + ", description="+ getDescription() + "] ";
+		 return tostr;
+	}
+	
+	public String toStringlinkedincomes() {
 String tostr=		 "BudgetPeriod [id=" + getId() + ", description="+ getDescription() + "] For test purposes, linked Incomes: ";
 for(BudgetedIncome b : listOfBudgetedIncomes) {
 	tostr+= b.toString()+", ";
@@ -142,5 +149,4 @@ for(BudgetedIncome b : listOfBudgetedIncomes) {
 tostr+="end";
 		 return tostr;
 	}
-
 }

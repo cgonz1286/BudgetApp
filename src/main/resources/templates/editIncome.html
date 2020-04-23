@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Edit Budgeted Income Entry</title>
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;
+}
+</style>
+</head>
+<body>
+<h1>Edit Budgeted Income</h1>
+
+<h3>Budget Period</h3>
+<!-- This section is read only, it displays the Budget Period that was passed in from the web controller -->
+<table>
+<tr>
+<th>Budget PeriodDescription</th>
+<th>Start Date</th>
+<th>End Date</th>
+</tr>
+<tr >
+	<td th:text="${selectedBudgetPeriod.id}" hidden />
+	<td th:text="${selectedBudgetPeriod.description}" />
+	<td th:text="${#dates.format(selectedBudgetPeriod.startDate, 'MM/dd/yyyy')}" /> 
+	<td th:text="${#dates.format(selectedBudgetPeriod.endDate, 'MM/dd/yyyy')}" /> 	
+</tr>
+</table>
+
+<form th:object="${newBudgetedIncome}" th:action="@{/updateBudgetedIncome/{id}/{periodid}/{GoTo}(id=${newBudgetedIncome.id},periodid=${selectedBudgetPeriod.id},GoTo = ${GoTo})}" method=POST>
+
+Income Description: <input name="Description" size="20" th:field="*{description}"><br />
+Expected Date: <input type ="text" name = "incomeDate" placeholder="MM/dd/yyyy" th:field="*{incomeDate}"><br />
+Amount: <input type ="text" name = "amount"  th:field="*{amount}"><br />
+
+<input name="Submit" type="submit" value="submit" /><br />
+</form>
+
+
+</body>
+</html>

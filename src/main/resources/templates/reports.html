@@ -25,6 +25,7 @@ th, td {
 <th>Description</th>
 <th>Start Date</th>
 <th>End Date</th>
+<th>Total Budgeted Income</th>
 
 </tr>
  
@@ -33,8 +34,9 @@ th, td {
 	<td th:text="${selectedBudgetPeriod.description}" />
 	<td th:text="${#dates.format(selectedBudgetPeriod.startDate, 'MM/dd/yyyy')}" /> 
 	<td th:text="${#dates.format(selectedBudgetPeriod.endDate, 'MM/dd/yyyy')}" /> 
-	
-	</tr>
+ 	<td th:text="${BudgetedIncomesTotal}" /> 
+	 
+	 </tr>
 </table>
 <h2>Income</h2>
 

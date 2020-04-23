@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert a New Budgeted Bill Entry</title>
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;
+}
+</style>
+</head>
+<body>
+<h1>Enter Budgeted Bill</h1>
+
+<h3>Budget Period</h3>
+
+<table>
+<tr>
+<th>Budget PeriodDescription</th>
+<th>Start Date</th>
+<th>End Date</th>
+</tr>
+<tr >
+	<td th:text="${selectedBudgetPeriod.id}" hidden />
+	<td th:text="${selectedBudgetPeriod.description}" />
+	<td th:text="${#dates.format(selectedBudgetPeriod.startDate, 'MM/dd/yyyy')}" /> 
+	<td th:text="${#dates.format(selectedBudgetPeriod.endDate, 'MM/dd/yyyy')}" /> 	
+</tr>
+</table>
+<h4>Expected Bills for this Budget Period</h4>
+
+<table>
+
+<tr>
+<th>Bill Name</th> 
+<th>Account Number</th>
+<th>Category</th>
+<th>Due Date</th>
+<th>Amount Due</th>
+
+</tr>
+ 
+<tr th:each="currentBudgetedBill: ${BudgetedBills}">
+	<td  th:text="${currentBudgetedBill.id}" hidden />
+	<td th:text="${currentBudgetedBill.name}" />
+	<td th:text="${currentBudgetedBill.accountNum}" />
+	<td th:text="${currentBudgetedBill.category}" />
+	<td th:text="${#dates.format(currentBudgetedBill.dateDue, 'MM/dd/yyyy')}" /> 
+	<td th:text="${currentBudgetedBill.price}" />
+
+	<td><a th:href="@{/editBudgetedBill/{id}(id=${currentBudgetedBill.id})}">Edit</a></td>
+	<td><a th:href="@{/deleteBudgetedBill/{id}(id=${currentBudgetedBill.id})}">Delete</a></td>
+	</tr>
+</table>
+<h4>Add More bills for this budget period</h4>
+
+<h5>Enter all the bills due during the budget period.</h5>
+
+<form th:object="${newBudgetedBill}" th:action="@{/updateBudgetedBill/{periodid}(periodid=${selectedBudgetPeriod.id})}" method=POST>
+
+Bill Name: <input name="Description" size="20" th:field="*{name}"><br />
+Account Number: <input name="Account Number" size="20" th:field="*{acountNum}"><br />
+Category: <input name="Category" size="20" th:field="*{category}"><br />
+Due Date: <input type ="text" name = "dateDue" placeholder="MM/dd/yyyy" th:field="*{dateDue}"><br />
+Amount Due: <input type ="text" name = "price"  th:field="*{price}"><br />
+
+<input name="Submit" type="submit" value="submit" /><br />
+</form>
+</body>
+</html>

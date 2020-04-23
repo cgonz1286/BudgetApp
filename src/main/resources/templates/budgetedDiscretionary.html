@@ -11,10 +11,11 @@ th, td {
 }
 tr:nth-child(even) {background-color: #dddddd;}
 </style>
-<title>Discretionary Categories</title>
+<title>Budgeted Discretionary</title>
 </head>
+<!-- NEED TO CHANGE BELOW FOR BUDGETED DISCRETIONARY (THIS IS JUST A COPY/PASTE FROM DISCRETIONARYCATEGORY.HTML) -->
 <body>
-	<h1>Add/Update/Delete All Discretionary Categories:</h1>
+	<h1>Add/update/delete discretionary information for this budget period:</h1>
 	<form th:object="${discretionaryCategory}" th:action="@{/updateDiscretionaryCategory/{id}(id=${discretionaryCategory.discCategoryId})}" method='POST'>	
 		<table style="width: 455px">
 			<tr>

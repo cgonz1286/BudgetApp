@@ -94,20 +94,24 @@ public class WebController {
 	
 	//////////////////BudgetedBill maps/////////////////////////
 
-	/*@GetMapping("/inputBudgetedBill/{periodId}")
+	@GetMapping("/inputBudgetedBill/{periodId}")
 	public String newBudgetedBill(@PathVariable("periodId") long periodId, Model model) {
+		System.out.println("??? /inputBudgetedBill/{periodId}");		
+
 		BudgetedBills p = new BudgetedBills();
 		
 		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
-		
+		System.out.println("??? /inputBudgetedBill/{periodId} selectedPeriod "+selectedPeriod.getId());		
+
 		model.addAttribute("newBudgetedBill", repoBudgetedBills.findAll());
 		
 		model.addAttribute("BudgetedBills", p);
 		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
 		
 		
-		return "BudgetedBill";
-	}*/
+		return "inputBudgetedBill";
+	}
+	/*
 	//I thought this might work, it didn't
 	@GetMapping("/inputBudgetedBill/{id}")
 	public String newBudgetedBill(@PathVariable("id") long id, Model model) {
@@ -124,7 +128,7 @@ public class WebController {
 		return "BudgetedBill";
 	}
 	
-	
+	*/
 	@GetMapping({ "/viewAllBudgetedBills" })
 	public String viewAllBudgetedBills(Model model) {
 		if(repoBudgetedBills.findAll().isEmpty()) {
@@ -143,15 +147,18 @@ public class WebController {
 		return "inputBudgetedBill";
 	}
 
-	@PostMapping("/updateBudgetedBills/{periodId}")
-	public String reviseBudgetedBills(@PathVariable("periodId") long periodId, BudgetedBills bb, Model model) {
-		
-	//	BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
-		
-//		bb.setBudgetPeriod(selectedPeriod); // commented this line out due to it causing errors
-		
+	@PostMapping("/updateBudgetedBills/{id}/{periodId}")
+	public String reviseBudgetedBills(@PathVariable("id") long id, @PathVariable("periodId") long periodId, BudgetedBills bb, Model model) {
+		System.out.println("???/updateBudgetedBills/{id}/{periodId ITEM TO EDIT: " + bb.toString());
+
+		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
+		System.out.println("???/updateBudgetedBills/{id}/{periodId budgetperiod: " + selectedPeriod.toString());
+
+		bb.setBudgetPeriod(selectedPeriod); // commented this line out due to it causing errors
 		
 		repoBudgetedBills.save(bb);
+		System.out.println("???/updateBudgetedBills/{id}/{periodId bb: " + bb.toString());
+
 		return viewAllBudgetedBills(model);
 	}
 	

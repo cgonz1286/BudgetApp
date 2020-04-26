@@ -18,43 +18,43 @@ public class BudgetedDiscretionary {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="budgeted_discretionary_id")
-	private long budgetDiscId; // auto-generated, pk, not null
+	private long id; // auto-generated, pk, not null
 	
-	@ManyToOne(cascade=CascadeType.PERSIST)
+	@ManyToOne(cascade=CascadeType.MERGE)
 	private BudgetPeriod budgetPeriod; // stores budgetPeriod.id, fk, not null, @ManyToOne
 	
-	@ManyToOne(cascade=CascadeType.PERSIST)
+	@ManyToOne(cascade=CascadeType.MERGE)
 	private DiscretionaryCategory discCategory; // not a list, stores discCategory.id, fk, not null, @ManyToOne
 	
 	@Column(name="budgeted_discretionary_amount", nullable=false, length=10)
-	private double budgetDiscAmount; // not null, 10
+	private double amount; // not null, 10
 
 	public BudgetedDiscretionary() {
 		super();
-		this.budgetDiscAmount = 0;		
+		this.amount = 0;
 	}
 
-	public BudgetedDiscretionary(long budgetDiscId, BudgetPeriod budgetPeriod) {
+	public BudgetedDiscretionary(long id, BudgetPeriod budgetPeriod) {
 		super();
-		this.budgetDiscId = budgetDiscId;
+		this.id = id;
 		this.budgetPeriod = budgetPeriod;
-		this.budgetDiscAmount = 0;
+		this.amount = 0;
 	}
 
-	public BudgetedDiscretionary(long budgetDiscId, BudgetPeriod budgetPeriod, DiscretionaryCategory discCategory, double budgetDiscAmount) {
+	public BudgetedDiscretionary(long id, BudgetPeriod budgetPeriod, DiscretionaryCategory discCategory, double amount) {
 		super();
-		this.budgetDiscId = budgetDiscId;
+		this.id = id;
 		this.budgetPeriod = budgetPeriod;
 		this.discCategory = discCategory;
-		this.budgetDiscAmount = budgetDiscAmount;
+		this.amount = amount;
 	}
 
-	public long getBudgetDiscId() {
-		return budgetDiscId;
+	public long getId() {
+		return id;
 	}
 
-	public void setBudgetDiscId(long budgetDiscId) {
-		this.budgetDiscId = budgetDiscId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public BudgetPeriod getBudgetPeriod() {
@@ -73,18 +73,18 @@ public class BudgetedDiscretionary {
 		this.discCategory = discCategory;
 	}
 
-	public double getBudgetDiscAmount() {
-		return budgetDiscAmount;
+	public double getAmount() {
+		return amount;
 	}
 
-	public void setBudgetDiscAmount(double budgetDiscAmount) {
-		this.budgetDiscAmount = budgetDiscAmount;
+	public void setAmount(double amount) {
+		this.amount = amount;
 	}
 
 	@Override
 	public String toString() {
-		return "BudgetedDiscretionary [budgetDiscId=" + budgetDiscId + ", budgetPeriod=" + budgetPeriod
-				+ ", discCategory=" + discCategory + ", budgetDiscAmount=" + budgetDiscAmount + "]";
+		return "BudgetedDiscretionary [id=" + id + ", budgetPeriod=" + budgetPeriod
+				+ ", discCategory=" + discCategory + ", amount=" + amount + "]";
 	}
 	
 }

@@ -28,7 +28,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 	    @DateTimeFormat(pattern = "MM/dd/yyyy")
 		private Date incomeDate;
 
-	    private String amount; //https://www.javacodemonk.com/which-data-type-would-you-choose-for-storing-monetary-values-in-java-6692c78c
+	    private double amount; //https://www.javacodemonk.com/which-data-type-would-you-choose-for-storing-monetary-values-in-java-6692c78c
 	    
 	    /**
 		 * @param id
@@ -108,13 +108,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 	/**
 	 * @return the amount
 	 */
-	public String getAmount() {
+	public double getAmount() {
 		return amount;
 	}
 	/**
 	 * @param amount the amount to set
 	 */
-	public void setAmount(String amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 	@Override

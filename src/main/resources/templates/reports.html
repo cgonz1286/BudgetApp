@@ -25,16 +25,18 @@ th, td {
 <th>Description</th>
 <th>Start Date</th>
 <th>End Date</th>
+<th>Total Budgeted Income</th>
 
 </tr>
  
 <tr >
-	<td th:text="${selectedBudgetPeriod.id}" hidden />
+	<td th:text="${selectedBudgetPeriod.id}"  />
 	<td th:text="${selectedBudgetPeriod.description}" />
 	<td th:text="${#dates.format(selectedBudgetPeriod.startDate, 'MM/dd/yyyy')}" /> 
 	<td th:text="${#dates.format(selectedBudgetPeriod.endDate, 'MM/dd/yyyy')}" /> 
-	
-	</tr>
+ 	<td th:text="${BudgetedIncomesTotal}" /> 
+	 
+	 </tr>
 </table>
 <h2>Income</h2>
 
@@ -49,12 +51,12 @@ th, td {
 </tr>
  
 <tr th:each="currentBudgetedIncome: ${periodIncomes}">
-	<td hidden th:text="${currentBudgetedIncome.id}"  />
+	<td  th:text="${currentBudgetedIncome.id}"  />
 	<td th:text="${currentBudgetedIncome.description}" />
 	<td th:text="${#dates.format(currentBudgetedIncome.incomeDate, 'MM/dd/yyyy')}" /> 
 	<td th:text="${currentBudgetedIncome.amount}" />
-	<td><a th:href="@{/editBudgetedIncome/{id}/GoToReports(id=${currentBudgetedIncome.id})}">Edit (WithGoTo)</a></td>
-	<td><a th:href="@{/deleteBudgetedIncome/{id}/GoToReports(id=${currentBudgetedIncome.id})}">Delete (WithGoTo)</a></td>
+	<td><a th:href="@{/editBudgetedIncome/{id}/GoToReports(id=${currentBudgetedIncome.id})}">Edit </a></td>
+	<td><a th:href="@{/deleteBudgetedIncome/{id}/GoToReports(id=${currentBudgetedIncome.id})}">Delete </a></td>
 	</tr>
 </table>
 

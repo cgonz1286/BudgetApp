@@ -109,7 +109,7 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 
 		model.addAttribute("periodIncomesTotal", inc); 
 		model.addAttribute("periodBillsTotal", bills); 
-		model.addAttribute("periodDiscretionariesTotal", disc); 
+		model.addAttribute("periodDiscTotal", disc); 
 		model.addAttribute("periodIncomeMinusBills", incMinusBills);
 		model.addAttribute("periodTotalBudgeted", totalBudgeted);
 

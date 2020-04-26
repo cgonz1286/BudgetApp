@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import budgetapp.beans.BudgetPeriod;
 import budgetapp.beans.BudgetedBills;
+import budgetapp.beans.BudgetedDiscretionary;
 import budgetapp.beans.BudgetedIncome;
 import budgetapp.beans.DiscretionaryCategory;
 import budgetapp.repository.BudgetPeriodRepository;
@@ -32,13 +33,94 @@ public class WebController {
 	DiscretionaryCategoryRepository repoDiscretionaryCategory;
 	@Autowired
 	BudgetedDiscretionaryRepository repoBudgetedDiscretionary;
-	
 
 	@GetMapping({"/index.html"})
 	public String index() {
 		return "index.html";
 	}
-		
+	///______________________________________________________________________________
+	///Calculations Section, use the getBudgetPeriodEntries and getBudgetPeriodSums for reports, or copy just the line you need into your own mapping.
+	///______________________________________________________________________________
+	double calcTotalBudgetedIncome(BudgetPeriod selectedPeriod){
+		 List<BudgetedIncome> BudgetedIncomes = repoBudgetedIncome.findByBudgetPeriod(selectedPeriod);
+		 double totalIncome = 0;
+
+		 for (BudgetedIncome b : BudgetedIncomes)
+		 {
+			 totalIncome += b.getAmount();
+				System.out.println("??? calcTotalBudgetedIncome "+b.getId()+" "+b.getAmount());
+		 }
+			System.out.println("??? calcTotalBudgetedIncome "+totalIncome);
+
+		 return totalIncome;
+	}
+	
+	double calcTotalBudgetedBills(BudgetPeriod selectedPeriod){
+		 List<BudgetedBills> BudgetedDiscretionaries = repoBudgetedBills.findByBudgetPeriod(selectedPeriod);
+		 double totalBill = 0;
+
+		 for (BudgetedBills b : BudgetedDiscretionaries)
+		 {
+			 totalBill += b.getPrice();
+				System.out.println("??? calcTotalBudgetedBill "+b.getId()+" "+b.getPrice());
+		 }
+			System.out.println("??? calcTotalBudgetedBill "+totalBill);
+
+		 return totalBill;
+	}
+	double calcTotalBudgetedDiscretionary(BudgetPeriod selectedPeriod){
+		 List<BudgetedDiscretionary> BudgetedDiscretionaries = repoBudgetedDiscretionary.findByBudgetPeriod(selectedPeriod);
+		 double totalDiscretionary = 0;
+
+		 for (BudgetedDiscretionary b : BudgetedDiscretionaries)
+		 {
+			 totalDiscretionary += b.getBudgetDiscAmount();
+				System.out.println("??? calcTotalBudgetedDiscretionary "+b.getBudgetDiscId()+" "+b.getBudgetDiscAmount());
+		 }
+			System.out.println("??? calcTotalBudgetedDiscretionary "+totalDiscretionary);
+
+		 return totalDiscretionary;
+	}
+	double calcIncomeMinusBills(BudgetPeriod selectedPeriod){
+		return calcTotalBudgetedIncome(selectedPeriod) - calcTotalBudgetedBills(selectedPeriod);
+	}
+	double calcTotalBudgeted(BudgetPeriod selectedPeriod){
+		return calcTotalBudgetedIncome(selectedPeriod) - calcTotalBudgetedBills(selectedPeriod) - calcTotalBudgetedDiscretionary(selectedPeriod);
+	}
+	
+//to use this, add "model = getBudgetPeriodEntries( model,  selectedPeriod)" as a line  your mapping 
+//then you can reference these attributes on your html page. See the income section of reports.html for example
+//use this to create table of all entries
+public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
+	model.addAttribute("periodIncomes", repoBudgetedIncome.findByBudgetPeriod(selectedPeriod)); //!!!Changed this to query the repo, allows the reports.html to refresh better
+	model.addAttribute("periodBills", repoBudgetedBills.findByBudgetPeriod(selectedPeriod)); //!!!Changed this to query the repo, allows the reports.html to refresh better
+	model.addAttribute("periodDiscretionaries", repoBudgetedDiscretionary.findByBudgetPeriod(selectedPeriod)); //!!!Changed this to query the repo, allows the reports.html to refresh better
+	return model;
+}
+	
+//to use this, add "model = getBudgetPeriodSums( model,  selectedPeriod)" as a line  your mapping 
+//then you can reference these attributes on your html page. See the income section of reports.html for example
+	public Model getBudgetPeriodSums(Model model, BudgetPeriod selectedPeriod) {
+		double inc =  calcTotalBudgetedIncome(selectedPeriod);//!!!Changed this to query the repo instead of using list in BudgetPeriod, allows the reports.html to refresh better
+		double bills = calcTotalBudgetedBills(selectedPeriod);
+		double disc = calcTotalBudgetedDiscretionary(selectedPeriod);
+		double incMinusBills = inc - bills;
+		double totalBudgeted = inc - bills - disc;
+
+		model.addAttribute("periodIncomesTotal", inc); 
+		model.addAttribute("periodBillsTotal", bills); 
+		model.addAttribute("periodDiscretionariesTotal", disc); 
+		model.addAttribute("periodIncomeMinusBills", incMinusBills);
+		model.addAttribute("periodTotalBudgeted", totalBudgeted);
+
+		return model;
+	}
+	
+///_________________________________________
+///End Calculations Section
+///_________________________________________
+	
+	////Budget Period Mappings
 	@GetMapping({"/viewAllBudgetPeriods" ,"/" })
 
 	public String viewAllBudgetPeriods(Model model) {
@@ -73,14 +155,13 @@ public class WebController {
 		return viewAllBudgetPeriods(model);
 	}
 
+	
 	@GetMapping("/viewReports/{periodId}")
 	public String viewReports(@PathVariable("periodId") long periodId, Model model) {
 		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
 	    model.addAttribute("selectedBudgetPeriod", selectedPeriod);
-	    model.addAttribute("periodIncomes", repoBudgetedIncome.findByBudgetPeriod(selectedPeriod)); //!!!Changed this to query the repo, allows the reports.html to refresh better
-	    model.addAttribute("periodIncomesString", selectedPeriod.toString());
-		model.addAttribute("BudgetedIncomesTotal", calcTotalBudgetedIncome(selectedPeriod)); ///!!!Fixed this by adding a method in BudgetedIncomeRepository to filter by period, and a method in webcontroller
-
+	    model = getBudgetPeriodSums(model, selectedPeriod);//Adds all the entries lists as attributes. See getBudgetPeriodEntries() function for attribute names.
+	    model = getBudgetPeriodSums(model, selectedPeriod);//Adds all the calculation fields as attributes. See getBudgetPeriodSums() function for attribute names.
 	    return "reports";
 	}	
 	
@@ -175,41 +256,9 @@ public class WebController {
 
 
 	///////////////////BudgetedIncome maps//////////////////////
-/* Not using
 
-	@GetMapping({ "/viewAllBudgetedIncomes" })
-	public String viewAllBudgetedIncomes(Model model) {
-		if(repoBudgetedIncome.findAll().isEmpty()) {
-			return viewAllBudgetPeriods(model);
-		}
-		model.addAttribute("BudgetedIncomes", repoBudgetedIncome.findAll());
-		return "resultsIncome";
-	}
-	
-	
-	Object findTotalIncome(BudgetPeriod selectedPeriod){
-		 List<Object[]> results = repoBudgetedIncome.sumByBudgetPeriod(selectedPeriod);
-		return results.get(0);
-	}
-	*/
-	double calcTotalBudgetedIncome(BudgetPeriod selectedPeriod){
-		 List<BudgetedIncome> BudgetedIncomes = repoBudgetedIncome.findByBudgetPeriod(selectedPeriod);
-		 double totalIncome = 0;
-
-		 for (BudgetedIncome b : BudgetedIncomes)
-		 {
-			 totalIncome += b.getAmount();
-				System.out.println("??? calcTotalBudgetedIncome "+b.getId()+" "+b.getAmount());
-
-		 }
-			System.out.println("??? calcTotalBudgetedIncome "+totalIncome);
-
-		 return totalIncome;
-	}
-	
 
 	///continue from period to inputBudgetedIncome
-
 	//!!! use this format to allow join, pass in the period id and add BudgetPeriod as an attribute
 	//!!!add the findAll attribute if you are also displaying the existing entries on the input form
 	@GetMapping("/inputBudgetedIncome/{periodId}")
@@ -301,54 +350,6 @@ public class WebController {
 	
 	//END Added GoTo to the above
 	
-	
-	/*
-	//original version does not have GoTo
-	@PostMapping("/updateBudgetedIncome/{periodId}")
-	public String reviseBudgetedIncome(@PathVariable("periodId") long periodId, BudgetedIncome b, Model model) {
-		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
-		b.setBudgetPeriod(selectedPeriod);
-		repoBudgetedIncome.save(b);
-		return addNewBudgetedIncome( selectedPeriod.getId(),  model) ;//!!!
-	}
-	
-	 	@GetMapping("/editBudgetedIncomeFromReport/{id}")
-	public String showUpdateBudgetedIncomeFromReport(@PathVariable("id") long id,  Model model) {
-		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
-		System.out.println("???ITEM TO EDIT: " + b.toString());
-		
-		BudgetPeriod selectedPeriod = b.getBudgetPeriod(); ///!!!Add this so the input form layout will work with the edit mapping
-		System.out.println("???ITEM TO EDIT: " + selectedPeriod.toString());
-
-		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
-
-		model.addAttribute("newBudgetedIncome", b);
-		model.addAttribute("BudgetedIncomes", repoBudgetedIncome.findAll());///!!Add this so the input form will work with the edit mapping
-
-		return "editIncomeGoToInputForm";
-	}
-	
-	//!!!edited to return to input form, have not added GoTo to this yet
-	@GetMapping("/deleteBudgetedIncome/{id}")
-	public String deleteBudgetedIncome(@PathVariable("id") long id, Model model) {
-		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
-		BudgetPeriod selectedPeriod = b.getBudgetPeriod();//!!! add
-	    repoBudgetedIncome.delete(b);
-	    return addNewBudgetedIncome(selectedPeriod.getId(), model);//!!! add
-	}
-	*/
-	
-
-	
-	//Maybe temporary, using this for troubleshooting
-	@GetMapping({ "/viewBudgetedIncomeDetail/{id}" })
-	public String viewBudgetedIncomeDetail(@PathVariable("id") long id, Model model) {
-		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
-		BudgetPeriod p = b.getBudgetPeriod();
-		model.addAttribute("selectedBudgetedIncome", b);
-		model.addAttribute("linkedBudgetPeriod", p);
-		return "resultsIncomeDetail";
-	}
 	//////////End of BudgetedIncomeMaps/////////////////////////
 	
 	// ------------------------------
@@ -450,4 +451,46 @@ public class WebController {
 //		return addNewDiscretionaryCategory(model);
 //	}
 	
+	
+	
+	
+	
+	
+	
+	
+	/*OLD STUFF FOR REFERENCE INCOME MAPPINGS
+	//original version does not have GoTo
+	@PostMapping("/updateBudgetedIncome/{periodId}")
+	public String reviseBudgetedIncome(@PathVariable("periodId") long periodId, BudgetedIncome b, Model model) {
+		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
+		b.setBudgetPeriod(selectedPeriod);
+		repoBudgetedIncome.save(b);
+		return addNewBudgetedIncome( selectedPeriod.getId(),  model) ;//!!!
+	}
+	
+	 	@GetMapping("/editBudgetedIncomeFromReport/{id}")
+	public String showUpdateBudgetedIncomeFromReport(@PathVariable("id") long id,  Model model) {
+		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
+		System.out.println("???ITEM TO EDIT: " + b.toString());
+		
+		BudgetPeriod selectedPeriod = b.getBudgetPeriod(); ///!!!Add this so the input form layout will work with the edit mapping
+		System.out.println("???ITEM TO EDIT: " + selectedPeriod.toString());
+
+		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
+
+		model.addAttribute("newBudgetedIncome", b);
+		model.addAttribute("BudgetedIncomes", repoBudgetedIncome.findAll());///!!Add this so the input form will work with the edit mapping
+
+		return "editIncomeGoToInputForm";
+	}
+	
+	//!!!edited to return to input form, have not added GoTo to this yet
+	@GetMapping("/deleteBudgetedIncome/{id}")
+	public String deleteBudgetedIncome(@PathVariable("id") long id, Model model) {
+		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
+		BudgetPeriod selectedPeriod = b.getBudgetPeriod();//!!! add
+	    repoBudgetedIncome.delete(b);
+	    return addNewBudgetedIncome(selectedPeriod.getId(), model);//!!! add
+	}
+*/
 }

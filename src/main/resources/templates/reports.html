@@ -34,7 +34,7 @@ th, td {
 	<td th:text="${selectedBudgetPeriod.description}" />
 	<td th:text="${#dates.format(selectedBudgetPeriod.startDate, 'MM/dd/yyyy')}" /> 
 	<td th:text="${#dates.format(selectedBudgetPeriod.endDate, 'MM/dd/yyyy')}" /> 
- 	<td th:text="${BudgetedIncomesTotal}" /> 
+ 	<td th:text="${periodIncomesTotal}" /> 
 	 
 	 </tr>
 </table>

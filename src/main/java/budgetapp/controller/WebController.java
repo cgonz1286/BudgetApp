@@ -254,6 +254,13 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 		return "inputBudgetedBill";
 	}
 
+	@PostMapping("/updateBudgetedBills/{periodId}")
+	public String reviseBudgetedBills(@PathVariable("periodId") long periodId, BudgetedBills bb, Model model) {
+		
+	//	BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
+		
+	//  bb.setBudgetPeriod(selectedPeriod); // commented this line out due to it causing errors
+=======
 	@PostMapping("/updateBudgetedBills/{id}/{periodId}")
 	public String reviseBudgetedBills(@PathVariable("id") long id, @PathVariable("periodId") long periodId, BudgetedBills bb, Model model) {
 		System.out.println("???/updateBudgetedBills/{id}/{periodId ITEM TO EDIT: " + bb.toString());
@@ -262,6 +269,7 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 		System.out.println("???/updateBudgetedBills/{id}/{periodId budgetperiod: " + selectedPeriod.toString());
 
 		bb.setBudgetPeriod(selectedPeriod); // commented this line out due to it causing errors
+
 		
 		repoBudgetedBills.save(bb);
 		System.out.println("???/updateBudgetedBills/{id}/{periodId bb: " + bb.toString());
@@ -276,6 +284,15 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 	    return viewAllBudgetedBills(model);
 	}
 
+	////////////////End of BudgededBill Maps////////////////
+
+	//------------------------------------------------------
+	//                 BudgetedIncome maps                        
+	//------------------------------------------------------
+	/* Not using
+	============
+=======
+
 
 
 
@@ -287,6 +304,7 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 //------------------------------------------------------
 //                 BudgetedIncome maps                        
 //------------------------------------------------------
+
 	@GetMapping({ "/viewAllBudgetedIncomes" })
 	public String viewAllBudgetedIncomes(Model model) {
 		if(repoBudgetedIncome.findAll().isEmpty()) {
@@ -296,9 +314,36 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 		return "resultsIncome";
 	}
 	
+
+
+	
+	Object findTotalIncome(BudgetPeriod selectedPeriod){
+		 List<Object[]> results = repoBudgetedIncome.sumByBudgetPeriod(selectedPeriod);
+		return results.get(0);
+	}
+	============
+	*/
+	double calcTotalBudgetedIncome(BudgetPeriod selectedPeriod){
+		 List<BudgetedIncome> BudgetedIncomes = repoBudgetedIncome.findByBudgetPeriod(selectedPeriod);
+		 double totalIncome = 0;
+
+		 for (BudgetedIncome b : BudgetedIncomes)
+		 {
+			 totalIncome += b.getAmount();
+				System.out.println("??? calcTotalBudgetedIncome "+b.getId()+" "+b.getAmount());
+
+		 }
+			System.out.println("??? calcTotalBudgetedIncome "+totalIncome);
+
+		 return totalIncome;
+	}
+
+	//continue from period to inputBudgetedIncome
+=======
 	
 
 	///continue from period to inputBudgetedIncome
+
 	//!!! use this format to allow join, pass in the period id and add BudgetPeriod as an attribute
 	//!!!add the findAll attribute if you are also displaying the existing entries on the input form
 	@GetMapping("/inputBudgetedIncome/{periodId}")
@@ -333,14 +378,14 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 		return "editIncome";
 	}
 	
-			//made the original map redirect to the above mapping so no need to change existing links, they will just default to the Input Form.
-			@GetMapping("/editBudgetedIncome/{id}")
-			public String showUpdateBudgetedIncome(@PathVariable("id") long id,  Model model) {
-					return showUpdateBudgetedIncome(id, "InputForm", model);
-			}
+	//made the original map redirect to the above mapping so no need to change existing links, they will just default to the Input Form.
+	@GetMapping("/editBudgetedIncome/{id}")
+	public String showUpdateBudgetedIncome(@PathVariable("id") long id,  Model model) {
+			return showUpdateBudgetedIncome(id, "InputForm", model);
+	}
 			
-	///editIncome post action leads here
-	///If you want other destinations, add another if statement to return to that. If more reports are added, can specify which report to go to.
+	//editIncome post action leads here
+	//If you want other destinations, add another if statement to return to that. If more reports are added, can specify which report to go to.
 	@PostMapping("/updateBudgetedIncome/{id}/{periodId}/{GoTo}")
 	public String reviseBudgetedIncome( @PathVariable("periodId") long periodId, @PathVariable("GoTo") String GoTo, BudgetedIncome b, Model model) {
 		System.out.println("??? reviseBudgetedIncome ...BudgetedIncome ID to edit is " + b.getId());
@@ -380,16 +425,64 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 			return viewReports(selectedPeriod.getId(), model);
 		}
 	    return addNewBudgetedIncome(selectedPeriod.getId(), model);//!!! add selected period
-		
 	}
-				//made the original map redirect to the above mapping so no need to change existing links, they will just default to the Input Form.
-				@GetMapping("/deleteBudgetedIncome/{id}")
-				public String deleteBudgetedIncome(@PathVariable("id") long id, Model model) {
-				    return deleteBudgetedIncome(id, "GoToInputForm",  model);
-				}
 	
-	//END Added GoTo to the above
+	//made the original map redirect to the above mapping so no need to change existing links, they will just default to the Input Form.
+	@GetMapping("/deleteBudgetedIncome/{id}")
+	public String deleteBudgetedIncome(@PathVariable("id") long id, Model model) {
+	    return deleteBudgetedIncome(id, "GoToInputForm",  model);
+	}
 	
+	//!!!END Added GoTo to the above
+	
+
+	/*
+	//original version does not have GoTo
+	@PostMapping("/updateBudgetedIncome/{periodId}")
+	public String reviseBudgetedIncome(@PathVariable("periodId") long periodId, BudgetedIncome b, Model model) {
+		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
+		b.setBudgetPeriod(selectedPeriod);
+		repoBudgetedIncome.save(b);
+		return addNewBudgetedIncome( selectedPeriod.getId(),  model) ;//!!!
+	}
+	
+	@GetMapping("/editBudgetedIncomeFromReport/{id}")
+	public String showUpdateBudgetedIncomeFromReport(@PathVariable("id") long id,  Model model) {
+		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
+		System.out.println("???ITEM TO EDIT: " + b.toString());
+		
+		BudgetPeriod selectedPeriod = b.getBudgetPeriod(); ///!!!Add this so the input form layout will work with the edit mapping
+		System.out.println("???ITEM TO EDIT: " + selectedPeriod.toString());
+
+		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
+
+		model.addAttribute("newBudgetedIncome", b);
+		model.addAttribute("BudgetedIncomes", repoBudgetedIncome.findAll());///!!Add this so the input form will work with the edit mapping
+
+		return "editIncomeGoToInputForm";
+	}
+	
+	//!!!edited to return to input form, have not added GoTo to this yet
+	@GetMapping("/deleteBudgetedIncome/{id}")
+	public String deleteBudgetedIncome(@PathVariable("id") long id, Model model) {
+		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
+		BudgetPeriod selectedPeriod = b.getBudgetPeriod();//!!! add
+	    repoBudgetedIncome.delete(b);
+	    return addNewBudgetedIncome(selectedPeriod.getId(), model);//!!! add
+	}
+	*/
+		
+	//Maybe temporary, using this for troubleshooting
+	@GetMapping({ "/viewBudgetedIncomeDetail/{id}" })
+	public String viewBudgetedIncomeDetail(@PathVariable("id") long id, Model model) {
+		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
+		BudgetPeriod p = b.getBudgetPeriod();
+		model.addAttribute("selectedBudgetedIncome", b);
+		model.addAttribute("linkedBudgetPeriod", p);
+		return "resultsIncomeDetail";
+	}
+=======
+
 	//////////End of BudgetedIncomeMaps/////////////////////////
 	
 	//------------------------------------------------------

@@ -25,22 +25,29 @@ th, td {
 <th>Description</th>
 <th>Start Date</th>
 <th>End Date</th>
-<th>Total Budgeted Income</th>
+<th>All Income </br> Budgeted</th>
+<th>All Bills</br> Budgeted</th>
+<th>All Other </br>Spending</br> Budgeted</th>
 
 </tr>
  
 <tr >
-	<td th:text="${selectedBudgetPeriod.id}"  />
+	<td th:text="${selectedBudgetPeriod.id}"  hidden/>
 	<td th:text="${selectedBudgetPeriod.description}" />
 	<td th:text="${#dates.format(selectedBudgetPeriod.startDate, 'MM/dd/yyyy')}" /> 
 	<td th:text="${#dates.format(selectedBudgetPeriod.endDate, 'MM/dd/yyyy')}" /> 
- 	<td th:text="${BudgetedIncomesTotal}" /> 
-	 
-	 </tr>
+ 	<td th:text="${#numbers.formatCurrency(periodIncomesTotal)}" /> 
+	 <td th:text="${#numbers.formatCurrency(periodBillsTotal)}" /> 
+	 <td  th:text="${#numbers.formatCurrency(periodDiscTotal)}" /> 
+	 	 <!-- https://www.thymeleaf.org/apidocs/thymeleaf/3.0.6.RELEASE/index.html?org/thymeleaf/expression/Numbers.html -->
 </table>
+</br>
+<td  th:text="${#numbers.formatCurrency(periodBudgetBalance)}" /> 
+
+<th th:text="${balanceInstructions}"/>
+
 <h2>Income</h2>
 
-<!-- add table here for income, requires List in Budget Period class and addAttribute in webcontroller viewReports mapping -->
 <table>
 
 <tr>

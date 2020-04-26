@@ -28,7 +28,6 @@ th, td {
 <th>All Income </br> Budgeted</th>
 <th>All Bills</br> Budgeted</th>
 <th>All Other </br>Spending</br> Budgeted</th>
-<th>Total</br> Budgeted</th>
 
 </tr>
  
@@ -40,9 +39,13 @@ th, td {
  	<td th:text="${#numbers.formatCurrency(periodIncomesTotal)}" /> 
 	 <td th:text="${#numbers.formatCurrency(periodBillsTotal)}" /> 
 	 <td  th:text="${#numbers.formatCurrency(periodDiscTotal)}" /> 
-	 <td  th:text="${#numbers.formatCurrency(periodTotalBudgeted)}" /> 
 	 	 <!-- https://www.thymeleaf.org/apidocs/thymeleaf/3.0.6.RELEASE/index.html?org/thymeleaf/expression/Numbers.html -->
 </table>
+</br>
+<td  th:text="${#numbers.formatCurrency(periodBudgetBalance)}" /> 
+
+<th th:text="${balanceInstructions}"/>
+
 <h2>Income</h2>
 
 <table>

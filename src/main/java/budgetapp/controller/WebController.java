@@ -85,7 +85,7 @@ public class WebController {
 	double calcIncomeMinusBills(BudgetPeriod selectedPeriod){
 		return calcTotalBudgetedIncome(selectedPeriod) - calcTotalBudgetedBills(selectedPeriod);
 	}
-	double calcTotalBudgeted(BudgetPeriod selectedPeriod){
+	double calcRemainingToBudget(BudgetPeriod selectedPeriod){
 		return calcTotalBudgetedIncome(selectedPeriod) - calcTotalBudgetedBills(selectedPeriod) - calcTotalBudgetedDiscretionary(selectedPeriod);
 	}
 	
@@ -106,13 +106,29 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 		double bills = calcTotalBudgetedBills(selectedPeriod);
 		double disc = calcTotalBudgetedDiscretionary(selectedPeriod);
 		double incMinusBills = inc - bills;
-		double totalBudgeted = inc - bills - disc;
+		double budgetBalance = inc - bills - disc;
+		String balanceInstructions = "";
+		if(budgetBalance > 0)
+		{
+			balanceInstructions = " remaining to budget (Add more to spending categories)";
 
+		}
+		else if (budgetBalance <0)
+		{
+			balanceInstructions = " difference to income (Decrease amounts in spending categories)";
+
+		}
+		else
+		{
+			balanceInstructions = "Balanced budget (All income have been assigned a spending category)";
+
+		}
 		model.addAttribute("periodIncomesTotal", inc); 
 		model.addAttribute("periodBillsTotal", bills); 
 		model.addAttribute("periodDiscTotal", disc); 
 		model.addAttribute("periodIncomeMinusBills", incMinusBills);
-		model.addAttribute("periodTotalBudgeted", totalBudgeted);
+		model.addAttribute("periodBudgetBalance", budgetBalance);
+		model.addAttribute("balanceInstructions", balanceInstructions);
 
 		return model;
 	}

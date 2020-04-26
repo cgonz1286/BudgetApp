@@ -3,6 +3,7 @@ package budgetapp.beans;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,9 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(
-		name="budgeted_discretionary"
-)
+@Table(name="budgeted_discretionary")
 public class BudgetedDiscretionary {
 
 	@Id
@@ -20,10 +19,10 @@ public class BudgetedDiscretionary {
 	@Column(name="budgeted_discretionary_id")
 	private long id; // auto-generated, pk, not null
 	
-	@ManyToOne(cascade=CascadeType.MERGE)
+	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
 	private BudgetPeriod budgetPeriod; // stores budgetPeriod.id, fk, not null, @ManyToOne
 	
-	@ManyToOne(cascade=CascadeType.MERGE)
+	@ManyToOne(cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
 	private DiscretionaryCategory discCategory; // not a list, stores discCategory.id, fk, not null, @ManyToOne
 	
 	@Column(name="budgeted_discretionary_amount", nullable=false, length=10)

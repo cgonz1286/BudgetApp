@@ -402,7 +402,7 @@ public class WebController {
 		
 		model.addAttribute("newBudgetedDiscretionary", bd);
 		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
-		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findAll());
+		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findByBudgetPeriod(selectedPeriod));
 		model.addAttribute("DiscretionaryCategories", repoDiscretionaryCategory.findAll());
 
 		return "budgetedDiscretionary";
@@ -416,9 +416,10 @@ public class WebController {
 		
 		model.addAttribute("newBudgetedDiscretionary", bd);
 		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
-		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findAll());
+		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findByBudgetPeriod(selectedPeriod));
 		model.addAttribute("DiscretionaryCategories", repoDiscretionaryCategory.findAll());
-
+//		model.addAttribute("BudgetedIncomesTotal", calcTotalBudgetedIncome(selectedPeriod)); //!!!Fixed this by adding a method in BudgetedIncomeRepository to filter by period
+			
 		return "budgetedDiscretionary";
 	}
 		
@@ -432,7 +433,7 @@ public class WebController {
 		
 		model.addAttribute("newBudgetedDiscretionary", bd);
 		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
-		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findAll());
+		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findByBudgetPeriod(selectedPeriod));
 		model.addAttribute("DiscretionaryCategories", repoDiscretionaryCategory.findAll());
 
 		return "budgetedDiscretionary"; 
@@ -441,7 +442,9 @@ public class WebController {
 	@PostMapping("/updateBudgetedDiscretionary/{periodId}")
 	public String reviseBudgetedDiscretionary(@PathVariable("periodId") long periodId, BudgetedDiscretionary bd, Model model) {
 		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null); // Find selected budget period.
+		DiscretionaryCategory selectedCategory = repoDiscretionaryCategory.findById(bd.getDiscCategory().getDiscCategoryId()).orElse(null);
 		bd.setBudgetPeriod(selectedPeriod); // Add budget period to entity.
+		bd.setDiscCategory(selectedCategory); // Add discretionary category to entity.
 		repoBudgetedDiscretionary.save(bd); // Save entity.
 		
 		return refreshPageBudgetedDiscretionary(periodId, model);

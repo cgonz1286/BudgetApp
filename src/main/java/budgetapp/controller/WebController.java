@@ -37,10 +37,11 @@ public class WebController {
 	public String index() {
 		return "index.html";
 	}
+	//------------------------------------------------------
+	//                Calculations Section
+	//use the getBudgetPeriodEntries and getBudgetPeriodSums for reports, or copy just the line you need into your own mapping.                            
+	//------------------------------------------------------
 
-	///______________________________________________________________________________
-	///Calculations Section, use the getBudgetPeriodEntries and getBudgetPeriodSums for reports, or copy just the line you need into your own mapping.
-	///______________________________________________________________________________
 	double calcTotalBudgetedIncome(BudgetPeriod selectedPeriod){
 		 List<BudgetedIncome> BudgetedIncomes = repoBudgetedIncome.findByBudgetPeriod(selectedPeriod);
 		 double totalIncome = 0;
@@ -165,7 +166,7 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 	public String viewReports(@PathVariable("periodId") long periodId, Model model) {
 		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
 	    model.addAttribute("selectedBudgetPeriod", selectedPeriod);
-	    model = getBudgetPeriodSums(model, selectedPeriod);//Adds all the entries lists as attributes. See getBudgetPeriodEntries() function for attribute names.
+	    model = getBudgetPeriodEntries(model, selectedPeriod);//Adds all the entries lists as attributes. See getBudgetPeriodEntries() function for attribute names.
 	    model = getBudgetPeriodSums(model, selectedPeriod);//Adds all the calculation fields as attributes. See getBudgetPeriodSums() function for attribute names.
 	    return "reports";
 	}	

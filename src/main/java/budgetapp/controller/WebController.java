@@ -74,8 +74,8 @@ public class WebController {
 
 		 for (BudgetedDiscretionary b : BudgetedDiscretionaries)
 		 {
-			 totalDiscretionary += b.getBudgetDiscAmount();
-				System.out.println("??? calcTotalBudgetedDiscretionary "+b.getBudgetDiscId()+" "+b.getBudgetDiscAmount());
+			 totalDiscretionary += b.getAmount();
+				System.out.println("??? calcTotalBudgetedDiscretionary "+b.getId()+" "+b.getAmount());
 		 }
 			System.out.println("??? calcTotalBudgetedDiscretionary "+totalDiscretionary);
 
@@ -279,27 +279,6 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 		return "resultsIncome";
 	}
 	
-
-	
-	Object findTotalIncome(BudgetPeriod selectedPeriod){
-		 List<Object[]> results = repoBudgetedIncome.sumByBudgetPeriod(selectedPeriod);
-		return results.get(0);
-	}
-	*/
-	double calcTotalBudgetedIncome(BudgetPeriod selectedPeriod){
-		 List<BudgetedIncome> BudgetedIncomes = repoBudgetedIncome.findByBudgetPeriod(selectedPeriod);
-		 double totalIncome = 0;
-
-		 for (BudgetedIncome b : BudgetedIncomes)
-		 {
-			 totalIncome += b.getAmount();
-				System.out.println("??? calcTotalBudgetedIncome "+b.getId()+" "+b.getAmount());
-
-		 }
-			System.out.println("??? calcTotalBudgetedIncome "+totalIncome);
-
-		 return totalIncome;
-	}
 	
 
 	///continue from period to inputBudgetedIncome
@@ -503,7 +482,6 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 	}
 	
 
-}
 
 	@GetMapping("/deleteBudgetedDiscretionary/{id}")
 	public String deleteBudgetedDiscretionary(@PathVariable("id") long id, Model model) {

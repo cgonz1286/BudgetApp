@@ -25,12 +25,14 @@ th, td {
 			<th>Budget Period Description</th>
 			<th>Start Date</th>
 			<th>End Date</th>
+			<th>Total Budgeted Spending</th>
 		</tr>
 		<tr >
 			<td th:text="${selectedBudgetPeriod.id}" hidden/>
 			<td th:text="${selectedBudgetPeriod.description}" />
 			<td th:text="${#dates.format(selectedBudgetPeriod.startDate, 'MM/dd/yyyy')}" /> 
-			<td th:text="${#dates.format(selectedBudgetPeriod.endDate, 'MM/dd/yyyy')}" /> 	
+			<td th:text="${#dates.format(selectedBudgetPeriod.endDate, 'MM/dd/yyyy')}" />
+			<td th:text="${BudgetedDiscTotal}" /> 	
 		</tr>
 	</table>
 	
@@ -51,7 +53,7 @@ th, td {
 	
 	<h3>Add More Discretionary Spending for this Budget Period</h3>	
 	<h4>Enter all the discretionary spending buckets you would like have this budget period.</br>
-		Continue making adjustments to entries as needed.</h4>
+		Continue making adjustments as needed.</h4>
 		
 	<form th:object="${newBudgetedDiscretionary}" th:action="@{/updateBudgetedDiscretionary/{periodid}(periodid=${selectedBudgetPeriod.id})}" method=POST>	
 		<!-- NOTE: This hidden field is causing an error - "Multiple representations of the same entity are being merged" -->

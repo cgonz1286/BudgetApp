@@ -511,6 +511,7 @@ public class WebController {
 		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
 		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findByBudgetPeriod(selectedPeriod));
 		model.addAttribute("DiscretionaryCategories", repoDiscretionaryCategory.findAll());
+		model.addAttribute("BudgetedDiscTotal", calcTotalBudgetedDiscretionary(selectedPeriod)); 
 
 		return "budgetedDiscretionary";
 	}
@@ -525,7 +526,7 @@ public class WebController {
 		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
 		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findByBudgetPeriod(selectedPeriod));
 		model.addAttribute("DiscretionaryCategories", repoDiscretionaryCategory.findAll());
-//		model.addAttribute("BudgetedIncomesTotal", calcTotalBudgetedIncome(selectedPeriod)); //!!!Fixed this by adding a method in BudgetedIncomeRepository to filter by period
+		model.addAttribute("BudgetedDiscTotal", calcTotalBudgetedDiscretionary(selectedPeriod)); 
 			
 		return "budgetedDiscretionary";
 	}
@@ -542,6 +543,7 @@ public class WebController {
 		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
 		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findByBudgetPeriod(selectedPeriod));
 		model.addAttribute("DiscretionaryCategories", repoDiscretionaryCategory.findAll());
+		model.addAttribute("BudgetedDiscTotal", calcTotalBudgetedDiscretionary(selectedPeriod)); 
 
 		return "budgetedDiscretionary"; 
 	}

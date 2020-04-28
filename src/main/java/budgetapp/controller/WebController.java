@@ -515,26 +515,9 @@ public class WebController {
 
 		return "budgetedDiscretionary";
 	}
-	
-	// Refresh current page so that it shows current data and is ready for a new entry
-	@GetMapping("/refreshPageBudgetedDiscretionary")
-	public String refreshPageBudgetedDiscretionary(long periodId, Model model) {
-		BudgetedDiscretionary bd = new BudgetedDiscretionary();
-		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
 		
-		model.addAttribute("newBudgetedDiscretionary", bd);
-		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
-		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findByBudgetPeriod(selectedPeriod));
-		model.addAttribute("DiscretionaryCategories", repoDiscretionaryCategory.findAll());
-		model.addAttribute("BudgetedDiscTotal", calcTotalBudgetedDiscretionary(selectedPeriod)); 
-			
-		return "budgetedDiscretionary";
-	}
-		
-	// !!! NOTE: Need to fix this as it's currently creating a new entry instead of editing an existing one. !!!
-	// !!! NOTE 2: Updated html page and now it's throwing "Multiple representations of the same entity are being merged" exception 
-	@GetMapping("/editBudgetedDiscretionary/{id}")
-	public String showUpdateBudgetedDiscretionary(@PathVariable("id") long id,  Model model) {
+	@GetMapping("/editBudgetedDiscretionary/{id}/{GoTo}")
+	public String showUpdateBudgetedDiscretionary(@PathVariable("id") long id, @PathVariable("GoTo") String GoTo,  Model model) {
 		BudgetedDiscretionary bd = repoBudgetedDiscretionary.findById(id).orElse(null);		
 		long periodId = bd.getBudgetPeriod().getId(); // Get periodId.
 		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
@@ -545,35 +528,138 @@ public class WebController {
 		model.addAttribute("DiscretionaryCategories", repoDiscretionaryCategory.findAll());
 		model.addAttribute("BudgetedDiscTotal", calcTotalBudgetedDiscretionary(selectedPeriod)); 
 
-		return "budgetedDiscretionary"; 
+		return "editBudgetedDiscretionary"; 
 	}
 
-	@PostMapping("/updateBudgetedDiscretionary/{periodId}")
-	public String reviseBudgetedDiscretionary(@PathVariable("periodId") long periodId, BudgetedDiscretionary bd, Model model) {
+	@PostMapping("/updateBudgetedDiscretionary/{periodId}/{GoTo}")
+	public String reviseBudgetedDiscretionary(@PathVariable("periodId") long periodId, @PathVariable("GoTo") String GoTo, BudgetedDiscretionary bd, Model model) {
 		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null); // Find selected budget period.
 		DiscretionaryCategory selectedCategory = repoDiscretionaryCategory.findById(bd.getDiscCategory().getDiscCategoryId()).orElse(null);
 		bd.setBudgetPeriod(selectedPeriod); // Add budget period to entity.
 		bd.setDiscCategory(selectedCategory); // Add discretionary category to entity.
 		repoBudgetedDiscretionary.save(bd); // Save entity.
 		
-		return refreshPageBudgetedDiscretionary(periodId, model);
+		if(GoTo.equals("GoToReports")) {
+			return viewReports(periodId, model);
+		}
+		else {
+			return addNewBudgetedDiscretionary(periodId, model) ;
+		}
 	}
 
-	@GetMapping("/deleteBudgetedDiscretionary/{id}")
-	public String deleteBudgetedDiscretionary(@PathVariable("id") long id, Model model) {
+	@GetMapping("/deleteBudgetedDiscretionary/{id}/{GoTo}")
+	public String deleteBudgetedDiscretionary(@PathVariable("id") long id, @PathVariable("GoTo") String GoTo, Model model) {
 		BudgetedDiscretionary bd = repoBudgetedDiscretionary.findById(id).orElse(null);
 		
 		long periodId = bd.getBudgetPeriod().getId(); // Get periodId before deleting.
 	    
 		repoBudgetedDiscretionary.delete(bd); // Delete entity.
-	    
-		return refreshPageBudgetedDiscretionary(periodId, model);
+		
+		if(GoTo.equals("GoToReports")) {
+			return viewReports(periodId, model);
+		}
+		else {
+			return addNewBudgetedDiscretionary(periodId, model);
+		}
+	}
+	
+	// Made the original map redirect to the above EDIT mapping so no need to change existing links, they will just default to the Input Form.
+	@GetMapping("/editBudgetedDiscretionary/{id}")
+	public String showUpdateBudgetedDiscretionary(@PathVariable("id") long id,  Model model) {
+			return showUpdateBudgetedDiscretionary(id, "GoToInputForm", model);
+	}
+	
+	// Made the original map redirect to the above UPDATE mapping so no need to change existing links, they will just default to the Input Form.
+	@PostMapping("/updateBudgetedDiscretionary/{periodId}")
+	public String reviseBudgetedDiscretionary( @PathVariable("periodId") long periodId, BudgetedDiscretionary bd, Model model) {	
+		return reviseBudgetedDiscretionary(periodId, "GoToInputForm", bd, model)	;
+	}
+	
+	// Made the original map redirect to the above DELETE mapping so no need to change existing links, they will just default to the Input Form.
+	@GetMapping("/deleteBudgetedDiscretionary/{id}")
+	public String deleteBudgetedDiscretionary(@PathVariable("id") long id, Model model) {
+	    return deleteBudgetedDiscretionary(id, "GoToInputForm",  model);
 	}
 }	
 
 
-	
-	
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//	
+// COPY OF AMY'S GOTO UPDATES DOWN HERE FOR EASIER ACCESS //
+//
+//!!!START Added GoTo - will also need to edit the post action link on reports.html to add the .../GoToReports . 
+//I created a simplified input form to collect just the edits and pass through the GoTo destination (see editIncome.html)
+//@GetMapping("/editBudgetedIncome/{id}/{GoTo}")
+//public String showUpdateBudgetedIncome(@PathVariable("id") long id, @PathVariable("GoTo") String GoTo,  Model model) {
+//	BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
+//	System.out.println("??? /editBudgetedIncome/{id}/{GoTo} ITEM TO EDIT: " + b.toString());
+//	System.out.println("??? /editBudgetedIncome/{id}/{GoTo} budget period: " + b.getBudgetPeriod().getId());
+//	
+//	BudgetPeriod selectedPeriod =  b.getBudgetPeriod();
+//	System.out.println("??? /editBudgetedIncome/{id}/{GoTo} budget period: " + selectedPeriod.toString());
+//			
+//	model.addAttribute("selectedBudgetPeriod", selectedPeriod);
+//	model.addAttribute("newBudgetedIncome", b);
+//	model.addAttribute("BudgetedIncomes", repoBudgetedIncome.findAll());
+//	return "editIncome";
+//}
+//
+////made the original map redirect to the above mapping so no need to change existing links, they will just default to the Input Form.
+//@GetMapping("/editBudgetedIncome/{id}")
+//public String showUpdateBudgetedIncome(@PathVariable("id") long id,  Model model) {
+//		return showUpdateBudgetedIncome(id, "InputForm", model);
+//}
+//		
+////editIncome post action leads here
+////If you want other destinations, add another if statement to return to that. If more reports are added, can specify which report to go to.
+//@PostMapping("/updateBudgetedIncome/{id}/{periodId}/{GoTo}")
+//public String reviseBudgetedIncome( @PathVariable("periodId") long periodId, @PathVariable("GoTo") String GoTo, BudgetedIncome b, Model model) {
+//	System.out.println("??? reviseBudgetedIncome ...BudgetedIncome ID to edit is " + b.getId());
+//
+//	BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
+//	System.out.println("??? reviseBudgetedIncome ...selectedPeriod is " + selectedPeriod.getId());
+//
+//	b.setBudgetPeriod(selectedPeriod);
+//	System.out.println("??? reviseBudgetedIncome ...set period is " + b.getBudgetPeriod().getId());
+//
+//	repoBudgetedIncome.save(b);
+//
+//	System.out.println(" ??? /updateBudgetedIncome/{id}/{periodId   editIncomeGoToInputForm form");
+//	if(GoTo.equals("GoToReports")) {
+//		return viewReports(selectedPeriod.getId(), model);
+//	}
+//	else {
+//		return addNewBudgetedIncome( selectedPeriod.getId(),  model) ;//!!!
+//	}
+//}
+//
+////made the original map redirect to the above mapping so no need to change existing links, they will just default to the Input Form.
+//@PostMapping("/updateBudgetedIncome/{id}/{periodId}")
+//public String reviseBudgetedIncome( @PathVariable("periodId") long periodId, BudgetedIncome b, Model model) {
+//	
+//	return reviseBudgetedIncome( periodId, "InputForm", b, model)	;
+//	
+//}
+//
+//@GetMapping("/deleteBudgetedIncome/{id}/{GoTo}")
+//public String deleteBudgetedIncome(@PathVariable("id") long id, @PathVariable("GoTo") String GoTo, Model model) {
+//	BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
+//	BudgetPeriod selectedPeriod = b.getBudgetPeriod();//!!! add selected period
+//    repoBudgetedIncome.delete(b);
+//    repoBudgetedIncome.flush();
+//    if(GoTo.equals("GoToReports")) {
+//		return viewReports(selectedPeriod.getId(), model);
+//	}
+//    return addNewBudgetedIncome(selectedPeriod.getId(), model);//!!! add selected period
+//}
+//
+////made the original map redirect to the above mapping so no need to change existing links, they will just default to the Input Form.
+//@GetMapping("/deleteBudgetedIncome/{id}")
+//public String deleteBudgetedIncome(@PathVariable("id") long id, Model model) {
+//    return deleteBudgetedIncome(id, "GoToInputForm",  model);
+//}
+//!!!END Added GoTo to the above
+//
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%//
 	
 	
 	

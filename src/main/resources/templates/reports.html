@@ -58,7 +58,7 @@ th, td {
 </tr>
  
 <tr th:each="currentBudgetedIncome: ${periodIncomes}">
-	<td  th:text="${currentBudgetedIncome.id}"  />
+	<td  th:text="${currentBudgetedIncome.id}" hidden />
 	<td th:text="${currentBudgetedIncome.description}" />
 	<td th:text="${#dates.format(currentBudgetedIncome.incomeDate, 'MM/dd/yyyy')}" /> 
 	<td th:text="${currentBudgetedIncome.amount}" />
@@ -70,6 +70,29 @@ th, td {
 <h2>Bills</h2>
 
 <!-- add table here for bills -->
+<!-- this list isn't showing here, don't know why -->
+<table>
+
+<tr>
+<th>Name</th> 
+<th>Account Number</th>
+<th>Category</th>
+<th>Due Date</th>
+<th>Total Due</th>
+
+</tr>
+ 
+<tr th:each="currentBudgetedBill: ${BudgetedBills}">
+	<td  th:text="${currentBudgetedBill.id}" hidden />
+	<td th:text="${currentBudgetedBill.name}" />
+	<td th:text="${currentBudgetedBill.acctNum}" />
+	<td th:text="${#dates.format(currentBudgetedBill.dateDue, 'MM/dd/yyyy')}" /> 
+	<td th:text="${#numbers.formatCurrency(currentBudgetedBill.price)}" />
+	<td><a th:href="@{/editBudgetedBill/{id}/GoToReports(id=${currentBudgetedBill.id})}">Edit </a></td>
+	<td><a th:href="@{/deleteBudgetedBills/{id}/GoToReports(id=${currentBudgetedBill.id})}">Delete </a></td>
+	</tr>
+</table>
+
 <h2>Discretionary Spending Budget</h2>
 
 <!-- add table here for discretionary -->
@@ -77,5 +100,5 @@ th, td {
 
 <a href="/inputBudgetPeriod">Add a new Budget Period</a><br/>
 <a href = "/viewAllBudgetPeriods">View all Budget Periods</a><br/>
-
+<a th:href="@{/inputBudgetedBill/{periodId}(periodId=${selectedBudgetPeriod.id})}">Add a new Bill</a><br/>
 </body></html>

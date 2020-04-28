@@ -71,9 +71,9 @@ Amount: <input type ="text" name = "amount"  th:field="*{amount}"><br />
 
 <input name="Submit" type="submit" value="submit" /><br />
 </form>
-
 <br/>
-<h5>!!!Uncomment the link to budgeted bills in inputIncome.html when that mapping is ready to receive period id.</h5>
+<br/>
+
 <a th:href="@{/inputBudgetedBill/{periodId}(periodId=${selectedBudgetPeriod.id})}">Continue to add Bills to this Budget</a><br/>
 <h5>!!!Added this temporarily to test budgetedDiscretionary page.</h5>
 <a th:href="@{/inputBudgetedDiscretionary/{periodId}(periodId=${selectedBudgetPeriod.id})}">Continue to add BudgetedDiscretionary to this Budget</a><br/></br>

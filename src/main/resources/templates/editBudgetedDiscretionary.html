@@ -35,27 +35,9 @@ th, td {
 			<td th:text="${BudgetedDiscTotal}" /> 	
 		</tr>
 	</table>
-	
-	<h3>Discretionary Spending for this Budget Period</h3>
-	<table>
-		<tr>
-			<th>Discretionary Category</th> 
-			<th>Discretionary Amount</th>
-		</tr>	 
-		<tr th:each="currentBudgetedDiscretionary: ${BudgetedDiscretionaries}">
-			<td th:text="${currentBudgetedDiscretionary.id}" hidden/>
-			<td th:text="${currentBudgetedDiscretionary.discCategory.description}" /> 
-			<td th:text="${currentBudgetedDiscretionary.amount}" />
-			<td><a th:href="@{/editBudgetedDiscretionary/{id}(id=${currentBudgetedDiscretionary.id})}">Edit</a></td>
-			<td><a th:href="@{/deleteBudgetedDiscretionary/{id}(id=${currentBudgetedDiscretionary.id})}">Delete</a></td>
-		</tr>
-	</table>
-	
-	<h3>Add More Discretionary Spending for this Budget Period</h3>	
-	<h4>Enter all the discretionary spending buckets you would like have this budget period.</br>
-		Continue making adjustments as needed.</h4>
-		
-	<form th:object="${newBudgetedDiscretionary}" th:action="@{/updateBudgetedDiscretionary/{periodId}(periodId=${selectedBudgetPeriod.id})}" method=POST>	
+	<br/>
+	<form th:object="${newBudgetedDiscretionary}" th:action="@{/updateBudgetedDiscretionary/{periodId}/{GoTo}(periodId=${selectedBudgetPeriod.id},GoTo=${GoTo})}" method=POST>	
+	<!-- <form th:object="${newBudgetedIncome}" th:action="@{/updateBudgetedIncome/{id}/{periodid}/{GoTo}(id=${newBudgetedIncome.id},periodid=${selectedBudgetPeriod.id},GoTo = ${GoTo})}" method=POST> -->
 		<tr><td><input name="id" th:field="*{id}" hidden></td></tr>
 		<tr>
 			<th>Discretionary Category:</th>
@@ -76,10 +58,5 @@ th, td {
 			<th><input name="submit" type="submit" value="submit" /></th>
 		</tr>
 	</form>
-	<br/>
-	<h5>!!!Uncomment and update the link to budgeted bills in budgetedDiscretionary.html when final page mapping is ready to receive period id.</h5>
-	<!-- <a th:href="@{/inputBudgetedBill/{periodId}(periodid=${selectedBudgetPeriod.id})}">Continue to add Bills to this Budget</a><br/> -->
-	<!-- <a th:href="@{/viewReports/{periodId}( periodId=${selectedBudgetPeriod.id})}">View Reports for this Budget Period</a><br/> -->
-	<!-- <a href="{/viewAllBudgetPeriods">Return to All Budget Periods</a><br/> -->
 </body>
 </html>

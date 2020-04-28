@@ -215,23 +215,7 @@ public class WebController {
 		
 		return "inputBudgetedBill";
 	}
-	/*
-	//I thought this might work, it didn't
-	@GetMapping("/inputBudgetedBill/{id}")
-	public String newBudgetedBill(@PathVariable("id") long id, Model model) {
-		BudgetedBills p = new BudgetedBills();
-		
-		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(id).orElse(null);
-		
-		model.addAttribute("newBudgetedBill", repoBudgetedBills.findAll());
-		
-		model.addAttribute("BudgetedBills", p);
-		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
-		
-		
-		return "BudgetedBill";
-	}
-	*/
+	
 
 	@GetMapping({ "/viewAllBudgetedBills" })
 	public String viewAllBudgetedBills(Model model) {

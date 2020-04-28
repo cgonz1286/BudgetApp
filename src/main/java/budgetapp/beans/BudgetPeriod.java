@@ -44,6 +44,7 @@ public class BudgetPeriod {
 	//!!!REmember to re-add setters and getters!!!				
 	//cascade type merge so that it doesn't create duplicates of same item
 	@OneToMany(mappedBy="budgetPeriod", cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<BudgetedDiscretionary> listOfBudgetedDiscretionaries;
 
 	/**
@@ -176,7 +177,6 @@ public class BudgetPeriod {
 		tostr+="end";
 		return tostr;
 	}
-	
 
 }
 

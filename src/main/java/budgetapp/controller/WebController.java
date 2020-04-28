@@ -37,11 +37,11 @@ public class WebController {
 	public String index() {
 		return "index.html";
 	}
+	
 	//------------------------------------------------------
 	//                Calculations Section
 	//use the getBudgetPeriodEntries and getBudgetPeriodSums for reports, or copy just the line you need into your own mapping.                            
 	//------------------------------------------------------
-
 	double calcTotalBudgetedIncome(BudgetPeriod selectedPeriod){
 		 List<BudgetedIncome> BudgetedIncomes = repoBudgetedIncome.findByBudgetPeriod(selectedPeriod);
 		 double totalIncome = 0;
@@ -69,6 +69,7 @@ public class WebController {
 
 		 return totalBill;
 	}
+	
 	double calcTotalBudgetedDiscretionary(BudgetPeriod selectedPeriod){
 		 List<BudgetedDiscretionary> BudgetedDiscretionaries = repoBudgetedDiscretionary.findByBudgetPeriod(selectedPeriod);
 		 double totalDiscretionary = 0;
@@ -82,25 +83,27 @@ public class WebController {
 
 		 return totalDiscretionary;
 	}
+	
 	double calcIncomeMinusBills(BudgetPeriod selectedPeriod){
 		return calcTotalBudgetedIncome(selectedPeriod) - calcTotalBudgetedBills(selectedPeriod);
 	}
+	
 	double calcRemainingToBudget(BudgetPeriod selectedPeriod){
 		return calcTotalBudgetedIncome(selectedPeriod) - calcTotalBudgetedBills(selectedPeriod) - calcTotalBudgetedDiscretionary(selectedPeriod);
 	}
 	
-//to use this, add "model = getBudgetPeriodEntries( model,  selectedPeriod)" as a line  your mapping 
-//then you can reference these attributes on your html page. See the income section of reports.html for example
-//use this to create table of all entries
-public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
-	model.addAttribute("periodIncomes", repoBudgetedIncome.findByBudgetPeriod(selectedPeriod)); //!!!Changed this to query the repo, allows the reports.html to refresh better
-	model.addAttribute("periodBills", repoBudgetedBills.findByBudgetPeriod(selectedPeriod)); //!!!Changed this to query the repo, allows the reports.html to refresh better
-	model.addAttribute("periodDiscretionaries", repoBudgetedDiscretionary.findByBudgetPeriod(selectedPeriod)); //!!!Changed this to query the repo, allows the reports.html to refresh better
-	return model;
-}
+	//to use this, add "model = getBudgetPeriodEntries( model,  selectedPeriod)" as a line  your mapping 
+	//then you can reference these attributes on your html page. See the income section of reports.html for example
+	//use this to create table of all entries
+	public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
+		model.addAttribute("periodIncomes", repoBudgetedIncome.findByBudgetPeriod(selectedPeriod)); //!!!Changed this to query the repo, allows the reports.html to refresh better
+		model.addAttribute("periodBills", repoBudgetedBills.findByBudgetPeriod(selectedPeriod)); //!!!Changed this to query the repo, allows the reports.html to refresh better
+		model.addAttribute("periodDiscretionaries", repoBudgetedDiscretionary.findByBudgetPeriod(selectedPeriod)); //!!!Changed this to query the repo, allows the reports.html to refresh better
+		return model;
+	}	
 	
-//to use this, add "model = getBudgetPeriodSums( model,  selectedPeriod)" as a line  your mapping 
-//then you can reference these attributes on your html page. See the income section of reports.html for example
+	//to use this, add "model = getBudgetPeriodSums( model,  selectedPeriod)" as a line  your mapping 
+	//then you can reference these attributes on your html page. See the income section of reports.html for example
 	public Model getBudgetPeriodSums(Model model, BudgetPeriod selectedPeriod) {
 		double inc =  calcTotalBudgetedIncome(selectedPeriod);//!!!Changed this to query the repo instead of using list in BudgetPeriod, allows the reports.html to refresh better
 		double bills = calcTotalBudgetedBills(selectedPeriod);
@@ -132,12 +135,9 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 
 		return model;
 	}
-	
-///_________________________________________
-///End Calculations Section
-///_________________________________________
-	
-
+	///________________________________________
+	///End Calculations Section
+	///_________________________________________
 	
 	//------------------------------------------------------
 	//                BudgetPeriod Maps                            
@@ -198,7 +198,6 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 	//------------------------------------------------------
 	//                BudgetedBill Maps
 	//------------------------------------------------------
-
 	@GetMapping("/inputBudgetedBill/{periodId}")
 	public String newBudgetedBill(@PathVariable("periodId") long periodId, Model model) {
 		System.out.println("??? /inputBudgetedBill/{periodId}");		
@@ -232,8 +231,6 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 		
 		return "BudgetedBill";
 	}
-	
-
 	*/
 
 	@GetMapping({ "/viewAllBudgetedBills" })
@@ -254,13 +251,6 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 		return "inputBudgetedBill";
 	}
 
-	@PostMapping("/updateBudgetedBills/{periodId}")
-	public String reviseBudgetedBills(@PathVariable("periodId") long periodId, BudgetedBills bb, Model model) {
-		
-	//	BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
-		
-	//  bb.setBudgetPeriod(selectedPeriod); // commented this line out due to it causing errors
-=======
 	@PostMapping("/updateBudgetedBills/{id}/{periodId}")
 	public String reviseBudgetedBills(@PathVariable("id") long id, @PathVariable("periodId") long periodId, BudgetedBills bb, Model model) {
 		System.out.println("???/updateBudgetedBills/{id}/{periodId ITEM TO EDIT: " + bb.toString());
@@ -283,28 +273,12 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 	    repoBudgetedBills.delete(p);
 	    return viewAllBudgetedBills(model);
 	}
-
 	////////////////End of BudgededBill Maps////////////////
 
 	//------------------------------------------------------
 	//                 BudgetedIncome maps                        
 	//------------------------------------------------------
 	/* Not using
-	============
-=======
-
-
-
-
-	////////////////End of BudgededBill Maps////////////////////
-
-
-
-
-//------------------------------------------------------
-//                 BudgetedIncome maps                        
-//------------------------------------------------------
-
 	@GetMapping({ "/viewAllBudgetedIncomes" })
 	public String viewAllBudgetedIncomes(Model model) {
 		if(repoBudgetedIncome.findAll().isEmpty()) {
@@ -314,15 +288,12 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 		return "resultsIncome";
 	}
 	
-
-
-	
 	Object findTotalIncome(BudgetPeriod selectedPeriod){
 		 List<Object[]> results = repoBudgetedIncome.sumByBudgetPeriod(selectedPeriod);
 		return results.get(0);
 	}
-	============
-	*/
+
+	// Commented out this method because it already exists in first section -CMG
 	double calcTotalBudgetedIncome(BudgetPeriod selectedPeriod){
 		 List<BudgetedIncome> BudgetedIncomes = repoBudgetedIncome.findByBudgetPeriod(selectedPeriod);
 		 double totalIncome = 0;
@@ -337,13 +308,9 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 
 		 return totalIncome;
 	}
-
-	//continue from period to inputBudgetedIncome
-=======
-	
+	*/
 
 	///continue from period to inputBudgetedIncome
-
 	//!!! use this format to allow join, pass in the period id and add BudgetPeriod as an attribute
 	//!!!add the findAll attribute if you are also displaying the existing entries on the input form
 	@GetMapping("/inputBudgetedIncome/{periodId}")
@@ -432,10 +399,8 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 	public String deleteBudgetedIncome(@PathVariable("id") long id, Model model) {
 	    return deleteBudgetedIncome(id, "GoToInputForm",  model);
 	}
-	
 	//!!!END Added GoTo to the above
 	
-
 	/*
 	//original version does not have GoTo
 	@PostMapping("/updateBudgetedIncome/{periodId}")
@@ -481,9 +446,7 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 		model.addAttribute("linkedBudgetPeriod", p);
 		return "resultsIncomeDetail";
 	}
-=======
-
-	//////////End of BudgetedIncomeMaps/////////////////////////
+	//////////End of BudgetedIncomeMaps/////////////////////
 	
 	//------------------------------------------------------
 	//           DiscretionaryCategory Mappings 
@@ -546,8 +509,9 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 		
 		model.addAttribute("newBudgetedDiscretionary", bd);
 		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
-		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findAll());
+		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findByBudgetPeriod(selectedPeriod));
 		model.addAttribute("DiscretionaryCategories", repoDiscretionaryCategory.findAll());
+		model.addAttribute("BudgetedDiscTotal", calcTotalBudgetedDiscretionary(selectedPeriod)); 
 
 		return "budgetedDiscretionary";
 	}
@@ -560,9 +524,10 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 		
 		model.addAttribute("newBudgetedDiscretionary", bd);
 		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
-		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findAll());
+		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findByBudgetPeriod(selectedPeriod));
 		model.addAttribute("DiscretionaryCategories", repoDiscretionaryCategory.findAll());
-
+		model.addAttribute("BudgetedDiscTotal", calcTotalBudgetedDiscretionary(selectedPeriod)); 
+			
 		return "budgetedDiscretionary";
 	}
 		
@@ -576,8 +541,9 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 		
 		model.addAttribute("newBudgetedDiscretionary", bd);
 		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
-		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findAll());
+		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findByBudgetPeriod(selectedPeriod));
 		model.addAttribute("DiscretionaryCategories", repoDiscretionaryCategory.findAll());
+		model.addAttribute("BudgetedDiscTotal", calcTotalBudgetedDiscretionary(selectedPeriod)); 
 
 		return "budgetedDiscretionary"; 
 	}
@@ -585,13 +551,13 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 	@PostMapping("/updateBudgetedDiscretionary/{periodId}")
 	public String reviseBudgetedDiscretionary(@PathVariable("periodId") long periodId, BudgetedDiscretionary bd, Model model) {
 		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null); // Find selected budget period.
+		DiscretionaryCategory selectedCategory = repoDiscretionaryCategory.findById(bd.getDiscCategory().getDiscCategoryId()).orElse(null);
 		bd.setBudgetPeriod(selectedPeriod); // Add budget period to entity.
+		bd.setDiscCategory(selectedCategory); // Add discretionary category to entity.
 		repoBudgetedDiscretionary.save(bd); // Save entity.
 		
 		return refreshPageBudgetedDiscretionary(periodId, model);
 	}
-	
-
 
 	@GetMapping("/deleteBudgetedDiscretionary/{id}")
 	public String deleteBudgetedDiscretionary(@PathVariable("id") long id, Model model) {
@@ -612,7 +578,7 @@ public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
 	
 	
 	
-//============================================================================================	
+//============================================================================================//	
 	/*OLD STUFF FOR REFERENCE INCOME MAPPINGS
 	//original version does not have GoTo
 	@PostMapping("/updateBudgetedIncome/{periodId}")

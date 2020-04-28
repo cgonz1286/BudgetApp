@@ -20,6 +20,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private		long id;
 		
+		// https://stackoverflow.com/questions/34179786/multiple-representations-of-the-same-entity-are-being-merged-detached
 		@ManyToOne(cascade=CascadeType.PERSIST,  fetch=FetchType.EAGER)
 		private BudgetPeriod budgetPeriod;
 		

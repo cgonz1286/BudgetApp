@@ -207,7 +207,8 @@ public class WebController {
 		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
 		System.out.println("??? /inputBudgetedBill/{periodId} selectedPeriod "+selectedPeriod.getId());		
 
-		model.addAttribute("newBudgetedBill", repoBudgetedBills.findAll());
+		//model.addAttribute("newBudgetedBill", repoBudgetedBills.findAll());
+		model.addAttribute("newBudgetedBill", p);
 		
 		model.addAttribute("BudgetedBills", p);
 		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
@@ -215,6 +216,13 @@ public class WebController {
 		
 		return "inputBudgetedBill";
 	}
+	
+	/*@GetMapping("/inputBudgetPeriod")
+	public String addNewBudgetPeriod(Model model) {
+		BudgetPeriod p = new BudgetPeriod();
+		model.addAttribute("newBudgetPeriod", p);
+		return "inputPeriod";
+	}*/
 	
 
 	@GetMapping({ "/viewAllBudgetedBills" })

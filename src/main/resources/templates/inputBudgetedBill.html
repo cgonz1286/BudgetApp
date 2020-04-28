@@ -59,15 +59,15 @@ th, td {
 <h4>Add More bills for this budget period</h4>
 
 <h5>Enter all the bills due during the budget period.</h5>
-<!--<form th:object="${newBudgetedBill}"  th:action="@{/updateBudgetedBills/{id}/{periodId}(id=${newBudgetedBill.id}, periodId=${selectedBudgetPeriod.id})}" method=POST>!-->
-<form th:object="${newBudgetedBill}"  th:action="@{/newBudgetedBill/{id}/{periodId}(id=${newBudgetedBill.id}, periodId=${selectedBudgetPeriod.id})}" method=POST>
-<!-- 
+<form th:object="${newBudgetedBill}"  th:action="@{/updateBudgetedBills/{id}/{periodId}(id=${newBudgetedBill.id}, periodId=${selectedBudgetPeriod.id})}" method=POST>
+<!--<form th:object="${newBudgetedBill}"  th:action="@{/newBudgetedBill/{id}/{periodId}(id=${newBudgetedBill.id}, periodId=${selectedBudgetPeriod.id})}" method=POST>!-->
+ 
 Bill Name: <input name="Description" size="20" th:field="*{name}"><br />
-Account Number: <input name="Account Number" size="20" th:field="*{acountNum}"><br />
+Account Number: <input name="Account Number" size="20" th:field="*{accountNum}"><br />
 Category: <input name="Category" size="20" th:field="*{category}"><br />
 Due Date: <input type ="text" name = "dateDue" placeholder="MM/dd/yyyy" th:field="*{dateDue}"><br />
 Amount Due: <input type ="text" name = "price"  th:field="*{price}"><br />
- -->
+
 <input name="Submit" type="submit" value="submit" /><br />
 
 </form>

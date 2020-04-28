@@ -34,16 +34,17 @@ th, td {
 	<td th:text="${currentBudgetedBill.accountNum}" />
 	<td th:text="${currentBudgetedBill.category}" />
 	<td th:text="${#dates.format(currentBudgetedBill.dateDue, 'MM/dd/yyyy')}" />
-	<td th:text="${currentBudgetedBill.price}" />
+	<td th:text="${#numbers.formatCurrency(currentBudgetedBill.price)}" />
 	
-	<td><a th:href="@{/editBudgetedBills/{id}(id=${currentBudgetedBill.id})}">Edit</a></td>
+	<td><a th:href="@{/editBudgetedBill/{id}(id=${currentBudgetedBill.id})}">Edit</a></td>
 	<td><a th:href="@{/deleteBudgetedBills/{id}(id=${currentBudgetedBill.id})}">Delete</a></td>
-
-
+	<td><a th:href="@{/viewReports/{periodId}(periodId=${currentBudgetPeriod.id})}">View Reports for this Budget Period</a></td>
+</tr>
 
 </table>
 </form>
 
 <a href="../updateBudgetedBill">Add a new Bill</a><br/>
+<a th:href = "@{/}">Return to All Budget Periods</a>
 </body>
 </html>

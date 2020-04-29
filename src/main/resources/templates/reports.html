@@ -32,7 +32,7 @@ th, td {
 </tr>
  
 <tr >
-	<td th:text="${selectedBudgetPeriod.id}"  hidden/>
+	<td hidden th:text="${selectedBudgetPeriod.id}"  />
 	<td th:text="${selectedBudgetPeriod.description}" />
 	<td th:text="${#dates.format(selectedBudgetPeriod.startDate, 'MM/dd/yyyy')}" /> 
 	<td th:text="${#dates.format(selectedBudgetPeriod.endDate, 'MM/dd/yyyy')}" /> 
@@ -58,7 +58,7 @@ th, td {
 </tr>
  
 <tr th:each="currentBudgetedIncome: ${periodIncomes}">
-	<td  th:text="${currentBudgetedIncome.id}"  />
+	<td hidden th:text="${currentBudgetedIncome.id}"  />
 	<td th:text="${currentBudgetedIncome.description}" />
 	<td th:text="${#dates.format(currentBudgetedIncome.incomeDate, 'MM/dd/yyyy')}" /> 
 	<td th:text="${currentBudgetedIncome.amount}" />
@@ -72,8 +72,19 @@ th, td {
 <!-- add table here for bills -->
 <h2>Discretionary Spending Budget</h2>
 
-<!-- add table here for discretionary -->
-
+<table>
+		<tr>
+			<th>Discretionary Category</th> 
+			<th>Discretionary Amount</th>
+		</tr>	 
+		<tr th:each="currentBudgetedDiscretionary: ${BudgetedDiscretionaries}">
+			<td th:text="${currentBudgetedDiscretionary.id}" hidden/>
+			<td th:text="${currentBudgetedDiscretionary.discCategory.description}" /> 
+			<td th:text="${currentBudgetedDiscretionary.amount}" />
+			<td><a th:href="@{/editBudgetedDiscretionary/{id}(id=${currentBudgetedDiscretionary.id})}">Edit</a></td>
+			<td><a th:href="@{/deleteBudgetedDiscretionary/{id}(id=${currentBudgetedDiscretionary.id})}">Delete</a></td>
+		</tr>
+</table>
 
 <a href="/inputBudgetPeriod">Add a new Budget Period</a><br/>
 <a href = "/viewAllBudgetPeriods">View all Budget Periods</a><br/>

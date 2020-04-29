@@ -462,7 +462,6 @@ public class WebController {
 		} else {
 			model.addAttribute("allDiscretionaryCategories", repoDiscretionaryCategory.findAll());
 		}
-		
 		return "discretionaryCategory";
 	}
 	

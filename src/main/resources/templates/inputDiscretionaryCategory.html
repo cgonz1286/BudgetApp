@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Discretionary Category Entry</title>
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;
+}
+</style>
+</head>
+
+<body>
+	<h1>Enter Discretionary Category</h1>	
+	
+	<h3>Budget Period</h3>
+	<!-- This section is read only, it displays the Budget Period that was passed in from the web controller -->
+	<table>
+		<tr>
+			<th>Budget Period Description</th>
+			<th>Start Date</th>
+			<th>End Date</th>
+		</tr>
+		<tr >
+			<td th:text="${selectedBudgetPeriod.id}" hidden/>
+			<td th:text="${selectedBudgetPeriod.description}" />
+			<td th:text="${#dates.format(selectedBudgetPeriod.startDate, 'MM/dd/yyyy')}" /> 
+			<td th:text="${#dates.format(selectedBudgetPeriod.endDate, 'MM/dd/yyyy')}" />	
+		</tr>
+	</table>
+	
+	<h3>Discretionary Categories (available in all budgets)</h3>
+	<table>
+		<tr>
+			<th>Discretionary Category</th> 
+		</tr>	 
+		<tr th:each="currentCategory : ${DiscretionaryCategories}">
+			<td th:text="${currentCategory.description}" />
+			<td><a th:href="@{/editDiscretionaryCategory/{periodId}/{id}/{GoTo}(periodId=${selectedBudgetPeriod.id}, id=${currentCategory.discCategoryId}, GoTo=${GoTo})}">Edit</a></td>
+			<td><a th:href="@{/deleteDiscretionaryCategory/{periodId}/{id}/{GoTo}(periodId=${selectedBudgetPeriod.id}, id=${currentCategory.discCategoryId}, GoTo=${GoTo})}">Delete</a></td>
+		</tr>                      
+	</table>
+	
+	<h3>Add More Discretionary Categories</h3>	
+	<h4>Enter any discretionary categories you may want to include this budget period.</br>
+		Continue making adjustments as needed.</h4>
+		
+	<form th:object="${newDiscretionaryCategory}" th:action="@{/updateDiscretionaryCategory/{periodId}/{GoTo}(periodId=${selectedBudgetPeriod.id}, GoTo=${GoTo})}" method=POST>	
+		<tr>
+			<th>Discretionary Category:</th>
+			<td><input name="id" th:field="*{discCategoryId}" hidden></td>
+			<td><input type="text" name="description" size="30" th:field="*{description}" required></td>
+			<td><input name="submit" type="submit" value="Submit"></td>
+		</tr>	
+	</form>
+	<br/>
+	<a th:href="@{/inputBudgetedDiscretionary/{periodId}/GoToInputForm(periodId=${selectedBudgetPeriod.id})}">Continue to add Discretionary Spending to this budget</a><br/>
+	<a th:href="@{/viewReports/{periodId}(periodId=${selectedBudgetPeriod.id})}">View Reports for this Budget Period</a><br/>
+	<a th:href = "@{/}">Return to All Budget Periods</a>
+</body>
+</html>

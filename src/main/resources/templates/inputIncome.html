@@ -35,7 +35,7 @@ th, td {
 	
 </tr>
 </table>
-<h4>Expected Income for this Budget Period</h4>
+<h3>Expected Income for this Budget Period</h3>
 
 <table>
 
@@ -56,10 +56,10 @@ th, td {
 	</tr>
 </table>
 
-<h4>Add More Expected Income for this Budget Period</h4>
+<h3>Add More Expected Income for this Budget Period</h3>
 
-<h5>Enter all the income that you expect to receive during the budget period.
-You can put in the full amount as one entry, or continue adding multiple entries.</h5>
+<h4>Enter all the income that you expect to receive during the budget period.</br>
+    You can put in the full amount as one entry, or continue adding multiple entries.</h4>
 	
 <!--<form th:object="${newBudgetedIncome}" th:action="@{/updateBudgetedIncome/{id}/{periodId}(id=${newBudgetedIncome.id}, periodId =${selectedBudgetPeriod.id})" method=POST>--> 
 <!--<form th:object="${newBudgetedIncome}" th:action="@{/updateBudgetedIncome/{id}(id=${newBudgetedIncome.id})}" method=POST>-->
@@ -69,17 +69,13 @@ Income Description: <input name="Description" size="20" th:field="*{description}
 Expected Date: <input type ="text" name = "incomeDate" placeholder="MM/dd/yyyy" th:field="*{incomeDate}"><br />
 Amount: <input type ="text" name = "amount"  th:field="*{amount}"><br />
 
-<input name="Submit" type="submit" value="submit" /><br />
+<input name="Submit" type="submit" value="Submit" /><br />
 </form>
-
 <br/>
-<h5>!!!Uncomment the link to budgeted bills in inputIncome.html when that mapping is ready to receive period id.</h5>
-<!--  <a th:href="@{/inputBudgetedBill/{periodId}(periodId=${selectedBudgetPeriod.id})}">Continue to add Bills to this Budget</a><br/> -->
-<h5>!!!Added this temporarily to test budgetedDiscretionary page.</h5>
-<a th:href="@{/inputBudgetedDiscretionary/{periodId}(periodId=${selectedBudgetPeriod.id})}">Continue to add BudgetedDiscretionary to this Budget</a><br/></br>
-
-<a th:href="@{/viewReports/{periodId}( periodId=${selectedBudgetPeriod.id})}">View Reports for this Budget Period</a>
 <br/>
+
+<a th:href="@{/inputBudgetedBill/{periodId}(periodId=${selectedBudgetPeriod.id})}">Continue to add Bills to this Budget</a><br/>
+<a th:href="@{/viewReports/{periodId}( periodId=${selectedBudgetPeriod.id})}">View Reports for this Budget Period</a><br/><br/> <!-- Consider removing this link? -->
 <a th:href = "@{/}">Return to All Budget Periods</a>
 <br/>
 </body>

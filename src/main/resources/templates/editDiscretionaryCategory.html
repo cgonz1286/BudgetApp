@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Budgeted Discretionary Spending Entry</title>
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;
+}
+</style>
+</head>
+
+<body>
+	<h1>Enter Budgeted Discretionary Spending</h1>	
+	
+	<h3>Budget Period</h3>
+	<!-- This section is read only, it displays the Budget Period that was passed in from the web controller -->
+	<table>
+		<tr>
+			<th>Budget Period Description</th>
+			<th>Start Date</th>
+			<th>End Date</th>
+		</tr>
+		<tr >
+			<td th:text="${selectedBudgetPeriod.id}" hidden/>
+			<td th:text="${selectedBudgetPeriod.description}" />
+			<td th:text="${#dates.format(selectedBudgetPeriod.startDate, 'MM/dd/yyyy')}" /> 
+			<td th:text="${#dates.format(selectedBudgetPeriod.endDate, 'MM/dd/yyyy')}" />
+		</tr>
+	</table>
+
+	<h3>Discretionary Category</h3>
+
+	<form th:object="${newDiscretionaryCategory}" th:action="@{/updateDiscretionaryCategory/{periodId}/{GoTo}(periodId=${selectedBudgetPeriod.id}, GoTo=${GoTo})}" method=POST>		
+		<tr>
+			<th>Discretionary Category:</th>
+			<td><input name="id" th:field="*{discCategoryId}" hidden></td>
+			<td><input type="text" name="description" size="30" th:field="*{description}" required></td>
+			<td><input name="submit" type="submit" value="Submit"></td>
+		</tr>				
+	</form>
+	
+</body>
+</html>

@@ -92,7 +92,7 @@ public class WebController {
 		return calcTotalBudgetedIncome(selectedPeriod) - calcTotalBudgetedBills(selectedPeriod) - calcTotalBudgetedDiscretionary(selectedPeriod);
 	}
 	
-	//to use this, add "model = getBudgetPeriodEntries( model,  selectedPeriod)" as a line  your mapping 
+	//to use this, add "model = getBudgetPeriodEntries(model, selectedPeriod)" as a line to your mapping 
 	//then you can reference these attributes on your html page. See the income section of reports.html for example
 	//use this to create table of all entries
 	public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
@@ -102,7 +102,7 @@ public class WebController {
 		return model;
 	}	
 	
-	//to use this, add "model = getBudgetPeriodSums( model,  selectedPeriod)" as a line  your mapping 
+	//to use this, add "model = getBudgetPeriodSums(model, selectedPeriod)" as a line to your mapping 
 	//then you can reference these attributes on your html page. See the income section of reports.html for example
 	public Model getBudgetPeriodSums(Model model, BudgetPeriod selectedPeriod) {
 		double inc =  calcTotalBudgetedIncome(selectedPeriod);//!!!Changed this to query the repo instead of using list in BudgetPeriod, allows the reports.html to refresh better
@@ -113,18 +113,15 @@ public class WebController {
 		String balanceInstructions = "";
 		if(budgetBalance > 0)
 		{
-			balanceInstructions = " remaining to budget (Add more to spending categories)";
-
+			balanceInstructions = " Funds available to budget (increase spending amounts or add spending categories)";
 		}
-		else if (budgetBalance <0)
+		else if (budgetBalance < 0)
 		{
-			balanceInstructions = " difference to income (Decrease amounts in spending categories)";
-
+			balanceInstructions = " Budgeted total is greater than income total (decrease spending amounts or delete spending categories)";
 		}
 		else
 		{
-			balanceInstructions = "Balanced budget (All income have been assigned a spending category)";
-
+			balanceInstructions = "Balanced budget (all income has been budgeted into bill and/or spending categories)";
 		}
 		model.addAttribute("periodIncomesTotal", inc); 
 		model.addAttribute("periodBillsTotal", bills); 
@@ -144,7 +141,6 @@ public class WebController {
 	//------------------------------------------------------		
 
 	@GetMapping({"/viewAllBudgetPeriods" ,"/" })
-
 	public String viewAllBudgetPeriods(Model model) {
 		if(repoBudgetPeriod.findAll().isEmpty()) {
 			return addNewBudgetPeriod(model);
@@ -207,7 +203,8 @@ public class WebController {
 		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
 		System.out.println("??? /inputBudgetedBill/{periodId} selectedPeriod "+selectedPeriod.getId());		
 
-		model.addAttribute("newBudgetedBill", repoBudgetedBills.findAll());
+		//model.addAttribute("newBudgetedBill", repoBudgetedBills.findAll());
+		model.addAttribute("newBudgetedBill", p);
 		
 		model.addAttribute("BudgetedBills", p);
 		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
@@ -215,23 +212,14 @@ public class WebController {
 		
 		return "inputBudgetedBill";
 	}
-	/*
-	//I thought this might work, it didn't
-	@GetMapping("/inputBudgetedBill/{id}")
-	public String newBudgetedBill(@PathVariable("id") long id, Model model) {
-		BudgetedBills p = new BudgetedBills();
-		
-		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(id).orElse(null);
-		
-		model.addAttribute("newBudgetedBill", repoBudgetedBills.findAll());
-		
-		model.addAttribute("BudgetedBills", p);
-		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
-		
-		
-		return "BudgetedBill";
-	}
-	*/
+	
+	/*@GetMapping("/inputBudgetPeriod")
+	public String addNewBudgetPeriod(Model model) {
+		BudgetPeriod p = new BudgetPeriod();
+		model.addAttribute("newBudgetPeriod", p);
+		return "inputPeriod";
+	}*/
+	
 
 	@GetMapping({ "/viewAllBudgetedBills" })
 	public String viewAllBudgetedBills(Model model) {
@@ -451,49 +439,61 @@ public class WebController {
 	//------------------------------------------------------
 	//           DiscretionaryCategory Mappings 
 	//------------------------------------------------------
-	@GetMapping("/mainDiscretionaryCategory")
-	public String addNewDiscretionaryCategory(Model model) {
+	//!!! Use this format to allow join, pass in the period id and add BudgetPeriod as an attribute
+	//!!! Add the findAll attribute if you are also displaying the existing entries on the input form
+	// Continue from a previous page to budgetedDiscretionary
+	@GetMapping("/inputDiscretionaryCategory/{periodId}/{GoTo}")
+	public String addNewDiscretionaryCategory(@PathVariable("periodId") long periodId, @PathVariable("GoTo") String GoTo, Model model) {
 		DiscretionaryCategory dc = new DiscretionaryCategory();
+		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
 		
-		model.addAttribute("discretionaryCategory", dc);	
+		model.addAttribute("newDiscretionaryCategory", dc);
+		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
+		model.addAttribute("DiscretionaryCategories", repoDiscretionaryCategory.findAll());
+		model.addAttribute("GoTo", GoTo);
+
+		return "inputDiscretionaryCategory";
+	}
+	
+	@GetMapping("/editDiscretionaryCategory/{periodId}/{id}/{GoTo}")
+	public String showUpdateDiscretionaryCategory(@PathVariable("periodId") long periodId, @PathVariable("id") long id, @PathVariable("GoTo") String GoTo,  Model model) {
+		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(id).orElse(null);	
+		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
 		
-		if(repoDiscretionaryCategory.findAll().isEmpty()) {
-			model.addAttribute("allDiscretionaryCategories", "EMPTY");
-		} else {
-			model.addAttribute("allDiscretionaryCategories", repoDiscretionaryCategory.findAll());
+		model.addAttribute("newDiscretionaryCategory", dc);
+		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
+		model.addAttribute("DiscretionaryCategories", repoDiscretionaryCategory.findAll());
+		model.addAttribute("GoTo", GoTo);
+
+		return "editDiscretionaryCategory"; 
+	}
+	
+	@PostMapping("/updateDiscretionaryCategory/{periodId}/{GoTo}")
+	public String reviseBudgetedDiscretionary(@PathVariable("periodId") long periodId, @PathVariable("GoTo") String GoTo, DiscretionaryCategory dc, Model model) {
+		repoDiscretionaryCategory.save(dc); // Save entity.
+		
+		if(GoTo.equals("GoToReports")) {
+			return viewReports(periodId, model);
 		}
-		return "discretionaryCategory";
-	}
-	
-	@GetMapping("/editDiscretionaryCategory/{id}")
-	public String showUpdateDiscretionaryCategory(@PathVariable("id") long discCategoryId, Model model) {
-		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(discCategoryId).orElse(null);
-			
-		model.addAttribute("discretionaryCategory", dc);
-		
-		if(repoDiscretionaryCategory.findAll().isEmpty()) {
-			model.addAttribute("allDiscretionaryCategories", "EMPTY");
-		} else {
-			model.addAttribute("allDiscretionaryCategories", repoDiscretionaryCategory.findAll());
+		else {
+			return addNewDiscretionaryCategory(periodId, GoTo, model) ;
 		}
-		
-		return "discretionaryCategory";
 	}
 	
-	@PostMapping("/updateDiscretionaryCategory/{id}")
-	public String reviseDiscretionaryCategory(DiscretionaryCategory dc, Model model) {
-		repoDiscretionaryCategory.save(dc);
+	@GetMapping("/deleteDiscretionaryCategory/{periodId}/{id}/{GoTo}")
+	public String deleteDiscretionaryCategory(@PathVariable("periodId") long periodId, @PathVariable("id") long id, @PathVariable("GoTo") String GoTo, Model model) {
+		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(id).orElse(null);
+	    
+		repoDiscretionaryCategory.delete(dc); // Delete entity.
 		
-		return addNewDiscretionaryCategory(model);
+		if(GoTo.equals("GoToReports")) {
+			return viewReports(periodId, model);
+		}
+		else {
+			return addNewDiscretionaryCategory(periodId, GoTo, model);
+		}
 	}
-	
-	@GetMapping("/deleteDiscretionaryCategory/{id}")
-	public String deleteUser(@PathVariable("id") long discCategoryId, Model model) {
-		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(discCategoryId).orElse(null);
-		repoDiscretionaryCategory.delete(dc);
-		
-		return addNewDiscretionaryCategory(model);
-	}
+	//////////End of DiscretionaryCategory Maps/////////////
 	
 	//------------------------------------------------------
 	//            BudgetedDiscretionary Mappings 
@@ -501,8 +501,8 @@ public class WebController {
 	//!!! Use this format to allow join, pass in the period id and add BudgetPeriod as an attribute
 	//!!! Add the findAll attribute if you are also displaying the existing entries on the input form
 	// Continue from a previous page to budgetedDiscretionary
-	@GetMapping("/inputBudgetedDiscretionary/{periodId}")
-	public String addNewBudgetedDiscretionary(@PathVariable("periodId") long periodId, Model model) {
+	@GetMapping("/inputBudgetedDiscretionary/{periodId}/{GoTo}")
+	public String addNewBudgetedDiscretionary(@PathVariable("periodId") long periodId, @PathVariable("GoTo") String GoTo, Model model) {
 		BudgetedDiscretionary bd = new BudgetedDiscretionary();
 		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
 		
@@ -511,29 +511,13 @@ public class WebController {
 		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findByBudgetPeriod(selectedPeriod));
 		model.addAttribute("DiscretionaryCategories", repoDiscretionaryCategory.findAll());
 		model.addAttribute("BudgetedDiscTotal", calcTotalBudgetedDiscretionary(selectedPeriod)); 
+		model.addAttribute("GoTo", GoTo);
 
 		return "budgetedDiscretionary";
 	}
-	
-	// Refresh current page so that it shows current data and is ready for a new entry
-	@GetMapping("/refreshPageBudgetedDiscretionary")
-	public String refreshPageBudgetedDiscretionary(long periodId, Model model) {
-		BudgetedDiscretionary bd = new BudgetedDiscretionary();
-		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
 		
-		model.addAttribute("newBudgetedDiscretionary", bd);
-		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
-		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findByBudgetPeriod(selectedPeriod));
-		model.addAttribute("DiscretionaryCategories", repoDiscretionaryCategory.findAll());
-		model.addAttribute("BudgetedDiscTotal", calcTotalBudgetedDiscretionary(selectedPeriod)); 
-			
-		return "budgetedDiscretionary";
-	}
-		
-	// !!! NOTE: Need to fix this as it's currently creating a new entry instead of editing an existing one. !!!
-	// !!! NOTE 2: Updated html page and now it's throwing "Multiple representations of the same entity are being merged" exception 
-	@GetMapping("/editBudgetedDiscretionary/{id}")
-	public String showUpdateBudgetedDiscretionary(@PathVariable("id") long id,  Model model) {
+	@GetMapping("/editBudgetedDiscretionary/{id}/{GoTo}")
+	public String showUpdateBudgetedDiscretionary(@PathVariable("id") long id, @PathVariable("GoTo") String GoTo,  Model model) {
 		BudgetedDiscretionary bd = repoBudgetedDiscretionary.findById(id).orElse(null);		
 		long periodId = bd.getBudgetPeriod().getId(); // Get periodId.
 		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
@@ -544,37 +528,61 @@ public class WebController {
 		model.addAttribute("DiscretionaryCategories", repoDiscretionaryCategory.findAll());
 		model.addAttribute("BudgetedDiscTotal", calcTotalBudgetedDiscretionary(selectedPeriod)); 
 
-		return "budgetedDiscretionary"; 
+		return "editBudgetedDiscretionary"; 
 	}
 
-	@PostMapping("/updateBudgetedDiscretionary/{periodId}")
-	public String reviseBudgetedDiscretionary(@PathVariable("periodId") long periodId, BudgetedDiscretionary bd, Model model) {
+	@PostMapping("/updateBudgetedDiscretionary/{periodId}/{GoTo}")
+	public String reviseBudgetedDiscretionary(@PathVariable("periodId") long periodId, @PathVariable("GoTo") String GoTo, BudgetedDiscretionary bd, Model model) {
 		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null); // Find selected budget period.
 		DiscretionaryCategory selectedCategory = repoDiscretionaryCategory.findById(bd.getDiscCategory().getDiscCategoryId()).orElse(null);
 		bd.setBudgetPeriod(selectedPeriod); // Add budget period to entity.
 		bd.setDiscCategory(selectedCategory); // Add discretionary category to entity.
 		repoBudgetedDiscretionary.save(bd); // Save entity.
 		
-		return refreshPageBudgetedDiscretionary(periodId, model);
+		if(GoTo.equals("GoToReports")) {
+			return viewReports(periodId, model);
+		}
+		else {
+			return addNewBudgetedDiscretionary(periodId, GoTo, model) ;
+		}
 	}
 
-	@GetMapping("/deleteBudgetedDiscretionary/{id}")
-	public String deleteBudgetedDiscretionary(@PathVariable("id") long id, Model model) {
+	@GetMapping("/deleteBudgetedDiscretionary/{id}/{GoTo}")
+	public String deleteBudgetedDiscretionary(@PathVariable("id") long id, @PathVariable("GoTo") String GoTo, Model model) {
 		BudgetedDiscretionary bd = repoBudgetedDiscretionary.findById(id).orElse(null);
 		
 		long periodId = bd.getBudgetPeriod().getId(); // Get periodId before deleting.
 	    
 		repoBudgetedDiscretionary.delete(bd); // Delete entity.
-	    
-		return refreshPageBudgetedDiscretionary(periodId, model);
+		
+		if(GoTo.equals("GoToReports")) {
+			return viewReports(periodId, model);
+		}
+		else {
+			return addNewBudgetedDiscretionary(periodId, GoTo, model);
+		}
+	}
+	
+	// Made the original map redirect to the above EDIT mapping so no need to change existing links, they will just default to the Input Form.
+	@GetMapping("/editBudgetedDiscretionary/{id}")
+	public String showUpdateBudgetedDiscretionary(@PathVariable("id") long id,  Model model) {
+			return showUpdateBudgetedDiscretionary(id, "GoToInputForm", model);
+	}
+	
+	// Made the original map redirect to the above UPDATE mapping so no need to change existing links, they will just default to the Input Form.
+	@PostMapping("/updateBudgetedDiscretionary/{periodId}")
+	public String reviseBudgetedDiscretionary( @PathVariable("periodId") long periodId, BudgetedDiscretionary bd, Model model) {	
+		return reviseBudgetedDiscretionary(periodId, "GoToInputForm", bd, model)	;
+	}
+	
+	// Made the original map redirect to the above DELETE mapping so no need to change existing links, they will just default to the Input Form.
+	@GetMapping("/deleteBudgetedDiscretionary/{id}")
+	public String deleteBudgetedDiscretionary(@PathVariable("id") long id, Model model) {
+	    return deleteBudgetedDiscretionary(id, "GoToInputForm",  model);
 	}
 }	
 
 
-	
-	
-	
-	
 	
 	
 //============================================================================================//	

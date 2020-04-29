@@ -14,6 +14,5 @@ public interface BudgetedDiscretionaryRepository extends JpaRepository<BudgetedD
 	@Query("FROM #{#entityName} WHERE budgetPeriod = :bp")//parameterize query to limit risk of sql injection attack
 	List<BudgetedDiscretionary> findByBudgetPeriod(@Param("bp") BudgetPeriod selectedPeriod);
 	  
-	@Query("Select amount FROM #{#entityName} WHERE budgetPeriod = :bp group by budgetPeriod")//parameterize query to limit risk of sql injection attack
-	List<Object[]> sumByBudgetPeriod(@Param("bp") BudgetPeriod selectedPeriod);
+
 }

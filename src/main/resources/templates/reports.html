@@ -16,54 +16,49 @@ th, td {
 <body>
 <h1>Budget Period Reports</h1>
 
-
 <h2>Selected Budget Period </h2>
 
 <table>
-
-<tr>
-<th>Description</th>
-<th>Start Date</th>
-<th>End Date</th>
-<th>All Income </br> Budgeted</th>
-<th>All Bills</br> Budgeted</th>
-<th>All Other </br>Spending</br> Budgeted</th>
-
-</tr>
- 
-<tr >
-	<td th:text="${selectedBudgetPeriod.id}"  hidden/>
-	<td th:text="${selectedBudgetPeriod.description}" />
-	<td th:text="${#dates.format(selectedBudgetPeriod.startDate, 'MM/dd/yyyy')}" /> 
-	<td th:text="${#dates.format(selectedBudgetPeriod.endDate, 'MM/dd/yyyy')}" /> 
- 	<td th:text="${#numbers.formatCurrency(periodIncomesTotal)}" /> 
-	 <td th:text="${#numbers.formatCurrency(periodBillsTotal)}" /> 
-	 <td  th:text="${#numbers.formatCurrency(periodDiscTotal)}" /> 
-	 	 <!-- https://www.thymeleaf.org/apidocs/thymeleaf/3.0.6.RELEASE/index.html?org/thymeleaf/expression/Numbers.html -->
+	<tr>
+		<th>Description</th>
+		<th>Start Date</th>
+		<th>End Date</th>
+		<th>All Income</br>Budgeted</th>
+		<th>All Bills</br>Budgeted</th>
+		<th>All</br>Spending</br>Budgeted</th>
+	</tr>
+	<tr>
+		<td th:text="${selectedBudgetPeriod.id}"  hidden/>
+		<td th:text="${selectedBudgetPeriod.description}" />
+		<td th:text="${#dates.format(selectedBudgetPeriod.startDate, 'MM/dd/yyyy')}" /> 
+		<td th:text="${#dates.format(selectedBudgetPeriod.endDate, 'MM/dd/yyyy')}" /> 
+	 	<td th:text="${#numbers.formatCurrency(periodIncomesTotal)}" /> 
+		<td th:text="${#numbers.formatCurrency(periodBillsTotal)}" /> 
+		<td  th:text="${#numbers.formatCurrency(periodDiscTotal)}" /> 
+		<!-- https://www.thymeleaf.org/apidocs/thymeleaf/3.0.6.RELEASE/index.html?org/thymeleaf/expression/Numbers.html -->
+	</tr>
 </table>
-</br>
-<td  th:text="${#numbers.formatCurrency(periodBudgetBalance)}" /> 
 
+<h2>Amount Remaining: <td th:text="${#numbers.formatCurrency(periodBudgetBalance)}"/></h2>
+<!-- <td th:text="${#numbers.formatCurrency(periodBudgetBalance)}"/> --> 
 <th th:text="${balanceInstructions}"/>
 
 <h2>Income</h2>
 
 <table>
-
-<tr>
-<th>Description</th> 
-<th>Date</th>
-<th>Amount</th>
-
-</tr>
- 
-<tr th:each="currentBudgetedIncome: ${periodIncomes}">
-	<td  th:text="${currentBudgetedIncome.id}" hidden />
-	<td th:text="${currentBudgetedIncome.description}" />
-	<td th:text="${#dates.format(currentBudgetedIncome.incomeDate, 'MM/dd/yyyy')}" /> 
-	<td th:text="${currentBudgetedIncome.amount}" />
-	<td><a th:href="@{/editBudgetedIncome/{id}/GoToReports(id=${currentBudgetedIncome.id})}">Edit </a></td>
-	<td><a th:href="@{/deleteBudgetedIncome/{id}/GoToReports(id=${currentBudgetedIncome.id})}">Delete </a></td>
+	<tr>
+		<th>Description</th> 
+		<th>Date</th>
+		<th>Amount</th>
+		<!-- add Add New button here? -->
+	</tr>
+	<tr th:each="currentBudgetedIncome: ${periodIncomes}">
+		<td  th:text="${currentBudgetedIncome.id}" hidden />
+		<td th:text="${currentBudgetedIncome.description}" />
+		<td th:text="${#dates.format(currentBudgetedIncome.incomeDate, 'MM/dd/yyyy')}" /> 
+		<td th:text="${#numbers.formatCurrency(currentBudgetedIncome.amount)}" />
+		<td><a th:href="@{/editBudgetedIncome/{id}/GoToReports(id=${currentBudgetedIncome.id})}">Edit </a></td>
+		<td><a th:href="@{/deleteBudgetedIncome/{id}/GoToReports(id=${currentBudgetedIncome.id})}">Delete </a></td>
 	</tr>
 </table>
 
@@ -72,33 +67,47 @@ th, td {
 <!-- add table here for bills -->
 <!-- this list isn't showing here, don't know why -->
 <table>
-
-<tr>
-<th>Name</th> 
-<th>Account Number</th>
-<th>Category</th>
-<th>Due Date</th>
-<th>Total Due</th>
-
-</tr>
- 
-<tr th:each="currentBudgetedBill: ${BudgetedBills}">
-	<td  th:text="${currentBudgetedBill.id}" hidden />
-	<td th:text="${currentBudgetedBill.name}" />
-	<td th:text="${currentBudgetedBill.acctNum}" />
-	<td th:text="${#dates.format(currentBudgetedBill.dateDue, 'MM/dd/yyyy')}" /> 
-	<td th:text="${#numbers.formatCurrency(currentBudgetedBill.price)}" />
-	<td><a th:href="@{/editBudgetedBill/{id}/GoToReports(id=${currentBudgetedBill.id})}">Edit </a></td>
-	<td><a th:href="@{/deleteBudgetedBills/{id}/GoToReports(id=${currentBudgetedBill.id})}">Delete </a></td>
+	<tr>
+		<th>Name</th> 
+		<th>Account Number</th>
+		<th>Category</th>
+		<th>Due Date</th>
+		<th>Total Due</th>
+		<!-- <th colspan="2"><a th:href="@{/inputBudgetedBill/{periodId}(periodId=${selectedBudgetPeriod.id})}">Add a new Bill</a></th> -->
 	</tr>
+	<!-- Commenting out this section for now since it was throwing an exception
+	<tr th:each="currentBudgetedBill: ${periodBills}">
+		<td th:text="${currentBudgetedBill.id}" hidden />
+		<td th:text="${currentBudgetedBill.name}" />
+		<td th:text="${currentBudgetedBill.acctNum}" />
+		<td th:text="${#dates.format(currentBudgetedBill.dateDue, 'MM/dd/yyyy')}" /> 
+		<td th:text="${#numbers.formatCurrency(currentBudgetedBill.price)}" />
+		<td><a th:href="@{/editBudgetedBill/{id}/GoToReports(id=${currentBudgetedBill.id})}">Edit </a></td>
+		<td><a th:href="@{/deleteBudgetedBills/{id}/GoToReports(id=${currentBudgetedBill.id})}">Delete </a></td>
+	</tr>
+	-->
 </table>
 
-<h2>Discretionary Spending Budget</h2>
+<h2>Discretionary Spending</h2>
 
-<!-- add table here for discretionary -->
-
+<table>
+	<tr>
+		<th>Category</th> 
+		<th>Amount</th>
+		<th colspan="2"><a th:href="@{/inputBudgetedDiscretionary/{periodId}(periodId=${selectedBudgetPeriod.id})}">Add New</a></th>
+	</tr>	 
+	<tr th:each="currentBudgetedDiscretionary: ${periodDiscretionaries}">
+		<td th:text="${currentBudgetedDiscretionary.id}" hidden/>
+		<td th:text="${currentBudgetedDiscretionary.discCategory.description}" /> 
+		<td th:text="${#numbers.formatCurrency(currentBudgetedDiscretionary.amount)}" />
+		<td><a th:href="@{/editBudgetedDiscretionary/{id}/GoToReports(id=${currentBudgetedDiscretionary.id})}">Edit</a></td>
+		<td><a th:href="@{/deleteBudgetedDiscretionary/{id}/GoToReports(id=${currentBudgetedDiscretionary.id})}">Delete</a></td>
+	</tr>
+</table>
+<br/>
 
 <a href="/inputBudgetPeriod">Add a new Budget Period</a><br/>
 <a href = "/viewAllBudgetPeriods">View all Budget Periods</a><br/>
 <a th:href="@{/inputBudgetedBill/{periodId}(periodId=${selectedBudgetPeriod.id})}">Add a new Bill</a><br/>
-</body></html>
+</body>
+</html>

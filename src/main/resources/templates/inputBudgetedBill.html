@@ -31,7 +31,7 @@ th, td {
 	<td th:text="${#dates.format(selectedBudgetPeriod.endDate, 'MM/dd/yyyy')}" /> 	
 </tr>
 </table>
-<h4>Expected Bills for this Budget Period</h4>
+<h3>Expected Bills for this Budget Period</h3>
 
 
 <table>
@@ -57,9 +57,9 @@ th, td {
 	<td><a th:href="@{/deleteBudgetedBill/{id}(id=${currentBudgetedBill.id})}">Delete</a></td>
 	</tr>
 </table>
-<h4>Add More bills for this budget period</h4>
+<h3>Add More bills for this budget period</h3>
 
-<h5>Enter all the bills due during the budget period.</h5>
+<h4>Enter all the bills due during the budget period.</h4>
 <form th:object="${newBudgetedBill}"  th:action="@{/updateBudgetedBills/{id}/{periodId}(id=${newBudgetedBill.id}, periodId=${selectedBudgetPeriod.id})}" method=POST>
  
 Bill Name: <input name="Description" size="20" th:field="*{name}"><br />
@@ -68,9 +68,8 @@ Category: <input name="Category" size="20" th:field="*{category}"><br />
 Due Date: <input type ="text" name = "dateDue" placeholder="MM/dd/yyyy" th:field="*{dateDue}"><br />
 Amount Due: <input type ="text" name = "price"  th:field="*{price}"><br />
 
-<input name="Submit" type="submit" value="submit" /><br />
-<!-- Change to below link to go to discretionaryCategory.html instead? -->
-<a th:href="@{/inputBudgetedDiscretionary/{periodId}(periodId=${selectedBudgetPeriod.id})}">Continue to add Discretionary Spending to this budget</a><br/></br> 
+<input name="Submit" type="submit" value="Submit" /><br /><br />
+<a th:href="@{/inputDiscretionaryCategory/{periodId}/GoToInputForm(periodId=${selectedBudgetPeriod.id})}">Continue to add Discretionary Categories</a><br/>
 <a th:href = "@{/}">Return to All Budget Periods</a>
 </form>
 

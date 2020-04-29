@@ -113,18 +113,15 @@ public class WebController {
 		String balanceInstructions = "";
 		if(budgetBalance > 0)
 		{
-			balanceInstructions = " remaining to budget (Add more to spending categories)";
-
+			balanceInstructions = " Funds available to budget (increase spending amounts or add spending categories)";
 		}
-		else if (budgetBalance <0)
+		else if (budgetBalance < 0)
 		{
-			balanceInstructions = " difference to income (Decrease amounts in spending categories)";
-
+			balanceInstructions = " Budgeted total is greater than income total (decrease spending amounts or delete spending categories)";
 		}
 		else
 		{
-			balanceInstructions = "Balanced budget (All income have been assigned a spending category)";
-
+			balanceInstructions = "Balanced budget (all income has been budgeted into bill and/or spending categories)";
 		}
 		model.addAttribute("periodIncomesTotal", inc); 
 		model.addAttribute("periodBillsTotal", bills); 

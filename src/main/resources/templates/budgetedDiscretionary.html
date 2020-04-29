@@ -45,7 +45,7 @@ th, td {
 		<tr th:each="currentBudgetedDiscretionary: ${BudgetedDiscretionaries}">
 			<td th:text="${currentBudgetedDiscretionary.id}" hidden/>
 			<td th:text="${currentBudgetedDiscretionary.discCategory.description}" /> 
-			<td th:text="${currentBudgetedDiscretionary.amount}" />
+			<td th:text="${#numbers.formatCurrency(currentBudgetedDiscretionary.amount)}" />
 			<td><a th:href="@{/editBudgetedDiscretionary/{id}(id=${currentBudgetedDiscretionary.id})}">Edit</a></td>
 			<td><a th:href="@{/deleteBudgetedDiscretionary/{id}(id=${currentBudgetedDiscretionary.id})}">Delete</a></td>
 		</tr>

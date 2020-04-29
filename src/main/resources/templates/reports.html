@@ -94,7 +94,7 @@ th, td {
 	<tr>
 		<th>Category</th> 
 		<th>Amount</th>
-		<th colspan="2"><a th:href="@{/inputBudgetedDiscretionary/{periodId}(periodId=${selectedBudgetPeriod.id})}">Add New</a></th>
+		<th colspan="2"><a th:href="@{/inputBudgetedDiscretionary/{periodId}/GoToReports(periodId=${selectedBudgetPeriod.id})}">Add New</a></th>
 	</tr>	 
 	<tr th:each="currentBudgetedDiscretionary: ${periodDiscretionaries}">
 		<td th:text="${currentBudgetedDiscretionary.id}" hidden/>

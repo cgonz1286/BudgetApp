@@ -25,38 +25,24 @@ th, td {
 			<th>Budget Period Description</th>
 			<th>Start Date</th>
 			<th>End Date</th>
-			<th>Total Budgeted Spending</th>
 		</tr>
 		<tr >
 			<td th:text="${selectedBudgetPeriod.id}" hidden/>
 			<td th:text="${selectedBudgetPeriod.description}" />
 			<td th:text="${#dates.format(selectedBudgetPeriod.startDate, 'MM/dd/yyyy')}" /> 
 			<td th:text="${#dates.format(selectedBudgetPeriod.endDate, 'MM/dd/yyyy')}" />
-			<td th:text="${BudgetedDiscTotal}" /> 	
 		</tr>
 	</table>
 
-	<h3>Discretionary Spending</h3>
-	<form th:object="${newBudgetedDiscretionary}" th:action="@{/updateBudgetedDiscretionary/{periodId}/{GoTo}(periodId=${selectedBudgetPeriod.id},GoTo=${GoTo})}" method=POST>	
-		<tr><td><input name="id" th:field="*{id}" hidden></td></tr>
+	<h3>Discretionary Category</h3>
+
+	<form th:object="${newDiscretionaryCategory}" th:action="@{/updateDiscretionaryCategory/{periodId}/{GoTo}(periodId=${selectedBudgetPeriod.id}, GoTo=${GoTo})}" method=POST>		
 		<tr>
 			<th>Discretionary Category:</th>
-			<td>			
-				<select th:field="*{discCategory.discCategoryId}">
-					<option th:each="currentDiscretionaryCategory : ${DiscretionaryCategories}" 
-						th:value="${currentDiscretionaryCategory.discCategoryId}" 
-						th:text="${currentDiscretionaryCategory.description}">
-					</option>
-				</select>
-			</td> 
-		</tr>
-		<tr>
-			<th>Discretionary Amount:</th>
-			<td><input type="number" size="10" maxlength="12" max="9999999.99" step="0.01" name="amount"  th:field="*{amount}"></td>
-		</tr>
-		<tr>
-			<th><input name="submit" type="submit" value="Submit" /></th>
-		</tr>
+			<td><input name="id" th:field="*{discCategoryId}" hidden></td>
+			<td><input type="text" name="description" size="30" th:field="*{description}" required></td>
+			<td><input name="submit" type="submit" value="Submit"></td>
+		</tr>				
 	</form>
 	
 </body>

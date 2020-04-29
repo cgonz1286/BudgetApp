@@ -92,7 +92,7 @@ public class WebController {
 		return calcTotalBudgetedIncome(selectedPeriod) - calcTotalBudgetedBills(selectedPeriod) - calcTotalBudgetedDiscretionary(selectedPeriod);
 	}
 	
-	//to use this, add "model = getBudgetPeriodEntries( model,  selectedPeriod)" as a line  your mapping 
+	//to use this, add "model = getBudgetPeriodEntries(model, selectedPeriod)" as a line to your mapping 
 	//then you can reference these attributes on your html page. See the income section of reports.html for example
 	//use this to create table of all entries
 	public Model getBudgetPeriodEntries(Model model, BudgetPeriod selectedPeriod) {
@@ -102,7 +102,7 @@ public class WebController {
 		return model;
 	}	
 	
-	//to use this, add "model = getBudgetPeriodSums( model,  selectedPeriod)" as a line  your mapping 
+	//to use this, add "model = getBudgetPeriodSums(model, selectedPeriod)" as a line to your mapping 
 	//then you can reference these attributes on your html page. See the income section of reports.html for example
 	public Model getBudgetPeriodSums(Model model, BudgetPeriod selectedPeriod) {
 		double inc =  calcTotalBudgetedIncome(selectedPeriod);//!!!Changed this to query the repo instead of using list in BudgetPeriod, allows the reports.html to refresh better
@@ -144,7 +144,6 @@ public class WebController {
 	//------------------------------------------------------		
 
 	@GetMapping({"/viewAllBudgetPeriods" ,"/" })
-
 	public String viewAllBudgetPeriods(Model model) {
 		if(repoBudgetPeriod.findAll().isEmpty()) {
 			return addNewBudgetPeriod(model);

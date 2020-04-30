@@ -1,5 +1,6 @@
 package budgetapp.beans;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,19 +34,19 @@ public class BudgetPeriod {
 	//cascade type merge so that it doesn't create duplicates of same item
 	@OneToMany(mappedBy="budgetPeriod", cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
-	private List<BudgetedIncome> listOfBudgetedIncomes;
+	private ArrayList<BudgetedIncome> listOfBudgetedIncomes = new ArrayList<BudgetedIncome>();
 	
 	//!!!REmember to re-add setters and getters!!!	
 	//cascade type merge so that it doesn't create duplicates of same item
 	@OneToMany(mappedBy="budgetPeriod", cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
-	private List<BudgetedBills> listOfBudgetedBills;
+	private ArrayList<BudgetedBills> listOfBudgetedBills= new ArrayList<BudgetedBills>();
 	
 	//!!!REmember to re-add setters and getters!!!				
 	//cascade type merge so that it doesn't create duplicates of same item
 	@OneToMany(mappedBy="budgetPeriod", cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
-	private List<BudgetedDiscretionary> listOfBudgetedDiscretionaries;
+	private ArrayList<BudgetedDiscretionary> listOfBudgetedDiscretionaries= new ArrayList<BudgetedDiscretionary>();
 
 	/**
 	 * @param id
@@ -82,17 +83,17 @@ public class BudgetPeriod {
 	/**
 	 * @param listOfBudgetedIncomes the listOfBudgetedIncomes to set
 	 */
-	public void setListOfBudgetedIncomes(List<BudgetedIncome> listOfBudgetedIncomes) {
+	public void setListOfBudgetedIncomes(ArrayList<BudgetedIncome> listOfBudgetedIncomes) {
 		this.listOfBudgetedIncomes = listOfBudgetedIncomes;
 	}
 	
-//	public List<BudgetedBills> getListOfBudgetedBills() {
-//		return listOfBudgetedBills;
-//	}
-//	
-//	public void setListOfBudgetedBills(List<BudgetedBills> listOfBudgetedBills) {
-//		this.listOfBudgetedBills = listOfBudgetedBills;
-//	}
+	public List<BudgetedBills> getListOfBudgetedBills() {
+		return listOfBudgetedBills;
+	}
+	
+		public void setListOfBudgetedBills(ArrayList<BudgetedBills> listOfBudgetedBills) {
+		this.listOfBudgetedBills = listOfBudgetedBills;
+	}
 	
 	/**
 	 * @return the listOfBudgetedDiscretionaries
@@ -103,7 +104,7 @@ public class BudgetPeriod {
 	/**
 	 * @param listOfBudgetedDiscretionaries the listOfBudgetedDiscretionaries to set
 	 */
-	public void setListOfBudgetedDiscretionaries(List<BudgetedDiscretionary> listOfBudgetedDiscretionaries) {
+	public void setListOfBudgetedDiscretionaries(ArrayList<BudgetedDiscretionary> listOfBudgetedDiscretionaries) {
 		this.listOfBudgetedDiscretionaries = listOfBudgetedDiscretionaries;
 	}
 		

@@ -31,13 +31,8 @@ private Date dateDue;
 private double price;
 
 
-/* !!!Remember to add getter and setter*/
 @ManyToOne(cascade=CascadeType.PERSIST)
 private BudgetPeriod budgetPeriod;
-
-
-@OneToMany(mappedBy="budgetedBills", cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
-private List<BudgetedBills> listOfBudgetedBills;
 
 public BudgetedBills() {
 	super();
@@ -130,13 +125,7 @@ public void setPrice(double price) {
 	this.price = price;
 }
 
-/*public List<BudgetedBills> getListOfBudgetedBills(){
-	return listOfBudgetedBills;
-}
 
-public void setListOfBudgetedBills(List<BudgetedBills> listOfBudgetedBills) {
-	this.listOfBudgetedBills = listOfBudgetedBills;
-}*/
 @ManyToOne
 public BudgetPeriod getBudgetPeriod() {
 	return budgetPeriod;

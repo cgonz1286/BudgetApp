@@ -1,8 +1,7 @@
 package budgetapp.beans;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -34,19 +33,19 @@ public class BudgetPeriod {
 	//cascade type merge so that it doesn't create duplicates of same item
 	@OneToMany(mappedBy="budgetPeriod", cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
-	private ArrayList<BudgetedIncome> listOfBudgetedIncomes = new ArrayList<BudgetedIncome>();
+	private List<BudgetedIncome> listOfBudgetedIncomes;
 	
 	//!!!REmember to re-add setters and getters!!!	
 	//cascade type merge so that it doesn't create duplicates of same item
 	@OneToMany(mappedBy="budgetPeriod", cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
-	private ArrayList<BudgetedBills> listOfBudgetedBills= new ArrayList<BudgetedBills>();
+	private List<BudgetedBills> listOfBudgetedBills;
 	
 	//!!!REmember to re-add setters and getters!!!				
 	//cascade type merge so that it doesn't create duplicates of same item
 	@OneToMany(mappedBy="budgetPeriod", cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
-	private ArrayList<BudgetedDiscretionary> listOfBudgetedDiscretionaries= new ArrayList<BudgetedDiscretionary>();
+	private List<BudgetedDiscretionary> listOfBudgetedDiscretionaries;
 
 	/**
 	 * @param id
@@ -73,40 +72,6 @@ public class BudgetPeriod {
 		super();
 	}
 	
-    /**
-	 * @return the listOfBudgetedIncomes
-	 */
-	public List<BudgetedIncome> getListOfBudgetedIncomes() {
-		return listOfBudgetedIncomes;
-	}
-	
-	/**
-	 * @param listOfBudgetedIncomes the listOfBudgetedIncomes to set
-	 */
-	public void setListOfBudgetedIncomes(ArrayList<BudgetedIncome> listOfBudgetedIncomes) {
-		this.listOfBudgetedIncomes = listOfBudgetedIncomes;
-	}
-	
-	public List<BudgetedBills> getListOfBudgetedBills() {
-		return listOfBudgetedBills;
-	}
-	
-		public void setListOfBudgetedBills(ArrayList<BudgetedBills> listOfBudgetedBills) {
-		this.listOfBudgetedBills = listOfBudgetedBills;
-	}
-	
-	/**
-	 * @return the listOfBudgetedDiscretionaries
-	 */
-	public List<BudgetedDiscretionary> getListOfBudgetedDiscretionaries() {
-		return listOfBudgetedDiscretionaries;
-	}
-	/**
-	 * @param listOfBudgetedDiscretionaries the listOfBudgetedDiscretionaries to set
-	 */
-	public void setListOfBudgetedDiscretionaries(ArrayList<BudgetedDiscretionary> listOfBudgetedDiscretionaries) {
-		this.listOfBudgetedDiscretionaries = listOfBudgetedDiscretionaries;
-	}
 		
 	/**
 	 * @return the id
@@ -164,20 +129,66 @@ public class BudgetPeriod {
 		this.endDate = endDate;
 	}
 	
+	
+	
+	/**
+	 * @return the listOfBudgetedIncomes
+	 */
+	public List<BudgetedIncome> getListOfBudgetedIncomes() {
+		return listOfBudgetedIncomes;
+	}
+
+	/**
+	 * @param listOfBudgetedIncomes the listOfBudgetedIncomes to set
+	 */
+	//https://stackoverflow.com/questions/5587482/hibernate-a-collection-with-cascade-all-delete-orphan-was-no-longer-referenc
+	public void setListOfBudgetedIncomes(List<BudgetedIncome> listOfBudgetedIncomes) {
+		 this.listOfBudgetedIncomes.clear();
+		    if (listOfBudgetedIncomes != null) {
+		        this.listOfBudgetedIncomes.addAll(listOfBudgetedIncomes);
+		    }	
+	}
+
+	/**
+	 * @return the listOfBudgetedBills
+	 */
+	public List<BudgetedBills> getListOfBudgetedBills() {
+		return listOfBudgetedBills;
+	}
+
+	/**
+	 * @param listOfBudgetedBills the listOfBudgetedBills to set
+	 */
+	public void setListOfBudgetedBills(List<BudgetedBills> listOfBudgetedBills) {
+		 this.listOfBudgetedBills.clear();
+		    if (listOfBudgetedBills != null) {
+		        this.listOfBudgetedBills.addAll(listOfBudgetedBills);
+		    }		}	
+
+	/**
+	 * @return the listOfBudgetedDiscretionaries
+	 */
+	public List<BudgetedDiscretionary> getListOfBudgetedDiscretionaries() {
+		return listOfBudgetedDiscretionaries;
+	}
+
+	/**
+	 * @param listOfBudgetedDiscretionaries the listOfBudgetedDiscretionaries to set
+	 */
+	public void setListOfBudgetedDiscretionaries(List<BudgetedDiscretionary> listOfBudgetedDiscretionaries) {
+		 this.listOfBudgetedDiscretionaries.clear();
+		    if (listOfBudgetedDiscretionaries != null) {
+		        this.listOfBudgetedDiscretionaries.addAll(listOfBudgetedDiscretionaries);
+		    }		}
+	
+
 	@Override
 	public String toString() {
 		String tostr="BudgetPeriod [id=" + getId() + ", description="+ getDescription() + "] ";
 		return tostr;
 	}
 	
-	public String toStringlinkedincomes() {
-		String tostr="BudgetPeriod [id=" + getId() + ", description="+ getDescription() + "] For test purposes, linked Incomes: ";
-		for(BudgetedIncome b : listOfBudgetedIncomes) {
-			tostr+= b.toString()+", ";
-		} ;
-		tostr+="end";
-		return tostr;
-	}
+
 
 }
 

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>View All BudgetPeriods</title>
+<title>BudgetPeriodReport</title>
 <style>
 table, th, td {
   border: 1px solid black;
@@ -14,7 +14,7 @@ th, td {
 </style>
 </head>
 <body>
-<h1>Budget Period Reports</h1>
+<h1>Budget Period Report</h1>
 
 <h2>Selected Budget Period </h2>
 
@@ -128,5 +128,7 @@ th, td {
 <a href="/inputBudgetPeriod">Add a new Budget Period</a><br/>
 <a href = "/viewAllBudgetPeriods">View all Budget Periods</a><br/>
 <a th:href="@{/inputBudgetedBill/{periodId}(periodId=${selectedBudgetPeriod.id})}">Add a new Bill</a><br/>
+<a href="../viewReportDiscCat">Spending Categories Budget Report</a><br/>
+
 </body>
 </html>

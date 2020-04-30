@@ -14,6 +14,9 @@ import budgetapp.beans.BudgetedBills;
 import budgetapp.beans.BudgetedDiscretionary;
 import budgetapp.beans.BudgetedIncome;
 import budgetapp.beans.DiscretionaryCategory;
+import budgetapp.pojo.SpendingByCategoryAndPeriod;
+import budgetapp.pojo.SumByCategory;
+import budgetapp.pojo.SumByPeriod;
 import budgetapp.repository.BudgetPeriodRepository;
 import budgetapp.repository.BudgetedBillsRepository;
 import budgetapp.repository.BudgetedDiscretionaryRepository;
@@ -101,7 +104,7 @@ public class WebController {
 		model.addAttribute("periodDiscretionaries", repoBudgetedDiscretionary.findByBudgetPeriod(selectedPeriod)); //!!!Changed this to query the repo, allows the reports.html to refresh better
 		return model;
 	}	
-	
+		
 	//to use this, add "model = getBudgetPeriodSums(model, selectedPeriod)" as a line to your mapping 
 	//then you can reference these attributes on your html page. See the income section of reports.html for example
 	public Model getBudgetPeriodSums(Model model, BudgetPeriod selectedPeriod) {
@@ -182,6 +185,25 @@ public class WebController {
 	    model = getBudgetPeriodSums(model, selectedPeriod);//Adds all the calculation fields as attributes. See getBudgetPeriodSums() function for attribute names.
 	    return "reports";
 	}	
+	
+	
+	@GetMapping("/viewReportDiscCat")
+	public String viewReportDiscCat(Model model) {
+		List<SpendingByCategoryAndPeriod> categoryEntries=repoBudgetedDiscretionary.sumSpendingByCategoryAndPeriod();
+			
+		
+		for (SpendingByCategoryAndPeriod s : categoryEntries) {
+		System.out.println("??? \"/viewReportDiscCat\" ...entry " + s.toString());		
+		}
+		
+		model.addAttribute("categoryEntries", categoryEntries);
+		model.addAttribute("tempAll",	repoBudgetedDiscretionary.findAll());
+		System.out.println("??? ->     reportDiscCat");
+
+		return "reportDiscCat";
+	}
+	
+	
 	
 	@GetMapping("/deleteBudgetPeriodRequest/{id}")
 	public String deleteBudgetPeriodRequest(@PathVariable("id") long id, Model model) {

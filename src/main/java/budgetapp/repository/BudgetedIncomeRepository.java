@@ -14,6 +14,6 @@ public interface BudgetedIncomeRepository extends JpaRepository<BudgetedIncome, 
 	  @Query("FROM #{#entityName} WHERE budgetPeriod = :bp")//parameterize query to limit risk of sql injection attack
 	 List<BudgetedIncome> findByBudgetPeriod(@Param("bp") BudgetPeriod selectedPeriod);
 	
-	  
-
+		@Query("SELECT SUM(e.amount) FROM #{#entityName} e WHERE budgetPeriod = :bp")
+		double sumByPeriod(@Param("bp") BudgetPeriod selectedPeriod);
 }

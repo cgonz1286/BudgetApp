@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>View All BudgetPeriods</title>
+<title>BudgetPeriodReport</title>
 <style>
 table, th, td {
   border: 1px solid black;
@@ -14,32 +14,35 @@ th, td {
 </style>
 </head>
 <body>
-<h1>Budget Period Reports</h1>
+<h1>Budget Period Report</h1>
 
 <h2>Selected Budget Period </h2>
 
 <table>
-	<tr>
-		<th>Description</th>
-		<th>Start Date</th>
-		<th>End Date</th>
-		<th>All Income</br>Budgeted</th>
-		<th>All Bills</br>Budgeted</th>
-		<th>All</br>Spending</br>Budgeted</th>
-	</tr>
-	<tr>
-		<td th:text="${selectedBudgetPeriod.id}"  hidden/>
-		<td th:text="${selectedBudgetPeriod.description}" />
-		<td th:text="${#dates.format(selectedBudgetPeriod.startDate, 'MM/dd/yyyy')}" /> 
-		<td th:text="${#dates.format(selectedBudgetPeriod.endDate, 'MM/dd/yyyy')}" /> 
-	 	<td th:text="${#numbers.formatCurrency(periodIncomesTotal)}" /> 
-		<td th:text="${#numbers.formatCurrency(periodBillsTotal)}" /> 
-		<td  th:text="${#numbers.formatCurrency(periodDiscTotal)}" /> 
-		<!-- https://www.thymeleaf.org/apidocs/thymeleaf/3.0.6.RELEASE/index.html?org/thymeleaf/expression/Numbers.html -->
-	</tr>
+
+<tr>
+<th>Description</th>
+<th>Start Date</th>
+<th>End Date</th>
+<th>All Income </br> Budgeted</th>
+<th>All Bills</br> Budgeted</th>
+<th>All Other </br>Spending</br> Budgeted</th>
+
+</tr>
+ 
+<tr >
+	<td hidden th:text="${selectedBudgetPeriod.id}"  />
+	<td th:text="${selectedBudgetPeriod.description}" />
+	<td th:text="${#dates.format(selectedBudgetPeriod.startDate, 'MM/dd/yyyy')}" /> 
+	<td th:text="${#dates.format(selectedBudgetPeriod.endDate, 'MM/dd/yyyy')}" /> 
+ 	<td th:text="${#numbers.formatCurrency(periodIncomesTotal)}" /> 
+	 <td th:text="${#numbers.formatCurrency(periodBillsTotal)}" /> 
+	 <td  th:text="${#numbers.formatCurrency(periodDiscTotal)}" /> 
+	 	 <!-- https://www.thymeleaf.org/apidocs/thymeleaf/3.0.6.RELEASE/index.html?org/thymeleaf/expression/Numbers.html -->
+</tr>
 </table>
 
-<h2>Amount Remaining: <td th:text="${#numbers.formatCurrency(periodBudgetBalance)}"/></h2>
+<h12>Amount Remaining: <td th:text="${#numbers.formatCurrency(periodBudgetBalance)}"/></h12>
 <!-- <td th:text="${#numbers.formatCurrency(periodBudgetBalance)}"/> --> 
 <th th:text="${balanceInstructions}"/>
 
@@ -86,6 +89,7 @@ th, td {
 	
 </table>
 
+
 <h2>Discretionary Spending</h2>
 
 <table>
@@ -107,6 +111,8 @@ th, td {
 <a href="/inputBudgetPeriod">Add a new Budget Period</a><br/>
 <a href = "/viewAllBudgetPeriods">View all Budget Periods</a><br/>
 <a th:href="@{/inputBudgetedBill/{periodId}(periodId=${selectedBudgetPeriod.id})}">Add a new Bill</a><br/>
+<a href="../viewReportDiscCat">Spending Categories Budget Report</a><br/>
+
 </body>
 </html>
 

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Discretionary Categories All BudgetPeriods</title>
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;
+}
+</style>
+</head>
+<body>
+<h1>Discretionary Categories All BudgetPeriods</h1>
+
+<table>
+
+<tr>
+<th>Category</th>
+<th>Budget Period</th>
+<th>Budgeted Amount</th>
+
+</tr>
+<tr th:each="currentEntry: ${categoryEntries}">
+		<td th:text="${currentEntry.discCategory.description}" />
+		<td th:text="${currentEntry.budgetPeriod.description}" />
+		<td th:text="${currentEntry.amount}" />
+</tr>
+</table>
+
+<a href = "/viewAllBudgetPeriods">Return to all Budget Periods</a><br/>
+</body>
+</html>

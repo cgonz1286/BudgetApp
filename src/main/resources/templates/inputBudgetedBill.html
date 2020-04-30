@@ -61,6 +61,7 @@ th, td {
 
 <h4>Enter all the bills due during the budget period.</h4>
 <form th:object="${newBudgetedBill}"  th:action="@{/updateBudgetedBills/{id}/{periodId}(id=${newBudgetedBill.id}, periodId=${selectedBudgetPeriod.id})}" method=POST>
+<!--<form th:object="${newBudgetedBill}"  th:action="@{/inputBudgetedBill/{id}/{periodId}(id=${newBudgetedBill.id}, periodId=${selectedBudgetPeriod.id})}" method=POST>  -->
  
 Bill Name: <input name="Description" size="20" th:field="*{name}"><br />
 Account Number: <input name="Account Number" size="20" th:field="*{accountNum}"><br />

@@ -183,10 +183,20 @@ public class WebController {
 	    return "reports";
 	}	
 	
+	@GetMapping("/deleteBudgetPeriodRequest/{id}")
+	public String deleteBudgetPeriodRequest(@PathVariable("id") long id, Model model) {
+		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(id).orElse(null);
+		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
+		System.out.println("??? \"/deleteBudgetPeriodRequest/{id}\" ...BudgetPeriod ID to edit is " + selectedPeriod);		
+
+	    return "deleteBudgetPeriodConfirmation";
+	}
+	
 	@GetMapping("/deleteBudgetPeriod/{id}")
 	public String deleteBudgetPeriod(@PathVariable("id") long id, Model model) {
 		BudgetPeriod p = repoBudgetPeriod.findById(id).orElse(null);
-	    repoBudgetPeriod.delete(p);
+		System.out.println("??? /deleteBudgetPeriod/{id} ...BudgetPeriod ID to edit is " +  p);		
+		repoBudgetPeriod.delete(p);
 	    return viewAllBudgetPeriods(model);
 	}
 	////////////////End of BudgetPeriod Maps////////////////
@@ -203,23 +213,15 @@ public class WebController {
 		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
 		System.out.println("??? /inputBudgetedBill/{periodId} selectedPeriod "+selectedPeriod.getId());		
 
-		//model.addAttribute("newBudgetedBill", repoBudgetedBills.findAll());
+		model.addAttribute("BudgetedBills", repoBudgetedBills.findByBudgetPeriod(selectedPeriod)); ///!!!Fixed this by adding a method in BudgetedBillRepository to filter by period
+		model.addAttribute("BudgetedBillsTotal", calcTotalBudgetedBills(selectedPeriod)); ///!!!Fixed this by adding a method in BudgetedBillRepository to filter by period
 		model.addAttribute("newBudgetedBill", p);
 		
 		model.addAttribute("BudgetedBills", p);
 		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
-		
-		
+				
 		return "inputBudgetedBill";
 	}
-	
-	/*@GetMapping("/inputBudgetPeriod")
-	public String addNewBudgetPeriod(Model model) {
-		BudgetPeriod p = new BudgetPeriod();
-		model.addAttribute("newBudgetPeriod", p);
-		return "inputPeriod";
-	}*/
-	
 
 	@GetMapping({ "/viewAllBudgetedBills" })
 	public String viewAllBudgetedBills(Model model) {
@@ -239,6 +241,8 @@ public class WebController {
 		return "inputBudgetedBill";
 	}
 
+	
+	
 	@PostMapping("/updateBudgetedBills/{id}/{periodId}")
 	public String reviseBudgetedBills(@PathVariable("id") long id, @PathVariable("periodId") long periodId, BudgetedBills bb, Model model) {
 		System.out.println("???/updateBudgetedBills/{id}/{periodId ITEM TO EDIT: " + bb.toString());
@@ -248,18 +252,20 @@ public class WebController {
 
 		bb.setBudgetPeriod(selectedPeriod); // commented this line out due to it causing errors
 
-		
 		repoBudgetedBills.save(bb);
 		System.out.println("???/updateBudgetedBills/{id}/{periodId bb: " + bb.toString());
 
-		return viewAllBudgetedBills(model);
-	}
+		return newBudgetedBill( selectedPeriod.getId(),  model);
+		}
+	
 	
 	@GetMapping("/deleteBudgetedBills/{id}")
 	public String deleteBudgetedBills(@PathVariable("id") long id, Model model) {
 		BudgetedBills p = repoBudgetedBills.findById(id).orElse(null);
-	    repoBudgetedBills.delete(p);
-	    return viewAllBudgetedBills(model);
+		BudgetPeriod selectedPeriod = p.getBudgetPeriod();//!!! add selected period
+		repoBudgetedBills.delete(p);
+		repoBudgetedBills.flush();
+		return newBudgetedBill( selectedPeriod.getId(),  model);
 	}
 	////////////////End of BudgededBill Maps////////////////
 

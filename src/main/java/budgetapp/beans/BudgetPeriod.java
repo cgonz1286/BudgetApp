@@ -31,19 +31,19 @@ public class BudgetPeriod {
 	private Date endDate; 
     
 	//cascade type merge so that it doesn't create duplicates of same item
-	@OneToMany(mappedBy="budgetPeriod", cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="budgetPeriod", cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<BudgetedIncome> listOfBudgetedIncomes;
 	
 	//!!!REmember to re-add setters and getters!!!	
 	//cascade type merge so that it doesn't create duplicates of same item
-//	@OneToMany(mappedBy="budgetPeriod", cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
-//	@Fetch(value = FetchMode.SUBSELECT)
-//	private List<BudgetedBills> listOfBudgetedBills;
+	@OneToMany(mappedBy="budgetPeriod", cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<BudgetedBills> listOfBudgetedBills;
 	
 	//!!!REmember to re-add setters and getters!!!				
 	//cascade type merge so that it doesn't create duplicates of same item
-	@OneToMany(mappedBy="budgetPeriod", cascade=CascadeType.MERGE, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="budgetPeriod", cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<BudgetedDiscretionary> listOfBudgetedDiscretionaries;
 

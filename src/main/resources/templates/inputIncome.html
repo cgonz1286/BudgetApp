@@ -75,7 +75,6 @@ Amount: <input type ="text" name = "amount"  th:field="*{amount}"><br />
 <br/>
 
 <a th:href="@{/inputBudgetedBill/{periodId}(periodId=${selectedBudgetPeriod.id})}">Continue to add Bills to this Budget</a><br/>
-<a th:href="@{/viewReports/{periodId}( periodId=${selectedBudgetPeriod.id})}">View Reports for this Budget Period</a><br/><br/> <!-- Consider removing this link? -->
 <a th:href = "@{/}">Return to All Budget Periods</a>
 <br/>
 </body>

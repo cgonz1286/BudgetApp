@@ -19,7 +19,6 @@ th, td {
 <h2>Selected Budget Period </h2>
 
 <table>
-<<<<<<< HEAD
 
 <tr>
 <th>Description</th>
@@ -40,36 +39,16 @@ th, td {
 	 <td th:text="${#numbers.formatCurrency(periodBillsTotal)}" /> 
 	 <td  th:text="${#numbers.formatCurrency(periodDiscTotal)}" /> 
 	 	 <!-- https://www.thymeleaf.org/apidocs/thymeleaf/3.0.6.RELEASE/index.html?org/thymeleaf/expression/Numbers.html -->
-=======
-	<tr>
-		<th>Description</th>
-		<th>Start Date</th>
-		<th>End Date</th>
-		<th>All Income</br>Budgeted</th>
-		<th>All Bills</br>Budgeted</th>
-		<th>All</br>Spending</br>Budgeted</th>
-	</tr>
-	<tr>
-		<td th:text="${selectedBudgetPeriod.id}"  hidden/>
-		<td th:text="${selectedBudgetPeriod.description}" />
-		<td th:text="${#dates.format(selectedBudgetPeriod.startDate, 'MM/dd/yyyy')}" /> 
-		<td th:text="${#dates.format(selectedBudgetPeriod.endDate, 'MM/dd/yyyy')}" /> 
-	 	<td th:text="${#numbers.formatCurrency(periodIncomesTotal)}" /> 
-		<td th:text="${#numbers.formatCurrency(periodBillsTotal)}" /> 
-		<td  th:text="${#numbers.formatCurrency(periodDiscTotal)}" /> 
-		<!-- https://www.thymeleaf.org/apidocs/thymeleaf/3.0.6.RELEASE/index.html?org/thymeleaf/expression/Numbers.html -->
-	</tr>
->>>>>>> branch 'master' of https://github.com/KLKln/BudgetApp.git
+</tr>
 </table>
 
-<h2>Amount Remaining: <td th:text="${#numbers.formatCurrency(periodBudgetBalance)}"/></h2>
+<h12>Amount Remaining: <td th:text="${#numbers.formatCurrency(periodBudgetBalance)}"/></h12>
 <!-- <td th:text="${#numbers.formatCurrency(periodBudgetBalance)}"/> --> 
 <th th:text="${balanceInstructions}"/>
 
 <h2>Income</h2>
 
 <table>
-<<<<<<< HEAD
 
 <tr>
 <th>Description</th> 
@@ -85,22 +64,7 @@ th, td {
 	<td th:text="${currentBudgetedIncome.amount}" />
 	<td><a th:href="@{/editBudgetedIncome/{id}/GoToReports(id=${currentBudgetedIncome.id})}">Edit </a></td>
 	<td><a th:href="@{/deleteBudgetedIncome/{id}/GoToReports(id=${currentBudgetedIncome.id})}">Delete </a></td>
-=======
-	<tr>
-		<th>Description</th> 
-		<th>Date</th>
-		<th>Amount</th>
-		<!-- add Add New button here? -->
-	</tr>
-	<tr th:each="currentBudgetedIncome: ${periodIncomes}">
-		<td  th:text="${currentBudgetedIncome.id}" hidden />
-		<td th:text="${currentBudgetedIncome.description}" />
-		<td th:text="${#dates.format(currentBudgetedIncome.incomeDate, 'MM/dd/yyyy')}" /> 
-		<td th:text="${#numbers.formatCurrency(currentBudgetedIncome.amount)}" />
-		<td><a th:href="@{/editBudgetedIncome/{id}/GoToReports(id=${currentBudgetedIncome.id})}">Edit </a></td>
-		<td><a th:href="@{/deleteBudgetedIncome/{id}/GoToReports(id=${currentBudgetedIncome.id})}">Delete </a></td>
->>>>>>> branch 'master' of https://github.com/KLKln/BudgetApp.git
-	</tr>
+</tr>
 </table>
 
 <h2>Bills</h2>
@@ -129,7 +93,6 @@ th, td {
 	-->
 </table>
 
-<<<<<<< HEAD
 <table>
 		<tr>
 			<th>Discretionary Category</th> 
@@ -143,7 +106,7 @@ th, td {
 			<td><a th:href="@{/deleteBudgetedDiscretionary/{id}(id=${currentBudgetedDiscretionary.id})}">Delete</a></td>
 		</tr>
 </table>
-=======
+
 <h2>Discretionary Spending</h2>
 
 <table>
@@ -161,7 +124,6 @@ th, td {
 	</tr>
 </table>
 <br/>
->>>>>>> branch 'master' of https://github.com/KLKln/BudgetApp.git
 
 <a href="/inputBudgetPeriod">Add a new Budget Period</a><br/>
 <a href = "/viewAllBudgetPeriods">View all Budget Periods</a><br/>

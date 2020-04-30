@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>View All BudgetPeriods</title>
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;
+}
+</style>
+</head>
+<body>
+
+<h2>Do you want to delete this Budget Period? </h2>
+<h12>Deleting this Budget Period will also delete all the entries under it. </h12>
+
+<br/><br/>
+<a th:href="@{/deleteBudgetPeriod/{id}(id=${selectedBudgetPeriod.id})}">Confirm Delete</a><br/>
+<a href="/">Cancel Delete</a><br/><br/>
+
+
+ 
+<table>
+
+<tr>
+<th>Description</th>
+<th>Start Date</th>
+<th>End Date</th>
+
+
+</tr>
+
+<tr >
+	<td hidden th:text="${selectedBudgetPeriod.id}"  />
+	<td th:text="${selectedBudgetPeriod.description}" />
+	<td th:text="${#dates.format(selectedBudgetPeriod.startDate, 'MM/dd/yyyy')}" /> 
+	<td th:text="${#dates.format(selectedBudgetPeriod.endDate, 'MM/dd/yyyy')}" /> 
+
+</tr>
+</table>
+</body>
+</html>

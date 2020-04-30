@@ -209,7 +209,7 @@ public class WebController {
 		model.addAttribute("BudgetedBillsTotal", repoBudgetedBills.sumByPeriod(selectedPeriod)); ///!!!Fixed this by adding a method in BudgetedBillRepository to filter by period
 		model.addAttribute("newBudgetedBill", p);
 		
-		model.addAttribute("BudgetedBills", p);
+		model.addAttribute("BudgetedBills", repoBudgetedBills.findByBudgetPeriod(selectedPeriod));
 		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
 				
 		return "inputBudgetedBill";
@@ -247,17 +247,20 @@ public class WebController {
 		repoBudgetedBills.save(bb);
 		System.out.println("???/updateBudgetedBills/{id}/{periodId bb: " + bb.toString());
 
-		return newBudgetedBill( selectedPeriod.getId(),  model);
-		}
+
+		return newBudgetedBill(periodId, model);
+	}
+
 	
 	
+
 	@GetMapping("/deleteBudgetedBills/{id}")
 	public String deleteBudgetedBills(@PathVariable("id") long id, Model model) {
 		BudgetedBills p = repoBudgetedBills.findById(id).orElse(null);
-		BudgetPeriod selectedPeriod = p.getBudgetPeriod();//!!! add selected period
-		repoBudgetedBills.delete(p);
-		repoBudgetedBills.flush();
-		return newBudgetedBill( selectedPeriod.getId(),  model);
+
+		long periodId = p.getBudgetPeriod().getId();
+	    repoBudgetedBills.delete(p);
+	    return newBudgetedBill(periodId, model);
 	}
 	////////////////End of BudgededBill Maps////////////////
 

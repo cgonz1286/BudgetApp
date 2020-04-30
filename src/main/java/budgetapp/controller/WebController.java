@@ -197,6 +197,8 @@ public class WebController {
 		BudgetPeriod p = repoBudgetPeriod.findById(id).orElse(null);
 		System.out.println("??? /deleteBudgetPeriod/{id} ...BudgetPeriod ID to edit is " +  p);		
 		repoBudgetPeriod.delete(p);
+		repoBudgetPeriod.flush();
+
 	    return viewAllBudgetPeriods(model);
 	}
 	////////////////End of BudgetPeriod Maps////////////////
@@ -491,7 +493,8 @@ public class WebController {
 		DiscretionaryCategory dc = repoDiscretionaryCategory.findById(id).orElse(null);
 	    
 		repoDiscretionaryCategory.delete(dc); // Delete entity.
-		
+		repoDiscretionaryCategory.flush();
+
 		if(GoTo.equals("GoToReports")) {
 			return viewReports(periodId, model);
 		}
@@ -560,7 +563,8 @@ public class WebController {
 		long periodId = bd.getBudgetPeriod().getId(); // Get periodId before deleting.
 	    
 		repoBudgetedDiscretionary.delete(bd); // Delete entity.
-		
+		repoBudgetedDiscretionary.flush(); // Delete entity.
+
 		if(GoTo.equals("GoToReports")) {
 			return viewReports(periodId, model);
 		}

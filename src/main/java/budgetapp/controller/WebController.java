@@ -225,17 +225,25 @@ public class WebController {
 		return "resultsBudgetedBills";
 	}
 	
-	@GetMapping("/editBudgetedBill/{id}")
-	public String showUpdateBudgetedBill(@PathVariable("id") long id, Model model) {
+	@GetMapping("/editBudgetedBill/{periodId}/{id}")
+	public String showUpdateBudgetedBill(@PathVariable("periodId") long periodId, @PathVariable("id") long id, Model model) {
+
 		BudgetedBills p = repoBudgetedBills.findById(id).orElse(null);
-		System.out.println("???/editBudgetedBill/{id} ITEM TO EDIT: " + p.toString());
+		System.out.println("???/editBudgetedBills/{id}/{periodId ITEM TO EDIT: " + p.toString());
+
+		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(id).orElse(null);
+		System.out.println("???/updateBudgetedBills/{id}/{periodId budgetperiod: " + selectedPeriod.toString());
+
 		model.addAttribute("newBudgetedBills", p);
+		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
+		model.addAttribute("BudgetedBills", repoBudgetedBills.findAll());
+		
 		return "inputBudgetedBill";
 	}
 
 	
 	
-	@PostMapping("/updateBudgetedBills/{id}/{periodId}")
+	@PostMapping("/updateBudgetedBills/{id}")
 	public String reviseBudgetedBills(@PathVariable("id") long id, @PathVariable("periodId") long periodId, BudgetedBills bb, Model model) {
 		System.out.println("???/updateBudgetedBills/{id}/{periodId ITEM TO EDIT: " + bb.toString());
 
@@ -254,12 +262,12 @@ public class WebController {
 	
 	
 
-	@GetMapping("/deleteBudgetedBills/{id}")
-	public String deleteBudgetedBills(@PathVariable("id") long id, Model model) {
+	@GetMapping("/deleteBudgetedBills/{periodId}/{id}")
+	public String deleteBudgetedBills(@PathVariable("periodId") long periodId, @PathVariable("id") long id, Model model) {
 		BudgetedBills p = repoBudgetedBills.findById(id).orElse(null);
 
-		long periodId = p.getBudgetPeriod().getId();
 	    repoBudgetedBills.delete(p);
+	    
 	    return newBudgetedBill(periodId, model);
 	}
 	////////////////End of BudgededBill Maps////////////////

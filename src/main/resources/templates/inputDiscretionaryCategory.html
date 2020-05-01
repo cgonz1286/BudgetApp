@@ -42,7 +42,8 @@ th, td {
 		<tr th:each="currentCategory : ${DiscretionaryCategories}">
 			<td th:text="${currentCategory.description}" />
 			<td><a th:href="@{/editDiscretionaryCategory/{periodId}/{id}/{GoTo}(periodId=${selectedBudgetPeriod.id}, id=${currentCategory.discCategoryId}, GoTo=${GoTo})}">Edit</a></td>
-			<td><a th:href="@{/deleteDiscretionaryCategory/{periodId}/{id}/{GoTo}(periodId=${selectedBudgetPeriod.id}, id=${currentCategory.discCategoryId}, GoTo=${GoTo})}">Delete</a></td>
+		<!--	<td><a th:href="@{/deleteDiscretionaryCategory/{periodId}/{id}/{GoTo}(periodId=${selectedBudgetPeriod.id}, id=${currentCategory.discCategoryId}, GoTo=${GoTo})}">Delete</a></td>
+		-->
 		</tr>                      
 	</table>
 	

@@ -30,14 +30,17 @@ public class BudgetPeriod {
     @DateTimeFormat(pattern = "MM/dd/yyyy")
 	private Date endDate; 
     
-	//cascade type merge so that it doesn't create duplicates of same item
 
-	@OneToMany(mappedBy="budgetPeriod", orphanRemoval = true)
-	@Fetch(value = FetchMode.SUBSELECT)
+	
+ 
+
+
+
+    /*
+	//cascade type merge so that it doesn't create duplicates of same item?
+	@OneToMany(mappedBy="budgetPeriod", cascade=CascadeType.ALL)
 	private List<BudgetedIncome> listOfBudgetedIncomes;
 	
-	//!!!REmember to re-add setters and getters!!!	
-	//cascade type merge so that it doesn't create duplicates of same item
 	@OneToMany(mappedBy="budgetPeriod", orphanRemoval = true)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<BudgetedBills> listOfBudgetedBills;
@@ -49,6 +52,9 @@ public class BudgetPeriod {
 
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<BudgetedDiscretionary> listOfBudgetedDiscretionaries;
+
+
+	*/
 
 	/**
 	 * @param id

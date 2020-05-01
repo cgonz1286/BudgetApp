@@ -196,7 +196,7 @@ public class WebController {
 	//------------------------------------------------------
 	//                BudgetedBill Maps
 	//------------------------------------------------------
-	@GetMapping("/inputBudgetedBill/{periodId}")
+/*	@GetMapping("/inputBudgetedBill/{periodId}")
 	public String newBudgetedBill(@PathVariable("periodId") long periodId, Model model) {
 		System.out.println("??? /inputBudgetedBill/{periodId}");		
 
@@ -270,42 +270,14 @@ public class WebController {
 	    
 	    return newBudgetedBill(periodId, model);
 	}
+	*/
 	////////////////End of BudgededBill Maps////////////////
 
 	//------------------------------------------------------
 	//                 BudgetedIncome maps                        
 	//------------------------------------------------------
-	/* Not using
-	@GetMapping({ "/viewAllBudgetedIncomes" })
-	public String viewAllBudgetedIncomes(Model model) {
-		if(repoBudgetedIncome.findAll().isEmpty()) {
-			return viewAllBudgetPeriods(model);
-		}
-		model.addAttribute("BudgetedIncomes", repoBudgetedIncome.findAll());
-		return "resultsIncome";
-	}
 	
-	Object findTotalIncome(BudgetPeriod selectedPeriod){
-		 List<Object[]> results = repoBudgetedIncome.sumByBudgetPeriod(selectedPeriod);
-		return results.get(0);
-	}
 
-	// Commented out this method because it already exists in first section -CMG
-	double repoBudgetedIncome.sumByPeriod(BudgetPeriod selectedPeriod){
-		 List<BudgetedIncome> BudgetedIncomes = repoBudgetedIncome.findByBudgetPeriod(selectedPeriod);
-		 double totalIncome = 0;
-
-		 for (BudgetedIncome b : BudgetedIncomes)
-		 {
-			 totalIncome += b.getAmount();
-				System.out.println("??? repoBudgetedIncome.sumByPeriod "+b.getId()+" "+b.getAmount());
-
-		 }
-			System.out.println("??? repoBudgetedIncome.sumByPeriod "+totalIncome);
-
-		 return totalIncome;
-	}
-	*/
 
 	///continue from period to inputBudgetedIncome
 	//!!! use this format to allow join, pass in the period id and add BudgetPeriod as an attribute
@@ -397,42 +369,7 @@ public class WebController {
 	    return deleteBudgetedIncome(id, "GoToInputForm",  model);
 	}
 	//!!!END Added GoTo to the above
-	
-	/*
-	//original version does not have GoTo
-	@PostMapping("/updateBudgetedIncome/{periodId}")
-	public String reviseBudgetedIncome(@PathVariable("periodId") long periodId, BudgetedIncome b, Model model) {
-		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
-		b.setBudgetPeriod(selectedPeriod);
-		repoBudgetedIncome.save(b);
-		return addNewBudgetedIncome( selectedPeriod.getId(),  model) ;//!!!
-	}
-	
-	@GetMapping("/editBudgetedIncomeFromReport/{id}")
-	public String showUpdateBudgetedIncomeFromReport(@PathVariable("id") long id,  Model model) {
-		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
-		System.out.println("???ITEM TO EDIT: " + b.toString());
-		
-		BudgetPeriod selectedPeriod = b.getBudgetPeriod(); ///!!!Add this so the input form layout will work with the edit mapping
-		System.out.println("???ITEM TO EDIT: " + selectedPeriod.toString());
 
-		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
-
-		model.addAttribute("newBudgetedIncome", b);
-		model.addAttribute("BudgetedIncomes", repoBudgetedIncome.findAll());///!!Add this so the input form will work with the edit mapping
-
-		return "editIncomeGoToInputForm";
-	}
-	
-	//!!!edited to return to input form, have not added GoTo to this yet
-	@GetMapping("/deleteBudgetedIncome/{id}")
-	public String deleteBudgetedIncome(@PathVariable("id") long id, Model model) {
-		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
-		BudgetPeriod selectedPeriod = b.getBudgetPeriod();//!!! add
-	    repoBudgetedIncome.delete(b);
-	    return addNewBudgetedIncome(selectedPeriod.getId(), model);//!!! add
-	}
-	*/
 		
 	//Maybe temporary, using this for troubleshooting
 	@GetMapping({ "/viewBudgetedIncomeDetail/{id}" })
@@ -591,7 +528,8 @@ public class WebController {
 	public String deleteBudgetedDiscretionary(@PathVariable("id") long id, Model model) {
 	    return deleteBudgetedDiscretionary(id, "GoToInputForm",  model);
 	}
-}	
+	
+
 
 
 	
@@ -632,3 +570,89 @@ public class WebController {
 	    return addNewBudgetedIncome(selectedPeriod.getId(), model);//!!! add
 	}
 */
+
+
+@GetMapping("/inputBudgetedBill/{periodId}")
+public String addNewBudgetedBills(@PathVariable("periodId") long periodId, Model model) {
+BudgetedBills b = new BudgetedBills();
+BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
+	model.addAttribute("BudgetedBills", repoBudgetedBills.findByBudgetPeriod(selectedPeriod)); ///!!!Fixed this by adding a method in BudgetedBillRepository to filter by period
+	model.addAttribute("BudgetedBillsTotal", calcTotalBudgetedBills(selectedPeriod)); ///!!!Fixed this by adding a method in BudgetedBillRepository to filter by period
+	
+	model.addAttribute("newBudgetedBill", b);
+	model.addAttribute("selectedBudgetPeriod", selectedPeriod);
+
+	return "inputBudgetedBill";
+}
+
+//!!!START Added GoTo - will also need to edit the post action link on reports.html to add the .../GoToReports . 
+//I created a simplified input form to collect just the edits and pass through the GoTo destination (see editBills.html)
+@GetMapping("/editBudgetedBill/{id}/{GoTo}")
+public String showUpdateBudgetedBills(@PathVariable("id") long id, @PathVariable("GoTo") String GoTo,  Model model) {
+	BudgetedBills b = repoBudgetedBills.findById(id).orElse(null);
+	BudgetPeriod selectedPeriod =  b.getBudgetPeriod();
+	System.out.println("/editBudgetedBill/{id}/{GoTo}"+id);		
+	model.addAttribute("selectedBudgetPeriod", selectedPeriod);
+	model.addAttribute("newBudgetedBill", b);
+	model.addAttribute("BudgetedBills", repoBudgetedBills.findAll());
+	return "editBudgetedBill";
+}
+
+//made the original map redirect to the above mapping so no need to change existing links, they will just default to the Input Form.
+@GetMapping("/editBudgetedBill/{id}")
+public String showUpdateBudgetedBills(@PathVariable("id") long id,  Model model) {
+	System.out.println("\"/editBudgetedBill/{id}\""+id);
+		return showUpdateBudgetedBills(id, "InputForm", model);
+}
+		
+//editBills post action leads here
+//If you want other destinations, add another if statement to return to that. If more reports are added, can specify which report to go to.
+@PostMapping("/updateBudgetedBills/{id}/{periodId}/{GoTo}")
+public String reviseBudgetedBills( @PathVariable("periodId") long periodId, @PathVariable("GoTo") String GoTo, BudgetedBills b, Model model) {
+
+	BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
+
+	b.setBudgetPeriod(selectedPeriod);
+
+	repoBudgetedBills.save(b);
+
+	if(GoTo.equals("GoToReports")) {
+		return viewReports(selectedPeriod.getId(), model);
+	}
+	else {
+	return addNewBudgetedBills( selectedPeriod.getId(),  model) ;//!!!
+	}
+}
+
+//made the original map redirect to the above mapping so no need to change existing links, they will just default to the Input Form.
+@PostMapping("/updateBudgetedBills/{id}/{periodId}")
+public String reviseBudgetedBills( @PathVariable("periodId") long periodId, BudgetedBills b, Model model) {
+	
+	return reviseBudgetedBills( periodId, "InputForm", b, model)	;
+	
+}
+
+@GetMapping("/deleteBudgetedBill/{id}/{GoTo}")
+public String deleteBudgetedBills(@PathVariable("id") long id, @PathVariable("GoTo") String GoTo, Model model) {
+	
+	BudgetedBills b = repoBudgetedBills.findById(id).orElse(null);
+	BudgetPeriod selectedPeriod = b.getBudgetPeriod();//!!! add selected period
+
+	repoBudgetedBills.delete(b);
+	
+	repoBudgetedBills.flush();
+
+    if(GoTo.equals("GoToReports")) {
+		return viewReports(selectedPeriod.getId(), model);
+	}
+    return addNewBudgetedBills(selectedPeriod.getId(), model);//!!! add selected period
+}
+
+//made the original map redirect to the above mapping so no need to change existing links, they will just default to the Input Form.
+@GetMapping("/deleteBudgetedBill/{id}")
+public String deleteBudgetedBills(@PathVariable("id") long id, Model model) {
+    return deleteBudgetedBills(id, "GoToInputForm",  model);
+}
+//!!!END Added GoTo to the above
+
+}

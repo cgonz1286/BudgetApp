@@ -234,7 +234,7 @@ public class WebController {
 		BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(id).orElse(null);
 		System.out.println("???/updateBudgetedBills/{id}/{periodId budgetperiod: " + selectedPeriod.toString());
 
-		model.addAttribute("newBudgetedBills", p);
+		model.addAttribute("currentBudgetedBill", p);
 		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
 		model.addAttribute("BudgetedBills", repoBudgetedBills.findAll());
 		

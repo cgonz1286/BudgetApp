@@ -34,7 +34,7 @@ th, td {
 	
 	
 	<td><a th:href="@{/editBudgetPeriod/{id}(id=${currentBudgetPeriod.id})}">Edit</a></td>
-	<td><a th:href="@{/deleteBudgetPeriodRequest/{id}(id=${currentBudgetPeriod.id})}">Delete</a></td>
+<!-- 	<td><a th:href="@{/deleteBudgetPeriodRequest/{id}(id=${currentBudgetPeriod.id})}">Delete</a></td> -->
 	<td><a th:href="@{/inputBudgetedIncome/{periodId}(periodId=${currentBudgetPeriod.id})}">Continue to Enter Income</a></td>
 	<td><a th:href="@{/viewReports/{periodId}(periodId=${currentBudgetPeriod.id})}">View Reports for this Budget Period</a></td>
 	<td th:text="${currentBudgetPeriod.id} "  /> <!-- temporarily displaying ID for testing" -->

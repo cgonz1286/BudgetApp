@@ -53,9 +53,9 @@ th, td {
 	<td th:text="${#dates.format(currentBudgetedBill.dateDue, 'MM/dd/yyyy')}" /> 
 	<td th:text="${currentBudgetedBill.price}" />
 
-	<td><a th:href="@{/editBudgetedBill/{id}/{periodId}(id=${currentBudgetedBill.id}, periodId =${selectedBudgetPeriod.id})}">Edit</a></td>
+	<td><a th:href="@{/editBudgetedBill/{id}/{periodId}(id=${currentBudgetedBill.id}, periodId=${selectedBudgetPeriod.id})}">Edit</a></td>
 	
-	<td><a th:href="@{/deleteBudgetedBill/{id}/{periodId}(id=${currentBudgetedBill.id}, periodId =${selectedBudgetPeriod.id})}">Delete</a></td>
+	<td><a th:href="@{/deleteBudgetedBill/{id}/{periodId}(id=${currentBudgetedBill.id}, periodId=${selectedBudgetPeriod.id})}">Delete</a></td>
 	</tr>
 </table>
 

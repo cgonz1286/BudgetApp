@@ -14,7 +14,7 @@ th, td {
 </style>
 </head>
 <body>
-<h1>Enter Budgeted Bill</h1>
+<h1>Edit Budgeted Bill</h1>
 
 <h3>Budget Period</h3>
  
@@ -31,37 +31,8 @@ th, td {
 	<td th:text="${#dates.format(selectedBudgetPeriod.endDate, 'MM/dd/yyyy')}" /> 	
 </tr>
 </table>
-<h3>Expected Bills for this Budget Period</h3>
 
 
-<table>
-
-<tr>
-<th>Bill Name</th> 
-<th>Account Number</th>
-<th>Category</th>
-<th>Due Date</th>
-<th>Amount Due</th>
-
-</tr>
- 
-<tr th:each="currentBudgetedBill: ${BudgetedBills}">
-	<td  th:text="${currentBudgetedBill.id}" hidden />
-	<td th:text="${currentBudgetedBill.name}" />
-	<td th:text="${currentBudgetedBill.accountNum}" />
-	<td th:text="${currentBudgetedBill.category}" />
-	<td th:text="${#dates.format(currentBudgetedBill.dateDue, 'MM/dd/yyyy')}" /> 
-	<td th:text="${currentBudgetedBill.price}" />
-
-	<td><a th:href="@{/editBudgetedBill/{id}(id=${currentBudgetedBill.id})}">Edit</a></td>
-	
-	<td><a th:href="@{/deleteBudgetedBill/{id}(id=${currentBudgetedBill.id})}">Delete</a></td>
-	</tr>
-</table>
-
-<h3>Add More bills for this budget period</h3>
-
-<h4>Enter all the bills due during the budget period.</h4>
 <form th:object="${newBudgetedBill}"  th:action="@{/updateBudgetedBills/{id}/{periodId}(id=${newBudgetedBill.id}, periodId=${selectedBudgetPeriod.id})}" method=POST>
  
 Bill Name: <input name="Description" size="20" th:field="*{name}"><br />
@@ -71,9 +42,5 @@ Due Date: <input type ="text" name = "dateDue" placeholder="MM/dd/yyyy" th:field
 Amount Due: <input type ="text" name = "price"  th:field="*{price}"><br />
 
 <input name="Submit" type="submit" value="Submit" /><br /><br />
-<a th:href="@{/inputDiscretionaryCategory/{periodId}/GoToInputForm(periodId=${selectedBudgetPeriod.id})}">Continue to add Discretionary Categories</a><br/>
-<a th:href = "@{/}">Return to All Budget Periods</a>
-</form>
-
 </body>
 </html>

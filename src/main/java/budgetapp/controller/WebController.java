@@ -626,20 +626,21 @@ BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
 
 //!!!START Added GoTo - will also need to edit the post action link on reports.html to add the .../GoToReports . 
 //I created a simplified input form to collect just the edits and pass through the GoTo destination (see editBills.html)
-@GetMapping("/editBudgetedBills/{id}/{GoTo}")
+@GetMapping("/editBudgetedBill/{id}/{GoTo}")
 public String showUpdateBudgetedBills(@PathVariable("id") long id, @PathVariable("GoTo") String GoTo,  Model model) {
 	BudgetedBills b = repoBudgetedBills.findById(id).orElse(null);
 	BudgetPeriod selectedPeriod =  b.getBudgetPeriod();
-			
+	System.out.println("/editBudgetedBill/{id}/{GoTo}"+id);		
 	model.addAttribute("selectedBudgetPeriod", selectedPeriod);
-	model.addAttribute("newBudgetedBills", b);
+	model.addAttribute("newBudgetedBill", b);
 	model.addAttribute("BudgetedBills", repoBudgetedBills.findAll());
-	return "inputBudgetedBill";
+	return "editBudgetedBill";
 }
 
 //made the original map redirect to the above mapping so no need to change existing links, they will just default to the Input Form.
-@GetMapping("/editBudgetedBills/{id}")
+@GetMapping("/editBudgetedBill/{id}")
 public String showUpdateBudgetedBills(@PathVariable("id") long id,  Model model) {
+	System.out.println("\"/editBudgetedBill/{id}\""+id);
 		return showUpdateBudgetedBills(id, "InputForm", model);
 }
 		
@@ -670,7 +671,7 @@ public String reviseBudgetedBills( @PathVariable("periodId") long periodId, Budg
 	
 }
 
-@GetMapping("/deleteBudgetedBills/{id}/{GoTo}")
+@GetMapping("/deleteBudgetedBill/{id}/{GoTo}")
 public String deleteBudgetedBills(@PathVariable("id") long id, @PathVariable("GoTo") String GoTo, Model model) {
 	
 	BudgetedBills b = repoBudgetedBills.findById(id).orElse(null);
@@ -687,7 +688,7 @@ public String deleteBudgetedBills(@PathVariable("id") long id, @PathVariable("Go
 }
 
 //made the original map redirect to the above mapping so no need to change existing links, they will just default to the Input Form.
-@GetMapping("/deleteBudgetedBills/{id}")
+@GetMapping("/deleteBudgetedBill/{id}")
 public String deleteBudgetedBills(@PathVariable("id") long id, Model model) {
     return deleteBudgetedBills(id, "GoToInputForm",  model);
 }

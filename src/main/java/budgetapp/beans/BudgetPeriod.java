@@ -35,12 +35,12 @@ public class BudgetPeriod {
 
 
 
-
+    /*
 	//cascade type merge so that it doesn't create duplicates of same item?
 	@OneToMany(mappedBy="budgetPeriod", cascade=CascadeType.ALL)
 	private List<BudgetedIncome> listOfBudgetedIncomes;
 	
-	   /*
+	   
 	@OneToMany(mappedBy="budgetPeriod", orphanRemoval = true)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<BudgetedBills> listOfBudgetedBills;
@@ -50,17 +50,13 @@ public class BudgetPeriod {
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<BudgetedDiscretionary> listOfBudgetedDiscretionaries;
 
-	*/
-    /**
-	 * @return the listOfBudgetedIncomes
-	 */
+	
+
 	public List<BudgetedIncome> getListOfBudgetedIncomes() {
 		return listOfBudgetedIncomes;
 	}
 
-	/**
-	 * @param listOfBudgetedIncomes the listOfBudgetedIncomes to set
-	 */
+	
 	//https://stackoverflow.com/questions/5587482/hibernate-a-collection-with-cascade-all-delete-orphan-was-no-longer-referenc	
 	public void setListOfBudgetedIncomes(List<BudgetedIncome> listOfBudgetedIncomes) {	
 			 this.listOfBudgetedIncomes.clear();	
@@ -68,7 +64,7 @@ public class BudgetPeriod {
 			        this.listOfBudgetedIncomes.addAll(listOfBudgetedIncomes);	
 			    }		
 		}
-	
+	*/
 	/**
 	 * @param id
 	 */

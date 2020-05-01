@@ -381,10 +381,18 @@ public class WebController {
 
 	@GetMapping("/deleteBudgetedIncome/{id}/{GoTo}")
 	public String deleteBudgetedIncome(@PathVariable("id") long id, @PathVariable("GoTo") String GoTo, Model model) {
+		System.out.println(" ??? /deleteBudgetedIncome/{id}/{GoTo}   start");
+
 		BudgetedIncome b = repoBudgetedIncome.findById(id).orElse(null);
 		BudgetPeriod selectedPeriod = b.getBudgetPeriod();//!!! add selected period
-	    repoBudgetedIncome.delete(b);
-	    repoBudgetedIncome.flush();
+		System.out.println(" ??? /deleteBudgetedIncome/{id}/{GoTo}   start delete");
+
+		repoBudgetedIncome.delete(b);
+		//System.out.println(" ??? /deleteBudgetedIncome/{id}/{GoTo}   start flush");
+
+		//repoBudgetedIncome.flush();
+		System.out.println(" ??? /deleteBudgetedIncome/{id}/{GoTo}   deleted");
+
 	    if(GoTo.equals("GoToReports")) {
 			return viewReports(selectedPeriod.getId(), model);
 		}

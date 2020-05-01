@@ -47,20 +47,53 @@ public class WebController {
 	//------------------------------------------------------
 
 	
+	double calcTotalBudgetedIncome(BudgetPeriod selectedPeriod){
+		 List<BudgetedIncome> BudgetedIncomes = repoBudgetedIncome.findByBudgetPeriod(selectedPeriod);
+		 double totalIncome = 0;
+
+		 for (BudgetedIncome b : BudgetedIncomes)
+		 {
+			 totalIncome += b.getAmount();
+				System.out.println("??? calcTotalBudgetedIncome "+b.getId()+" "+b.getAmount());
+		 }
+			System.out.println("??? calcTotalBudgetedIncome "+totalIncome);
+
+		 return totalIncome;
+	}
+	
 	double calcTotalBudgetedBills(BudgetPeriod selectedPeriod){
-		 return repoBudgetedBills.sumByPeriod(selectedPeriod);
+		 List<BudgetedBills> BudgetedDiscretionaries = repoBudgetedBills.findByBudgetPeriod(selectedPeriod);
+		 double totalBill = 0;
+
+		 for (BudgetedBills b : BudgetedDiscretionaries)
+		 {
+			 totalBill += b.getPrice();
+				System.out.println("??? calcTotalBudgetedBill "+b.getId()+" "+b.getPrice());
+		 }
+			System.out.println("??? calcTotalBudgetedBill "+totalBill);
+
+		 return totalBill;
 	}
 	
 	double calcTotalBudgetedDiscretionary(BudgetPeriod selectedPeriod){
-		 return repoBudgetedDiscretionary.sumByPeriod(selectedPeriod);
-	}
+		 List<BudgetedDiscretionary> BudgetedDiscretionaries = repoBudgetedDiscretionary.findByBudgetPeriod(selectedPeriod);
+		 double totalDiscretionary = 0;
 
+		 for (BudgetedDiscretionary b : BudgetedDiscretionaries)
+		 {
+			 totalDiscretionary += b.getAmount();
+				System.out.println("??? calcTotalBudgetedDiscretionary "+b.getId()+" "+b.getAmount());
+		 }
+			System.out.println("??? calcTotalBudgetedDiscretionary "+totalDiscretionary);
+
+		 return totalDiscretionary;
+	}
 	double calcIncomeMinusBills(BudgetPeriod selectedPeriod){
-			return	repoBudgetedIncome.sumByPeriod(selectedPeriod)-repoBudgetedBills.sumByPeriod(selectedPeriod);
+			return	calcTotalBudgetedIncome(selectedPeriod)-calcTotalBudgetedBills(selectedPeriod);
 	}
 	
 	double calcRemainingToBudget(BudgetPeriod selectedPeriod){
-		return repoBudgetedIncome.sumByPeriod(selectedPeriod) - repoBudgetedBills.sumByPeriod(selectedPeriod) - repoBudgetedDiscretionary.sumByPeriod(selectedPeriod);
+		return calcTotalBudgetedIncome(selectedPeriod) - calcTotalBudgetedBills(selectedPeriod) - calcTotalBudgetedDiscretionary(selectedPeriod);
 	}
 	
 	//to use this, add "model = getBudgetPeriodEntries(model, selectedPeriod)" as a line to your mapping 
@@ -76,9 +109,9 @@ public class WebController {
 	//to use this, add "model = getBudgetPeriodSums(model, selectedPeriod)" as a line to your mapping 
 	//then you can reference these attributes on your html page. See the income section of reports.html for example
 	public Model getBudgetPeriodSums(Model model, BudgetPeriod selectedPeriod) {
-		double inc =  repoBudgetedIncome.sumByPeriod(selectedPeriod);//!!!Changed this to query the repo instead of using list in BudgetPeriod, allows the reports.html to refresh better
-		double bills = repoBudgetedBills.sumByPeriod(selectedPeriod);
-		double disc = repoBudgetedDiscretionary.sumByPeriod(selectedPeriod);
+		double inc =  calcTotalBudgetedIncome(selectedPeriod);//!!!Changed this to query the repo instead of using list in BudgetPeriod, allows the reports.html to refresh better
+		double bills = calcTotalBudgetedBills(selectedPeriod);
+		double disc = calcTotalBudgetedDiscretionary(selectedPeriod);
 		double incMinusBills = inc - bills;
 		double budgetBalance = inc - bills - disc;
 		String balanceInstructions = "";
@@ -206,7 +239,7 @@ public class WebController {
 		System.out.println("??? /inputBudgetedBill/{periodId} selectedPeriod "+selectedPeriod.getId());		
 
 		model.addAttribute("BudgetedBills", repoBudgetedBills.findByBudgetPeriod(selectedPeriod)); ///!!!Fixed this by adding a method in BudgetedBillRepository to filter by period
-		model.addAttribute("BudgetedBillsTotal", repoBudgetedBills.sumByPeriod(selectedPeriod)); ///!!!Fixed this by adding a method in BudgetedBillRepository to filter by period
+		model.addAttribute("BudgetedBillsTotal", calcTotalBudgetedBills(selectedPeriod)); ///!!!Fixed this by adding a method in BudgetedBillRepository to filter by period
 		model.addAttribute("newBudgetedBill", p);
 		
 		model.addAttribute("BudgetedBills", repoBudgetedBills.findByBudgetPeriod(selectedPeriod));
@@ -291,17 +324,17 @@ public class WebController {
 	}
 
 	// Commented out this method because it already exists in first section -CMG
-	double repoBudgetedIncome.sumByPeriod(BudgetPeriod selectedPeriod){
+	double calcTotalBudgetedIncome(BudgetPeriod selectedPeriod){
 		 List<BudgetedIncome> BudgetedIncomes = repoBudgetedIncome.findByBudgetPeriod(selectedPeriod);
 		 double totalIncome = 0;
 
 		 for (BudgetedIncome b : BudgetedIncomes)
 		 {
 			 totalIncome += b.getAmount();
-				System.out.println("??? repoBudgetedIncome.sumByPeriod "+b.getId()+" "+b.getAmount());
+				System.out.println("??? calcTotalBudgetedIncome "+b.getId()+" "+b.getAmount());
 
 		 }
-			System.out.println("??? repoBudgetedIncome.sumByPeriod "+totalIncome);
+			System.out.println("??? calcTotalBudgetedIncome "+totalIncome);
 
 		 return totalIncome;
 	}
@@ -315,8 +348,8 @@ public class WebController {
 	BudgetedIncome b = new BudgetedIncome();
 	BudgetPeriod selectedPeriod = repoBudgetPeriod.findById(periodId).orElse(null);
 		model.addAttribute("BudgetedIncomes", repoBudgetedIncome.findByBudgetPeriod(selectedPeriod)); ///!!!Fixed this by adding a method in BudgetedIncomeRepository to filter by period
-		model.addAttribute("BudgetedIncomesTotal", repoBudgetedIncome.sumByPeriod(selectedPeriod)); ///!!!Fixed this by adding a method in BudgetedIncomeRepository to filter by period
-		System.out.println("??? /inputBudgetedIncome/{periodId} BudgetedIncomesTotal"+repoBudgetedIncome.sumByPeriod(selectedPeriod));
+		model.addAttribute("BudgetedIncomesTotal", calcTotalBudgetedIncome(selectedPeriod)); ///!!!Fixed this by adding a method in BudgetedIncomeRepository to filter by period
+		System.out.println("??? /inputBudgetedIncome/{periodId} BudgetedIncomesTotal"+calcTotalBudgetedIncome(selectedPeriod));
 
 		model.addAttribute("newBudgetedIncome", b);
 		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
@@ -528,7 +561,7 @@ public class WebController {
 		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
 		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findByBudgetPeriod(selectedPeriod));
 		model.addAttribute("DiscretionaryCategories", repoDiscretionaryCategory.findAll());
-		model.addAttribute("BudgetedDiscTotal", repoBudgetedDiscretionary.sumByPeriod(selectedPeriod)); 
+		model.addAttribute("BudgetedDiscTotal", calcTotalBudgetedDiscretionary(selectedPeriod)); 
 		model.addAttribute("GoTo", GoTo);
 
 		return "budgetedDiscretionary";
@@ -544,7 +577,7 @@ public class WebController {
 		model.addAttribute("selectedBudgetPeriod", selectedPeriod);
 		model.addAttribute("BudgetedDiscretionaries", repoBudgetedDiscretionary.findByBudgetPeriod(selectedPeriod));
 		model.addAttribute("DiscretionaryCategories", repoDiscretionaryCategory.findAll());
-		model.addAttribute("BudgetedDiscTotal", repoBudgetedDiscretionary.sumByPeriod(selectedPeriod)); 
+		model.addAttribute("BudgetedDiscTotal", calcTotalBudgetedDiscretionary(selectedPeriod)); 
 
 		return "editBudgetedDiscretionary"; 
 	}

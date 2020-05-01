@@ -15,8 +15,8 @@ public interface BudgetedBillsRepository extends JpaRepository<BudgetedBills, Lo
 	  @Query("FROM #{#entityName} WHERE budgetPeriod = :bp")//parameterize query to limit risk of sql injection attack
 	  List<BudgetedBills> findByBudgetPeriod(@Param("bp") BudgetPeriod selectedPeriod);
 		
-		@Query("SELECT SUM(e.price) FROM #{#entityName} e WHERE budgetPeriod = :bp")
-		double sumByPeriod(@Param("bp") BudgetPeriod selectedPeriod);
+//		@Query("SELECT SUM(e.price) FROM #{#entityName} e WHERE budgetPeriod = :bp")
+//		double sumByPeriod(@Param("bp") BudgetPeriod selectedPeriod);
 	
 
 	}

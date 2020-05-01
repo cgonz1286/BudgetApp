@@ -19,8 +19,8 @@ public interface BudgetedDiscretionaryRepository extends JpaRepository<BudgetedD
 	List<BudgetedDiscretionary> findByBudgetPeriod(@Param("bp") BudgetPeriod selectedPeriod);
 	 	
 	
-	@Query("SELECT SUM(e.amount) FROM #{#entityName} e WHERE budgetPeriod = :bp")
-	double sumByPeriod(@Param("bp") BudgetPeriod selectedPeriod);
+//	@Query("SELECT SUM(e.amount) FROM #{#entityName} e WHERE budgetPeriod = :bp")
+//	double sumByPeriod(@Param("bp") BudgetPeriod selectedPeriod);
 	
 
 	@Query("SELECT NEW budgetapp.pojo.SpendingByCategoryAndPeriod(e.discCategory, e.budgetPeriod, SUM(e.amount)) FROM #{#entityName} e GROUP BY e.discCategory, e.budgetPeriod ORDER BY e.discCategory, e.budgetPeriod")

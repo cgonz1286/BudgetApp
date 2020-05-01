@@ -30,23 +30,25 @@ public class BudgetPeriod {
     @DateTimeFormat(pattern = "MM/dd/yyyy")
 	private Date endDate; 
     
-	//cascade type merge so that it doesn't create duplicates of same item
+	
+    /*
+    //cascade type merge so that it doesn't create duplicates of same item?
 	@OneToMany(mappedBy="budgetPeriod", orphanRemoval = true)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<BudgetedIncome> listOfBudgetedIncomes;
 	
-	//!!!REmember to re-add setters and getters!!!	
-	//cascade type merge so that it doesn't create duplicates of same item
+
 	@OneToMany(mappedBy="budgetPeriod", orphanRemoval = true)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<BudgetedBills> listOfBudgetedBills;
 	
-	//!!!REmember to re-add setters and getters!!!				
-	//cascade type merge so that it doesn't create duplicates of same item
+
 	@OneToMany(mappedBy="budgetPeriod",  orphanRemoval = true)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<BudgetedDiscretionary> listOfBudgetedDiscretionaries;
 
+	*/
+	
 	/**
 	 * @param id
 	 */
@@ -129,58 +131,7 @@ public class BudgetPeriod {
 		this.endDate = endDate;
 	}
 	
-	
-	
-	/**
-	 * @return the listOfBudgetedIncomes
-	 */
-	public List<BudgetedIncome> getListOfBudgetedIncomes() {
-		return listOfBudgetedIncomes;
-	}
 
-	/**
-	 * @param listOfBudgetedIncomes the listOfBudgetedIncomes to set
-	 */
-	//https://stackoverflow.com/questions/5587482/hibernate-a-collection-with-cascade-all-delete-orphan-was-no-longer-referenc
-	public void setListOfBudgetedIncomes(List<BudgetedIncome> listOfBudgetedIncomes) {
-		 this.listOfBudgetedIncomes.clear();
-		    if (listOfBudgetedIncomes != null) {
-		        this.listOfBudgetedIncomes.addAll(listOfBudgetedIncomes);
-		    }	
-	}
-
-	/**
-	 * @return the listOfBudgetedBills
-	 */
-	public List<BudgetedBills> getListOfBudgetedBills() {
-		return listOfBudgetedBills;
-	}
-
-	/**
-	 * @param listOfBudgetedBills the listOfBudgetedBills to set
-	 */
-	public void setListOfBudgetedBills(List<BudgetedBills> listOfBudgetedBills) {
-		 this.listOfBudgetedBills.clear();
-		    if (listOfBudgetedBills != null) {
-		        this.listOfBudgetedBills.addAll(listOfBudgetedBills);
-		    }		}	
-
-	/**
-	 * @return the listOfBudgetedDiscretionaries
-	 */
-	public List<BudgetedDiscretionary> getListOfBudgetedDiscretionaries() {
-		return listOfBudgetedDiscretionaries;
-	}
-
-	/**
-	 * @param listOfBudgetedDiscretionaries the listOfBudgetedDiscretionaries to set
-	 */
-	public void setListOfBudgetedDiscretionaries(List<BudgetedDiscretionary> listOfBudgetedDiscretionaries) {
-		 this.listOfBudgetedDiscretionaries.clear();
-		    if (listOfBudgetedDiscretionaries != null) {
-		        this.listOfBudgetedDiscretionaries.addAll(listOfBudgetedDiscretionaries);
-		    }		}
-	
 
 	@Override
 	public String toString() {

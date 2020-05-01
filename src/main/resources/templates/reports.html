@@ -53,7 +53,7 @@ th, td {
 		<th>Description</th> 
 		<th>Date</th>
 		<th>Amount</th>
-		<!-- add Add New button here? -->
+		<th colspan="2"><a th:href="@{/inputBudgetedIncome/{periodId}(periodId=${selectedBudgetPeriod.id})}">Add New</a></th>
 	</tr>
 	<tr th:each="currentBudgetedIncome: ${periodIncomes}">
 		<td  th:text="${currentBudgetedIncome.id}" hidden />
@@ -75,12 +75,13 @@ th, td {
 		<th>Category</th>
 		<th>Due Date</th>
 		<th>Total Due</th>
-		<th colspan="2"><a th:href="@{/inputBudgetedBill/{periodId}/GoToReports(periodId=${selectedBudgetPeriod.id})}">Add a new Bill</a></th>
+		<th colspan="2"><a th:href="@{/inputBudgetedBill/{periodId}(periodId=${selectedBudgetPeriod.id})}">Add New </a></th>
 	</tr>
 	<tr th:each="currentBudgetedBill: ${periodBills}">
 		<td th:text="${currentBudgetedBill.id}" hidden />
 		<td th:text="${currentBudgetedBill.name}" />
 		<td th:text="${currentBudgetedBill.accountNum}" />
+		<td th:text="${currentBudgetedBill.category}" />
 		<td th:text="${#dates.format(currentBudgetedBill.dateDue, 'MM/dd/yyyy')}" /> 
 		<td th:text="${#numbers.formatCurrency(currentBudgetedBill.price)}" />
 		<td><a th:href="@{/editBudgetedBill/{id}/GoToReports(id=${currentBudgetedBill.id})}">Edit </a></td>
@@ -110,8 +111,8 @@ th, td {
 
 <a href="/inputBudgetPeriod">Add a new Budget Period</a><br/>
 <a href = "/viewAllBudgetPeriods">View all Budget Periods</a><br/>
-<a th:href="@{/inputBudgetedBill/{periodId}(periodId=${selectedBudgetPeriod.id})}">Add a new Bill</a><br/>
-<a href="../viewReportDiscCat">Spending Categories Budget Report</a><br/>
+
+<a href="/viewReportDiscCat">Spending Categories Budget Report</a><br/>
 
 </body>
 </html>
